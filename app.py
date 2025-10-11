@@ -81,14 +81,15 @@ def get_weather(city):
     except Exception as e:
         return None
 
-# ---------------------- API PRICE FETCHER ----------------------
-def fetch_prices_from_api(location, api_key):
+# ---------------------- API PRICE FETCHER (GOVERNMENT API ONLY) ----------------------
+# ONLY REPLACE THE fetch_prices_from_government_api FUNCTION
+
+def fetch_prices_from_government_api(location):
     """
-    Fetches real-time commodity prices from Indian Government API
+    Fetches real-time commodity prices from Indian Government API ONLY
     """
     prices_data = {}
     
-    # Using Indian Government Open Data API (FREE - No API key needed!)
     try:
         # Commodity mapping for Indian markets
         commodity_mapping = {
@@ -135,7 +136,10 @@ def fetch_prices_from_api(location, api_key):
         base_url = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070"
         api_key_gov = "579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b"
         
-        for commodity_key, commodity_name in commodity_mapping.items():
+        # Fetch only a few commodities to speed up
+        priority_commodities = ['Tomato', 'Potato', 'Onion', 'Cabbage', 'Apple', 'Banana']
+        
+        for commodity_name in priority_commodities:
             try:
                 params = {
                     'api-key': api_key_gov,
@@ -146,7 +150,8 @@ def fetch_prices_from_api(location, api_key):
                     'offset': 0
                 }
                 
-                response = requests.get(base_url, params=params, timeout=8)
+                # Increased timeout to 15 seconds
+                response = requests.get(base_url, params=params, timeout=15)
                 
                 if response.status_code == 200:
                     data = response.json()
@@ -187,75 +192,49 @@ def fetch_prices_from_api(location, api_key):
                                 "trend": trend,
                                 "source": "Live API"
                             }
-                        except (ValueError, TypeError) as e:
+                        except (ValueError, TypeError):
                             continue
+                else:
+                    # Log the error for debugging
+                    print(f"API Error for {commodity_name}: Status {response.status_code}")
                 
+            except requests.exceptions.Timeout:
+                print(f"Timeout for {commodity_name}")
+                continue
             except Exception as e:
-                continue  # Skip this commodity if it fails
+                print(f"Error fetching {commodity_name}: {str(e)}")
+                continue
         
         if city_prices and len(city_prices) > 0:
             location_formatted = location.title() if location != "all" else "Delhi"
             prices_data[location_formatted] = city_prices
-            # Don't show info message here - will show in format function
             return prices_data
         else:
             # If no data found, return None to trigger fallback
+            print(f"No price data found for {location}")
             return None
             
     except Exception as e:
+        print(f"Government API Error: {str(e)}")
         st.error(f"Government API Error: {str(e)}")
     
     return None
 
-def get_weather(city):
-    """
-    Fetches real-time weather data for the given city using OpenWeatherMap API
-    """
-    API_KEY = "bc072ed23f5983aac7f32d666efe49af"
-    BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
-    
-    try:
-        params = {
-            "q": city,
-            "appid": API_KEY,
-            "units": "metric"
-        }
-        response = requests.get(BASE_URL, params=params, timeout=5)
-        
-        if response.status_code == 200:
-            data = response.json()
-            weather_info = {
-                "city": data["name"],
-                "temperature": data["main"]["temp"],
-                "feels_like": data["main"]["feels_like"],
-                "humidity": data["main"]["humidity"],
-                "description": data["weather"][0]["description"],
-                "wind_speed": data["wind"]["speed"]
-            }
-            return weather_info
-        else:
-            return None
-    except Exception as e:
-        return None
-
 # ---------------------- PRODUCE PRICE FUNCTION ----------------------
 def get_produce_prices(state="all"):
     """
-    Fetches produce prices using real-time APIs
+    Fetches produce prices using Government API with fallback to sample data
     """
-    # API Configuration
-    API_NINJAS_KEY = "YOUR_API_NINJAS_KEY"  # Replace with your key from https://api-ninjas.com/
-    
-    # ALWAYS try to fetch from API first (Government API doesn't need key)
+    # Try to fetch from Government API first
     try:
-        api_prices = fetch_prices_from_api(state, API_NINJAS_KEY)
+        api_prices = fetch_prices_from_government_api(state)
         if api_prices and len(api_prices) > 0:
             # Check if we got actual data (not empty)
             for city, prices in api_prices.items():
                 if prices and len(prices) > 0:
                     return api_prices
     except Exception as e:
-        st.warning(f"⚠️ API temporarily unavailable: {str(e)}")
+        st.warning(f"⚠️ Government API temporarily unavailable: {str(e)}")
     
     # Fallback to sample data if API fails
     sample_prices = {
@@ -674,18 +653,17 @@ with st.sidebar:
     
     with st.expander("📝 About Price Data"):
         st.write("""
-        **Data Sources:**
+        **Data Source:**
         
-        🇮🇳 **Primary:** Indian Government Open Data API
+        🇮🇳 **Indian Government Open Data API**
         - Real mandi prices
         - Updated regularly
         - No API key needed!
+        - FREE and open for all
         
-        🌍 **Secondary:** API-Ninjas (optional)
-        - Get key from [API-Ninjas](https://api-ninjas.com/)
-        - Replace `YOUR_API_NINJAS_KEY` in code
+        📊 **Note:** Prices shown are wholesale rates per quintal (100 kg) converted to per kg. Retail prices may vary.
         
-        📊 **Note:** Prices shown are wholesale rates per quintal (100 kg). Retail prices may vary.
+        💡 **Fallback:** If API is unavailable, sample data is shown for reference.
         """)
     
     st.divider()
