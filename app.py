@@ -5,7 +5,7 @@ from datetime import datetime
 import re
 
 # ---------------------- STREAMLIT CONFIG ----------------------
-st.set_page_config(page_title="🌾 AI Farmer Chatbot", page_icon="🌱", layout="centered")
+st.set_page_config(page_title="🌾 Krishisaathi", page_icon="🌱", layout="centered")
 
 # ---------------------- CUSTOM CSS ----------------------
 st.markdown("""
@@ -32,7 +32,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="main-header"><h1>🌾 AGRI SENSE AI CHATBOT</h1><p>Your smart assistant for sustainable farming 🚜</p></div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header"><h1>🌾 KRISHISAATHI AI CHATBOT</h1><p>Your smart assistant for sustainable farming 🚜</p></div>', unsafe_allow_html=True)
 
 # ---------------------- INITIALIZE SESSION ----------------------
 if "messages" not in st.session_state:
@@ -817,9 +817,9 @@ def get_bot_response(user_message):
 with st.sidebar:
     st.header("ℹ️ About")
     st.write("""
-    **Agri Sense AI** helps with:
+    **Krishisaathi** helps with:
     - 🌤️ Weather updates
-    - 💰 Market prices (50+ cities)
+    - 💰 Market prices (100+ cities)
     - 🌾 Crop tips
     - 🐛 Pest management
     - 💧 Irrigation advice
@@ -885,7 +885,7 @@ if prompt := st.chat_input("Ask about farming..."):
 st.divider()
 st.markdown("""
 <div style='text-align: center; color: #666;'>
-    <p>🌾 <b>Agri Sense AI</b> - Empowering Farmers</p>
+    <p>🌾 <b>Krishisaathi</b> - Empowering Farmers</p>
     <p style='font-size: 0.9em;'>💡 Weekly updated prices | Real-time weather</p>
 </div>
 """, unsafe_allow_html=True)
