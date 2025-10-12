@@ -466,6 +466,18 @@ def get_produce_prices(state="all"):
         return None
 
 
+import re
+
+def extract_city_from_message(message: str):
+    """Extracts city name from user's message using keywords like 'in' or 'at'."""
+    message = message.lower()
+    match = re.search(r"(?:in|at)\s+([a-zA-Z\s]+)", message)
+    if match:
+        # Clean up extra spaces or trailing words
+        city = match.group(1).strip().split(" ")[0]
+        return city.capitalize()
+    return None
+
 # Update the chatbot to show available cities
 def get_bot_response(user_message):
     """
