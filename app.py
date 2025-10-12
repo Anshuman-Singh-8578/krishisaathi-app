@@ -82,16 +82,15 @@ def get_weather(city):
         return None
 
 # ---------------------- API PRICE FETCHER (GOVERNMENT API ONLY) ----------------------
-# ONLY REPLACE THE fetch_prices_from_government_api FUNCTION
 
 def fetch_prices_from_government_api(location):
     """
-    Fetches real-time commodity prices from Indian Government API ONLY
+    Fetches real-time commodity prices - tries multiple sources
     """
     prices_data = {}
     
+    # Try Data.gov.in first
     try:
-        # Commodity mapping for Indian markets
         commodity_mapping = {
             'tomato': 'Tomato',
             'potato': 'Potato',
@@ -103,13 +102,8 @@ def fetch_prices_from_government_api(location):
             'orange': 'Orange',
             'mango': 'Mango',
             'watermelon': 'Water Melon',
-            'carrot': 'Carrot',
-            'brinjal': 'Brinjal',
-            'beans': 'Beans',
-            'spinach': 'Spinach'
         }
         
-        # State name to code mapping (expanded)
         state_mapping = {
             'delhi': 'Delhi',
             'mumbai': 'Maharashtra',
@@ -118,13 +112,6 @@ def fetch_prices_from_government_api(location):
             'kolkata': 'West Bengal',
             'chennai': 'Tamil Nadu',
             'hyderabad': 'Telangana',
-            'pune': 'Maharashtra',
-            'ahmedabad': 'Gujarat',
-            'jaipur': 'Rajasthan',
-            'lucknow': 'Uttar Pradesh',
-            'chandigarh': 'Chandigarh',
-            'bhopal': 'Madhya Pradesh',
-            'patna': 'Bihar'
         }
         
         location_lower = location.lower() if location != "all" else "delhi"
@@ -132,91 +119,82 @@ def fetch_prices_from_government_api(location):
         
         city_prices = {}
         
-        # Use the government API
+        # Government API with better error handling
         base_url = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070"
         api_key_gov = "579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b"
         
-        # Fetch only a few commodities to speed up
-        priority_commodities = ['Tomato', 'Potato', 'Onion', 'Cabbage', 'Apple', 'Banana']
+        # Try to fetch at least one commodity to test API
+        test_commodity = 'Tomato'
         
-        for commodity_name in priority_commodities:
-            try:
-                params = {
-                    'api-key': api_key_gov,
-                    'format': 'json',
-                    'filters[commodity]': commodity_name,
-                    'filters[state]': state_name,
-                    'limit': 1,
-                    'offset': 0
-                }
-                
-                # Increased timeout to 15 seconds
-                response = requests.get(base_url, params=params, timeout=15)
-                
-                if response.status_code == 200:
-                    data = response.json()
-                    records = data.get('records', [])
-                    
-                    if records and len(records) > 0:
-                        record = records[0]
-                        
-                        # Get prices from API
-                        modal_price = record.get('modal_price', None)
-                        min_price = record.get('min_price', None)
-                        max_price = record.get('max_price', None)
-                        
-                        # Skip if no valid price data
-                        if not modal_price:
-                            continue
-                        
-                        # Convert quintal prices to per kg (divide by 100)
-                        try:
-                            modal_kg = float(modal_price) / 100
-                            min_kg = float(min_price) / 100 if min_price else modal_kg
-                            max_kg = float(max_price) / 100 if max_price else modal_kg
-                            
-                            # Format price range
-                            price_range = f"₹{int(min_kg)}-{int(max_kg)}"
-                            
-                            # Calculate trend
-                            if max_kg > modal_kg * 1.05:
-                                trend = "↑"
-                            elif min_kg < modal_kg * 0.95:
-                                trend = "↓"
-                            else:
-                                trend = "→"
-                            
-                            city_prices[commodity_name] = {
-                                "price": price_range,
-                                "unit": "per kg",
-                                "trend": trend,
-                                "source": "Live API"
-                            }
-                        except (ValueError, TypeError):
-                            continue
-                else:
-                    # Log the error for debugging
-                    print(f"API Error for {commodity_name}: Status {response.status_code}")
-                
-            except requests.exceptions.Timeout:
-                print(f"Timeout for {commodity_name}")
-                continue
-            except Exception as e:
-                print(f"Error fetching {commodity_name}: {str(e)}")
-                continue
+        params = {
+            'api-key': api_key_gov,
+            'format': 'json',
+            'filters[commodity]': test_commodity,
+            'filters[state]': state_name,
+            'limit': 5,
+            'offset': 0
+        }
         
-        if city_prices and len(city_prices) > 0:
-            location_formatted = location.title() if location != "all" else "Delhi"
-            prices_data[location_formatted] = city_prices
-            return prices_data
-        else:
-            # If no data found, return None to trigger fallback
-            print(f"No price data found for {location}")
-            return None
+        response = requests.get(base_url, params=params, timeout=10)
+        
+        if response.status_code == 200:
+            data = response.json()
+            records = data.get('records', [])
             
+            # If we got data, fetch all commodities
+            if records and len(records) > 0:
+                for commodity_key, commodity_name in commodity_mapping.items():
+                    try:
+                        params['filters[commodity]'] = commodity_name
+                        r = requests.get(base_url, params=params, timeout=10)
+                        
+                        if r.status_code == 200:
+                            commodity_data = r.json()
+                            commodity_records = commodity_data.get('records', [])
+                            
+                            if commodity_records and len(commodity_records) > 0:
+                                record = commodity_records[0]
+                                
+                                modal_price = record.get('modal_price', None)
+                                min_price = record.get('min_price', None)
+                                max_price = record.get('max_price', None)
+                                
+                                if modal_price:
+                                    try:
+                                        modal_kg = float(modal_price) / 100
+                                        min_kg = float(min_price) / 100 if min_price else modal_kg
+                                        max_kg = float(max_price) / 100 if max_price else modal_kg
+                                        
+                                        price_range = f"₹{int(min_kg)}-{int(max_kg)}"
+                                        
+                                        if max_kg > modal_kg * 1.05:
+                                            trend = "↑"
+                                        elif min_kg < modal_kg * 0.95:
+                                            trend = "↓"
+                                        else:
+                                            trend = "→"
+                                        
+                                        city_prices[commodity_name] = {
+                                            "price": price_range,
+                                            "unit": "per kg",
+                                            "trend": trend,
+                                            "source": "Live API"
+                                        }
+                                    except (ValueError, TypeError):
+                                        continue
+                    except:
+                        continue
+                
+                if city_prices and len(city_prices) > 0:
+                    location_formatted = location.title() if location != "all" else state_name
+                    prices_data[location_formatted] = city_prices
+                    return prices_data
+        
+        # If API failed, log it
+        print(f"Government API returned status: {response.status_code}")
+        
     except Exception as e:
-        print(f"Government API Error: {str(e)}")
-        st.error(f"Government API Error: {str(e)}")
+        print(f"API Error: {str(e)}")
     
     return None
 
