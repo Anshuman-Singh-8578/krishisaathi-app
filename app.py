@@ -478,6 +478,28 @@ def extract_city_from_message(message: str):
         return city.capitalize()
     return None
 
+# ---------------------- PRICE FORMATTING LOGIC ----------------------
+def format_specific_produce_price(prices, city, produce):
+    """Formats the price output for a specific produce and city."""
+    if not prices:
+        return f"❌ Sorry, I couldn't find any price data for {produce} in {city}."
+
+    # If prices is a dict with city keys
+    if isinstance(prices, dict):
+        city_data = prices.get(city.lower())
+        if city_data:
+            return (
+                f"📍 **Market Price for {produce.title()} in {city.title()}**\n"
+                f"➡️ Average: ₹{city_data.get('avg_price', 'N/A')} per kg\n"
+                f"➡️ Min: ₹{city_data.get('min_price', 'N/A')} per kg\n"
+                f"➡️ Max: ₹{city_data.get('max_price', 'N/A')} per kg"
+            )
+        else:
+            return f"❌ Sorry, no market data found for {city.title()}."
+
+    # If prices is just a number (fallback)
+    return f"💰 The average price of {produce.title()} in {city.title()} is ₹{prices} per kg."
+
 # Update the chatbot to show available cities
 def get_bot_response(user_message):
     """
