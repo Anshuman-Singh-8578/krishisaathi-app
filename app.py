@@ -829,13 +829,30 @@ with st.sidebar:
     
     st.header("🎯 Quick Actions")
     if st.button("📍 Delhi Prices"):
-        st.session_state.messages.append({"role": "user", "content": "Show prices in Delhi"})
+        user_msg = "Show prices in Delhi"
+        st.session_state.messages.append({"role": "user", "content": user_msg})
+        
+        # Generate bot response
+        bot_response = get_bot_response(user_msg)
+        st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
+        
     if st.button("🌤️ Mumbai Weather"):
-        st.session_state.messages.append({"role": "user", "content": "Weather in Mumbai"})
+        user_msg = "Weather in Mumbai"
+        st.session_state.messages.append({"role": "user", "content": user_msg})
+        
+        # Generate bot response
+        bot_response = get_bot_response(user_msg)
+        st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
+        
     if st.button("🌾 Crop Tips"):
-        st.session_state.messages.append({"role": "user", "content": "Tell me about wheat"})
+        user_msg = "Tell me about wheat"
+        st.session_state.messages.append({"role": "user", "content": user_msg})
+        
+        # Generate bot response
+        bot_response = get_bot_response(user_msg)
+        st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
     
     st.divider()
