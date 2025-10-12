@@ -477,28 +477,50 @@ def extract_city_from_message(message: str):
         city = match.group(1).strip().split(" ")[0]
         return city.capitalize()
     return None
+#----------------------FORMATTING LOGIC----------------------------------
 
-# ---------------------- PRICE FORMATTING LOGIC ----------------------
+import difflib
+
 def format_specific_produce_price(prices, city, produce):
-    """Formats the price output for a specific produce and city."""
+    """Formats the price output for a specific produce and city with smart matching."""
     if not prices:
         return f"❌ Sorry, I couldn't find any price data for {produce} in {city}."
 
-    # If prices is a dict with city keys
-    if isinstance(prices, dict):
-        city_data = prices.get(city.lower())
-        if city_data:
-            return (
-                f"📍 **Market Price for {produce.title()} in {city.title()}**\n"
-                f"➡️ Average: ₹{city_data.get('avg_price', 'N/A')} per kg\n"
-                f"➡️ Min: ₹{city_data.get('min_price', 'N/A')} per kg\n"
-                f"➡️ Max: ₹{city_data.get('max_price', 'N/A')} per kg"
-            )
-        else:
-            return f"❌ Sorry, no market data found for {city.title()}."
+    # Normalize city name
+    city_clean = city.strip().lower()
 
-    # If prices is just a number (fallback)
-    return f"💰 The average price of {produce.title()} in {city.title()} is ₹{prices} per kg."
+    # Get all available cities
+    available_cities = [c.lower().strip() for c in prices.keys()]
+
+    # Try exact match first
+    if city_clean in available_cities:
+        matched_city = city_clean
+    else:
+        # Try fuzzy matching (for spelling differences)
+        matches = difflib.get_close_matches(city_clean, available_cities, n=1, cutoff=0.6)
+        matched_city = matches[0] if matches else None
+
+    if matched_city:
+        city_data = prices.get(matched_city) or prices.get(matched_city.title()) or prices.get(matched_city.upper())
+        if city_data:
+            avg = city_data.get("avg_price", "N/A")
+            minp = city_data.get("min_price", "N/A")
+            maxp = city_data.get("max_price", "N/A")
+            return (
+                f"📍 **Market Price for {produce.title()} in {matched_city.title()}**\n"
+                f"➡️ Average: ₹{avg} per kg\n"
+                f"➡️ Min: ₹{minp} per kg\n"
+                f"➡️ Max: ₹{maxp} per kg"
+            )
+
+    # If still not found
+    similar = difflib.get_close_matches(city_clean, available_cities, n=3, cutoff=0.4)
+    if similar:
+        suggestions = ", ".join([s.title() for s in similar])
+        return f"⚠️ No exact data for {city.title()}, but nearby matches are: {suggestions}"
+    else:
+        return f"❌ Sorry, no market data found for {city.title()}."
+
 
 # Update the chatbot to show available cities
 def get_bot_response(user_message):
