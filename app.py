@@ -1095,23 +1095,47 @@ def format_specific_produce_price(prices, city_name, produce_name):
 # ---------------------- FARMING KNOWLEDGE BASE ----------------------
 farming_tips = {
     "crops": {
-        "wheat": "🌾 Wheat grows best in cool, moist climates. Plant in fall or spring. Requires well-drained soil with pH 6.0-7.0.",
-        "rice": "🍚 Rice needs flooded fields and warm temperatures (20-35°C). Requires clayey soil that retains water well.",
-        "tomato": "🍅 Tomatoes need 6-8 hours of sunlight daily. Plant when soil temperature is above 15°C.",
-        "potato": "🥔 Potatoes prefer cool weather (15-20°C). Plant in loose, acidic soil (pH 5.0-6.0)."
+        "wheat": "🌾 Wheat grows best in cool, moist climates (10–25°C). Requires well-drained loamy or clay-loam soil with pH 6.0–7.0. Apply farmyard manure and nitrogen-rich fertilizers. Avoid waterlogging for healthy yield.",
+        "rice": "🍚 Rice needs flooded fields and warm temperatures (20–35°C). Prefers clayey or loamy soil that retains water well. Requires consistent irrigation and high humidity. Use organic compost or green manure for better yield.",
+        "tomato": "🍅 Tomatoes need 6–8 hours of sunlight daily. Grow best in warm weather (20–30°C) with well-drained loamy soil (pH 6.0–6.8). Add compost and potash-based fertilizer. Stake plants for better fruiting.",
+        "potato": "🥔 Potatoes prefer cool weather (15–20°C). Grow in loose, sandy or loamy soil (pH 5.0–6.0). Add compost and wood ash to improve yield. Avoid high humidity during tuber formation.",
+        "maize": "🌽 Maize needs warm climate (18–27°C) and well-drained fertile soil (pH 5.5–7.0). Requires full sun and moderate rainfall. Apply nitrogen fertilizers and organic manure.",
+        "sugarcane": "🍬 Sugarcane thrives in tropical climate (20–35°C) and rich loamy soil. Requires high water and sunlight. Organic compost and nitrogen fertilizer improve sucrose content.",
+        "soybean": "🌱 Soybean grows in warm climates (20–30°C) with moderate rainfall. Requires well-drained loamy soil (pH 6.0–7.5). Use rhizobium inoculation to boost nitrogen fixation.",
+        "banana": "🍌 Banana prefers warm, humid climates (25–35°C) and deep, rich loamy soil with good drainage. Requires plenty of organic manure and potassium fertilizer.",
+        "mango": "🥭 Mango trees need tropical to subtropical climates with dry periods. Grows well in deep, well-drained loam or alluvial soil (pH 5.5–7.5). Apply compost annually.",
+        "onion": "🧅 Onions grow in cool weather (13–24°C). Prefer loose sandy loam soil (pH 6.0–7.0). Add phosphorus and potash before bulb formation.",
+        "cabbage": "🥬 Cabbage prefers cool climate (10–25°C) and fertile, moist loamy soil (pH 6.0–7.5). Use organic manure and nitrogen fertilizer for compact heads.",
+        "brinjal": "🍆 Brinjal (eggplant) thrives in warm weather (21–30°C) and fertile loamy soil. Add compost and potassium fertilizer. Avoid frost and waterlogging.",
+        "cauliflower": "🥦 Cauliflower prefers cool, moist climate (15–25°C). Needs rich, well-drained soil with pH 6.0–7.5. Apply compost and boron for firm heads.",
+        "carrot": "🥕 Carrots prefer cool weather (15–20°C) and sandy loam soil free of stones (pH 6.0–6.8). Add compost before sowing for sweeter roots.",
+        "spinach": "🌿 Spinach grows best in cool weather (10–24°C). Requires fertile, moist soil (pH 6.0–7.0). Add nitrogen-rich fertilizer for greener leaves.",
+        "chili": "🌶️ Chilies grow in warm climate (20–35°C) with full sunlight. Loamy soil with good drainage and organic manure ensures healthy fruiting.",
+        "papaya": "🍈 Papaya grows in tropical and subtropical climates (25–35°C). Needs light, well-drained soil. Add compost and potash fertilizer for sweeter fruits.",
+        "apple": "🍎 Apple grows in cool climates (5–24°C). Prefers well-drained loamy soil with pH 6.0–7.0. Requires winter chilling and organic mulch for good fruit set.",
+        "grapes": "🍇 Grapes grow in warm, dry climates (15–35°C) with deep, well-drained sandy loam soil. Require potassium and magnesium for good yield.",
+        "pomegranate": "🍒 Pomegranate grows in semi-arid regions (20–35°C). Prefers well-drained loamy soil (pH 6.0–7.5). Add organic compost for better flowering.",
+        "watermelon": "🍉 Watermelon needs hot, dry climate (25–35°C) and sandy loam soil with good drainage. Requires potassium fertilizer and regular irrigation during fruiting.",
+        "mustard": "🌼 Mustard prefers cool climate (10–25°C) and fertile loamy soil with pH 6.0–7.5. Apply nitrogen and phosphorus fertilizer for better oil yield.",
+        "cotton": "🧵 Cotton grows in warm climates (21–30°C). Requires well-drained black or alluvial soil. Add potash and nitrogen fertilizers for longer fibers."
     },
     "seasons": {
-        "spring": "🌸 Spring: Plant tomatoes, peppers, corn, beans, cucumbers.",
-        "summer": "☀️ Summer: Regular watering, pest control, harvest early crops.",
-        "fall": "🍂 Fall: Plant garlic, onions, winter wheat, cover crops.",
-        "winter": "❄️ Winter: Plan next season, maintain equipment, indoor seed starting."
+        "spring": "🌸 Spring: Ideal for planting tomatoes, corn, beans, cucumbers, spinach, and peppers. Maintain regular irrigation and start pest control early.",
+        "summer": "☀️ Summer: Regular watering is crucial. Protect crops from heat stress. Best for okra, gourds, eggplants, and chilies. Mulching helps retain moisture.",
+        "monsoon": "🌧️ Monsoon: Plant rice, maize, soybean, and cotton. Watch for fungal infections and ensure proper drainage to avoid root rot.",
+        "fall": "🍂 Fall: Perfect for planting garlic, onions, winter wheat, mustard, and leafy greens. Apply compost and prepare soil for winter crops.",
+        "winter": "❄️ Winter: Grow carrots, cabbage, peas, cauliflower, and spinach. Protect plants from frost and plan crop rotation for next season."
     },
     "pests": {
-        "aphids": "🐛 Aphids: Use neem oil spray, introduce ladybugs, or spray with water.",
-        "caterpillars": "🐛 Caterpillars: Hand-pick, use Bt, or plant companion flowers.",
-        "general": "🛡️ Prevention: Crop rotation, companion planting, beneficial insects."
+        "aphids": "🐛 Aphids: Suck sap and spread viruses. Control with neem oil, ladybugs, or soap water spray. Avoid over-fertilization with nitrogen.",
+        "caterpillars": "🐛 Caterpillars: Chew leaves and fruits. Hand-pick, use Bt spray, or introduce trichogramma wasps.",
+        "whiteflies": "🦟 Whiteflies: Cause leaf yellowing. Use yellow sticky traps and neem oil. Avoid excess nitrogen fertilizers.",
+        "fruitfly": "🍊 Fruit Fly: Damages fruits like mango, guava, and papaya. Use pheromone traps or neem extract sprays.",
+        "rootrot": "🦠 Root Rot: Caused by waterlogging and fungi. Improve soil drainage, use Trichoderma, and avoid overwatering.",
+        "general": "🛡️ Prevention: Crop rotation, companion planting, clean fields, balanced fertilizer use, and biological pest control."
     }
 }
+
 
 # ---------------------- CHATBOT RESPONSE LOGIC ----------------------
 def get_bot_response(user_message):
