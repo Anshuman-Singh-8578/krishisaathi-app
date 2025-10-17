@@ -1281,32 +1281,7 @@ def get_bot_response(user_message):
     
     return random.choice(responses)
 
-# 🔹 Placeholder AI function for disease detection
-def ai_predict_disease(image_file):
-    """
-    Placeholder for future ML model.
-    Replace this with model.predict(image) after training.
-    """
-    fake_predictions = [
-        "Tomato - Late Blight",
-        "Potato - Early Blight",
-        "Apple - Healthy",
-        "Rice - Brown Spot",
-        "Wheat - Leaf Rust"
-    ]
-    return random.choice(fake_predictions)
-# Handle image upload
-if st.session_state.expect_image:
-    uploaded_file = st.file_uploader("📤 Upload crop photo", type=["jpg", "png", "jpeg"])
-    if uploaded_file:
-        st.image(uploaded_file, caption="Uploaded Crop Image", use_column_width=True)
 
-        # 👉 Placeholder AI prediction
-        prediction = ai_predict_disease(uploaded_file)
-        st.success(f"✅ AI Prediction (Placeholder): **{prediction}**")
-
-        # Reset
-        st.session_state.expect_image = False
 # ---------------------- SIDEBAR ----------------------
 with st.sidebar:
     st.header("ℹ️ About")
