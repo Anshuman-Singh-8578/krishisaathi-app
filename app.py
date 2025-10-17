@@ -11,12 +11,29 @@ st.set_page_config(page_title="🌾 Krishisaathi AI", page_icon="🌱", layout="
 st.markdown("""
 <style>
     .main-header {
-        background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%);
-        padding: 20px;
-        border-radius: 10px;
-        color: white;
-        text-align: center;
+        background: transparent;
+        padding: 10px 0;
+        border-radius: 0;
+        color: #2e7d32;
+        text-align: left;
         margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+    .logo-container {
+        max-width: 150px;
+    }
+    .header-text h1 {
+        color: #2e7d32;
+        font-size: 2em;
+        margin: 0;
+        font-weight: bold;
+    }
+    .header-text p {
+        color: #555;
+        margin: 5px 0 0 0;
+        font-size: 1em;
     }
     .stButton>button {
         background-color: #4caf50;
@@ -39,15 +56,25 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Display logo and header
-try:
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        st.image("logo.png", use_container_width=True)
-except FileNotFoundError:
-    st.warning("⚠️ Logo file 'logo.png' not found in the current directory")
+# Display logo and header in same line
+st.markdown('<div class="main-header">', unsafe_allow_html=True)
 
-st.markdown('<div class="main-header"><h1>🌾 KRISHISAATHI AI CHATBOT</h1><p>Your smart assistant for sustainable farming 🚜</p></div>', unsafe_allow_html=True)
+col1, col2 = st.columns([1, 4])
+with col1:
+    try:
+        st.image("logo.png", use_container_width=True)
+    except FileNotFoundError:
+        st.warning("⚠️")
+
+with col2:
+    st.markdown("""
+    <div class="header-text">
+        <h1>🌾 KRISHISAATHI AI CHATBOT</h1>
+        <p>Your smart assistant for sustainable farming 🚜</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------------------- INITIALIZE SESSION ----------------------
 if "messages" not in st.session_state:
