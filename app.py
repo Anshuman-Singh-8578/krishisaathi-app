@@ -39,6 +39,14 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# Display logo and header
+try:
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.image("logo.png", use_container_width=True)
+except FileNotFoundError:
+    st.warning("⚠️ Logo file 'logo.png' not found in the current directory")
+
 st.markdown('<div class="main-header"><h1>🌾 KRISHISAATHI AI CHATBOT</h1><p>Your smart assistant for sustainable farming 🚜</p></div>', unsafe_allow_html=True)
 
 # ---------------------- INITIALIZE SESSION ----------------------
@@ -380,6 +388,13 @@ Ask me about:
 
 # ---------------------- SIDEBAR ----------------------
 with st.sidebar:
+    # Logo in sidebar
+    try:
+        st.image("logo.png", use_container_width=True)
+        st.markdown("---")
+    except FileNotFoundError:
+        pass
+    
     st.header("ℹ️ About")
     st.write("""
     **Krishisaathi AI** helps with:
