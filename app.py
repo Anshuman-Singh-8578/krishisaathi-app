@@ -10,7 +10,8 @@ st.set_page_config(page_title="🌾 Krishisaathi AI", page_icon="🌱", layout="
 # ---------------------- CUSTOM CSS ----------------------
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Saira:wght@400;600;700&display=swap');
+
     
     .main-header {
         background: transparent;
@@ -31,14 +32,14 @@ st.markdown("""
         font-size: 2.5em;
         margin: 0;
         font-weight: 700;
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Saira', sans-serif;
         letter-spacing: 2px;
     }
     .header-text p {
         color: #888;
         margin: 5px 0 0 0;
         font-size: 1.1em;
-        font-family: 'Roboto', sans-serif;
+        font-family: 'Saira', sans-serif;
         font-weight: 400;
     }
     .stButton>button {
