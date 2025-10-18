@@ -7,81 +7,339 @@ import re
 # ---------------------- STREAMLIT CONFIG ----------------------
 st.set_page_config(page_title="🌾 Krishisaathi AI", page_icon="🌱", layout="centered")
 
-# ---------------------- CUSTOM CSS ----------------------
+# ---------------------- MODERN CUSTOM CSS ----------------------
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Saira:wght@400;600;700&display=swap');
-
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
     
-    .main-header {
-        background: transparent;
-        padding: 10px 0;
-        border-radius: 0;
-        color: #2e7d32;
-        text-align: left;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 20px;
+    /* Global Styles */
+    * {
+        font-family: 'Inter', sans-serif;
     }
-    .logo-container {
-        max-width: 150px;
+    
+    /* Hide default Streamlit elements */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    /* Main container styling */
+    .main {
+        background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1419 100%);
+        padding: 0;
     }
-    .header-text h1 {
-        color: #4caf50;
-        font-size: 2.5em;
-        margin: 0;
+    
+    .block-container {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+        max-width: 900px;
+    }
+    
+    /* Modern Header */
+    .modern-header {
+        background: linear-gradient(135deg, #1e3a5f 0%, #2d5f3f 100%);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 40px rgba(46, 125, 50, 0.3);
+        border: 1px solid rgba(76, 175, 80, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .modern-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(76, 175, 80, 0.1) 0%, transparent 70%);
+        animation: pulse 4s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 0.5; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.1); }
+    }
+    
+    .header-content {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .app-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 2.5rem;
         font-weight: 700;
-        font-family: 'Saira', sans-serif;
-        letter-spacing: 2px;
+        background: linear-gradient(135deg, #4caf50 0%, #81c784 50%, #66bb6a 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 0;
+        letter-spacing: 1px;
+        text-shadow: 0 0 30px rgba(76, 175, 80, 0.5);
     }
-    .header-text p {
-        color: #888;
-        margin: 5px 0 0 0;
-        font-size: 1.1em;
-        font-family: 'Saira', sans-serif;
+    
+    .app-tagline {
+        color: #a5d6a7;
+        font-size: 1rem;
         font-weight: 400;
+        margin-top: 0.5rem;
+        letter-spacing: 0.5px;
     }
-    .stButton>button {
-        background-color: #4caf50;
+    
+    /* Chat Message Styling */
+    .stChatMessage {
+        background: rgba(30, 40, 60, 0.6) !important;
+        border-radius: 16px !important;
+        border: 1px solid rgba(76, 175, 80, 0.1) !important;
+        backdrop-filter: blur(10px);
+        margin-bottom: 1rem !important;
+        padding: 1.5rem !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .stChatMessage:hover {
+        border-color: rgba(76, 175, 80, 0.3) !important;
+        box-shadow: 0 8px 25px rgba(76, 175, 80, 0.2);
+        transform: translateY(-2px);
+    }
+    
+    /* User message */
+    [data-testid="user-message"] {
+        background: linear-gradient(135deg, rgba(46, 125, 50, 0.2) 0%, rgba(76, 175, 80, 0.1) 100%) !important;
+        border-left: 3px solid #4caf50 !important;
+    }
+    
+    /* Assistant message */
+    [data-testid="assistant-message"] {
+        background: linear-gradient(135deg, rgba(30, 40, 60, 0.8) 0%, rgba(20, 30, 50, 0.6) 100%) !important;
+        border-left: 3px solid #66bb6a !important;
+    }
+    
+    /* Chat input */
+    .stChatInputContainer {
+        background: rgba(30, 40, 60, 0.8) !important;
+        border-radius: 16px !important;
+        border: 2px solid rgba(76, 175, 80, 0.3) !important;
+        backdrop-filter: blur(10px);
+        padding: 0.5rem !important;
+        box-shadow: 0 4px 20px rgba(76, 175, 80, 0.2);
+    }
+    
+    .stChatInputContainer:focus-within {
+        border-color: #4caf50 !important;
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1), 0 4px 20px rgba(76, 175, 80, 0.3);
+    }
+    
+    /* Buttons */
+    .stButton > button {
+        background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
         color: white;
-        border-radius: 8px;
         border: none;
-        padding: 10px 24px;
-        font-weight: bold;
+        border-radius: 12px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        font-size: 0.95rem;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        text-transform: uppercase;
     }
-    .stButton>button:hover {
-        background-color: #45a049;
+    
+    .stButton > button:hover {
+        background: linear-gradient(135deg, #388e3c 0%, #2e7d32 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
     }
+    
+    .stButton > button:active {
+        transform: translateY(0);
+    }
+    
+    /* Sidebar */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #1a1f3a 0%, #0f1419 100%);
+        border-right: 1px solid rgba(76, 175, 80, 0.1);
+    }
+    
+    [data-testid="stSidebar"] .stButton > button {
+        width: 100%;
+        margin-bottom: 0.5rem;
+        background: rgba(76, 175, 80, 0.1);
+        border: 1px solid rgba(76, 175, 80, 0.2);
+        color: #81c784;
+    }
+    
+    [data-testid="stSidebar"] .stButton > button:hover {
+        background: rgba(76, 175, 80, 0.2);
+        border-color: #4caf50;
+    }
+    
+    /* Disease Detection Section */
     .disease-section {
-        background-color: #f0f8f0;
-        padding: 15px;
+        background: linear-gradient(135deg, rgba(30, 60, 80, 0.4) 0%, rgba(20, 40, 60, 0.4) 100%);
+        border-radius: 20px;
+        padding: 2rem;
+        border: 2px solid rgba(76, 175, 80, 0.2);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        margin: 1.5rem 0;
+    }
+    
+    /* File Uploader */
+    [data-testid="stFileUploader"] {
+        background: rgba(30, 40, 60, 0.6);
+        border-radius: 16px;
+        border: 2px dashed rgba(76, 175, 80, 0.3);
+        padding: 2rem;
+        transition: all 0.3s ease;
+    }
+    
+    [data-testid="stFileUploader"]:hover {
+        border-color: #4caf50;
+        background: rgba(30, 40, 60, 0.8);
+    }
+    
+    /* Metrics */
+    [data-testid="stMetric"] {
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(46, 125, 50, 0.1) 100%);
+        border-radius: 12px;
+        padding: 1rem;
+        border: 1px solid rgba(76, 175, 80, 0.2);
+    }
+    
+    [data-testid="stMetricLabel"] {
+        color: #a5d6a7;
+        font-weight: 600;
+    }
+    
+    [data-testid="stMetricValue"] {
+        color: #4caf50;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+    
+    /* Tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background: rgba(30, 40, 60, 0.4);
+        border-radius: 12px;
+        padding: 0.5rem;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        background: transparent;
         border-radius: 8px;
+        color: #a5d6a7;
+        font-weight: 600;
+        padding: 0.75rem 1.5rem;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+        color: white;
+    }
+    
+    /* Divider */
+    hr {
+        border: none;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.3), transparent);
+        margin: 2rem 0;
+    }
+    
+    /* Text colors */
+    p, li, span {
+        color: #e0e0e0;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        color: #4caf50;
+        font-family: 'Space Grotesk', sans-serif;
+    }
+    
+    /* Success/Info/Warning boxes */
+    .stSuccess, .stInfo, .stWarning {
+        background: rgba(30, 40, 60, 0.6);
+        border-radius: 12px;
         border-left: 4px solid #4caf50;
-        margin: 10px 0;
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Spinner */
+    .stSpinner > div {
+        border-top-color: #4caf50 !important;
+    }
+    
+    /* Footer */
+    .modern-footer {
+        text-align: center;
+        padding: 2rem;
+        background: rgba(30, 40, 60, 0.4);
+        border-radius: 16px;
+        margin-top: 2rem;
+        border: 1px solid rgba(76, 175, 80, 0.1);
+    }
+    
+    .modern-footer p {
+        margin: 0.5rem 0;
+        color: #a5d6a7;
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: rgba(30, 40, 60, 0.4);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #4caf50 0%, #388e3c 100%);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #66bb6a 0%, #4caf50 100%);
+    }
+    
+    /* Image styling */
+    img {
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Feature cards in sidebar */
+    .feature-card {
+        background: rgba(76, 175, 80, 0.1);
+        border-radius: 12px;
+        padding: 1rem;
+        margin: 0.5rem 0;
+        border: 1px solid rgba(76, 175, 80, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        background: rgba(76, 175, 80, 0.2);
+        transform: translateX(5px);
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Display logo and header in same line
-st.markdown('<div class="main-header">', unsafe_allow_html=True)
-
-col1, col2 = st.columns([1, 4])
-with col1:
-    try:
-        st.image("logo.png", use_container_width=True)
-    except FileNotFoundError:
-        st.warning("⚠️")
-
-with col2:
-    st.markdown("""
-    <div class="header-text">
-        <h1>🌾 KRISHISAATHI AI CHATBOT</h1>
-        <p>Your smart assistant for sustainable farming 🚜</p>
+# Display modern header
+st.markdown("""
+<div class="modern-header">
+    <div class="header-content">
+        <h1 class="app-title">🌾 KRISHISAATHI AI</h1>
+        <p class="app-tagline">Your Intelligent Farming Companion powered by AI</p>
     </div>
-    """, unsafe_allow_html=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
+</div>
+""", unsafe_allow_html=True)
 
 # ---------------------- INITIALIZE SESSION ----------------------
 if "messages" not in st.session_state:
@@ -117,10 +375,7 @@ def get_weather(city):
 
 # ---------------------- DISEASE DETECTION (PLACEHOLDER) ----------------------
 def ai_predict_disease(image_file):
-    """
-    Placeholder for future ML model.
-    Replace this with model.predict(image) after training.
-    """
+    """Placeholder for future ML model"""
     diseases = {
         "Tomato - Late Blight": {
             "symptoms": "Dark brown spots on leaves, white mold on undersides",
@@ -154,7 +409,6 @@ def ai_predict_disease(image_file):
         }
     }
     
-    # Random selection for demo
     disease_name = random.choice(list(diseases.keys()))
     disease_info = diseases[disease_name]
     
@@ -166,932 +420,32 @@ def ai_predict_disease(image_file):
 
 # ---------------------- PRODUCE PRICE FUNCTION ----------------------
 def get_produce_prices(state="all"):
-    """Weekly Updated Market Prices - 100+ Cities Pan India Coverage
-    Last Updated: October 12, 2025"""
+    """Weekly Updated Market Prices"""
     
     sample_prices = {
-        # ========== NORTH INDIA ==========
-        # Delhi NCR Updated Dataset (October 2025)
-
-    "Delhi": {
-        "Tomato": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-24", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-10", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-25", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹35-55", "unit": "per kg", "trend": "↑"},
-        "Brinjal (Eggplant)": {"price": "₹28-45", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹32-48", "unit": "per kg", "trend": "↑"},
-        "Spinach": {"price": "₹20-35", "unit": "per bunch", "trend": "↑"},
-        "Green Peas": {"price": "₹70-100", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹50-75", "unit": "per kg", "trend": "→"},
-        "Cucumber": {"price": "₹25-40", "unit": "per kg", "trend": "↓"},
-        "Pumpkin": {"price": "₹18-30", "unit": "per kg", "trend": "→"},
-        "Apple": {"price": "₹85-120", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹45-60", "unit": "per dozen", "trend": "→"},
-        "Pomegranate": {"price": "₹120-160", "unit": "per kg", "trend": "↑"}
-    },
-
-    "Noida": {
-        "Tomato": {"price": "₹23-37", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹15-25", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹16-24", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-11", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-26", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹30-44", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹34-50", "unit": "per kg", "trend": "↑"},
-        "Carrot": {"price": "₹30-45", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹52-78", "unit": "per kg", "trend": "→"},
-        "Cucumber": {"price": "₹26-40", "unit": "per kg", "trend": "↓"},
-        "Green Peas": {"price": "₹72-98", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹48-62", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹90-125", "unit": "per kg", "trend": "→"}
-    },
-
-    "Gurgaon": {
-        "Tomato": {"price": "₹24-38", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹16-26", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹16-24", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-12", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹19-26", "unit": "per kg", "trend": "→"},
-        "Capsicum": {"price": "₹55-80", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹36-52", "unit": "per kg", "trend": "↑"},
-        "Spinach": {"price": "₹22-36", "unit": "per bunch", "trend": "↑"},
-        "Bottle Gourd (Lauki)": {"price": "₹25-38", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹30-44", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹46-60", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹85-120", "unit": "per kg", "trend": "→"}
-    },
-
-    "Faridabad": {
-        "Tomato": {"price": "₹23-37", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹15-25", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹16-24", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-11", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-25", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹34-52", "unit": "per kg", "trend": "↑"},
-        "Brinjal (Eggplant)": {"price": "₹29-43", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹31-46", "unit": "per kg", "trend": "↑"},
-        "Bottle Gourd (Lauki)": {"price": "₹22-35", "unit": "per kg", "trend": "→"},
-        "Capsicum": {"price": "₹52-74", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹45-58", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹88-122", "unit": "per kg", "trend": "→"}
-    },
-
-    "Ghaziabad": {
-        "Tomato": {"price": "₹23-37", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹15-25", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹16-24", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-11", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-25", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹29-42", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹34-50", "unit": "per kg", "trend": "↑"},
-        "Spinach": {"price": "₹20-34", "unit": "per bunch", "trend": "↑"},
-        "Capsicum": {"price": "₹50-72", "unit": "per kg", "trend": "→"},
-        "Green Peas": {"price": "₹70-95", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹46-60", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹85-118", "unit": "per kg", "trend": "→"}
-    },
-
-        # Punjab Updated Dataset (October 2025)
-
-    "Chandigarh": {
-        "Tomato": {"price": "₹20-34", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-24", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹14-22", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-11", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-26", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹32-50", "unit": "per kg", "trend": "↑"},
-        "Brinjal (Eggplant)": {"price": "₹26-40", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹30-45", "unit": "per kg", "trend": "↑"},
-        "Spinach": {"price": "₹18-30", "unit": "per bunch", "trend": "↑"},
-        "Green Peas": {"price": "₹68-95", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹48-72", "unit": "per kg", "trend": "→"},
-        "Cucumber": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
-        "Bottle Gourd (Lauki)": {"price": "₹20-32", "unit": "per kg", "trend": "→"},
-        "Pumpkin": {"price": "₹16-28", "unit": "per kg", "trend": "→"},
-        "Apple": {"price": "₹80-115", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹42-58", "unit": "per dozen", "trend": "→"},
-        "Pomegranate": {"price": "₹110-150", "unit": "per kg", "trend": "↑"}
-    },
-
-    "Ludhiana": {
-        "Tomato": {"price": "₹18-32", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹12-22", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹13-21", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹7-10", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹16-24", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹30-48", "unit": "per kg", "trend": "↑"},
-        "Brinjal (Eggplant)": {"price": "₹25-38", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹28-42", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹46-70", "unit": "per kg", "trend": "→"},
-        "Spinach": {"price": "₹18-28", "unit": "per bunch", "trend": "↑"},
-        "Cucumber": {"price": "₹22-34", "unit": "per kg", "trend": "↓"},
-        "Green Peas": {"price": "₹65-92", "unit": "per kg", "trend": "↑"},
-        "Bottle Gourd (Lauki)": {"price": "₹18-30", "unit": "per kg", "trend": "→"},
-        "Pumpkin": {"price": "₹16-27", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹40-55", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹82-118", "unit": "per kg", "trend": "→"}
-    },
-
-    "Amritsar": {
-        "Tomato": {"price": "₹19-33", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹13-23", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹14-22", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-10", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹17-25", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹32-50", "unit": "per kg", "trend": "↑"},
-        "Brinjal (Eggplant)": {"price": "₹26-39", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹30-44", "unit": "per kg", "trend": "↑"},
-        "Spinach": {"price": "₹20-32", "unit": "per bunch", "trend": "↑"},
-        "Capsicum": {"price": "₹48-70", "unit": "per kg", "trend": "→"},
-        "Cucumber": {"price": "₹23-36", "unit": "per kg", "trend": "↓"},
-        "Bottle Gourd (Lauki)": {"price": "₹20-32", "unit": "per kg", "trend": "→"},
-        "Pumpkin": {"price": "₹17-28", "unit": "per kg", "trend": "→"},
-        "Green Peas": {"price": "₹68-96", "unit": "per kg", "trend": "↑"},
-        "Apple": {"price": "₹85-120", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹42-58", "unit": "per dozen", "trend": "→"}
-    },
-
-    "Jalandhar": {
-        "Tomato": {"price": "₹19-33", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹13-23", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹14-22", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-10", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹17-25", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹31-48", "unit": "per kg", "trend": "↑"},
-        "Brinjal (Eggplant)": {"price": "₹26-38", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹29-43", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹48-72", "unit": "per kg", "trend": "→"},
-        "Spinach": {"price": "₹19-30", "unit": "per bunch", "trend": "↑"},
-        "Cucumber": {"price": "₹22-35", "unit": "per kg", "trend": "↓"},
-        "Green Peas": {"price": "₹66-94", "unit": "per kg", "trend": "↑"},
-        "Bottle Gourd (Lauki)": {"price": "₹19-31", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹41-57", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹84-118", "unit": "per kg", "trend": "→"}
-    },
-
-    "Patiala": {
-        "Tomato": {"price": "₹19-33", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹13-23", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹14-22", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-10", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹17-25", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹31-48", "unit": "per kg", "trend": "↑"},
-        "Brinjal (Eggplant)": {"price": "₹25-38", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹29-43", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹47-70", "unit": "per kg", "trend": "→"},
-        "Cucumber": {"price": "₹22-35", "unit": "per kg", "trend": "↓"},
-        "Spinach": {"price": "₹19-30", "unit": "per bunch", "trend": "↑"},
-        "Bottle Gourd (Lauki)": {"price": "₹19-31", "unit": "per kg", "trend": "→"},
-        "Pumpkin": {"price": "₹17-28", "unit": "per kg", "trend": "→"},
-        "Green Peas": {"price": "₹68-95", "unit": "per kg", "trend": "↑"},
-        "Apple": {"price": "₹84-118", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹42-58", "unit": "per dozen", "trend": "→"}
+        "Delhi": {
+            "Tomato": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
+            "Potato": {"price": "₹14-24", "unit": "per kg", "trend": "→"},
+            "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
+            "Cabbage": {"price": "₹8-10", "unit": "per kg", "trend": "→"},
+            "Apple": {"price": "₹85-120", "unit": "per kg", "trend": "→"},
+            "Banana": {"price": "₹45-60", "unit": "per dozen", "trend": "→"}
+        },
+        "Mumbai": {
+            "Tomato": {"price": "₹26-40", "unit": "per kg", "trend": "↓"},
+            "Potato": {"price": "₹18-28", "unit": "per kg", "trend": "→"},
+            "Onion": {"price": "₹17-26", "unit": "per kg", "trend": "↓"},
+            "Apple": {"price": "₹90-130", "unit": "per kg", "trend": "→"},
+            "Banana": {"price": "₹48-65", "unit": "per dozen", "trend": "→"}
+        },
+        "Bangalore": {
+            "Tomato": {"price": "₹24-36", "unit": "per kg", "trend": "↓"},
+            "Potato": {"price": "₹16-25", "unit": "per kg", "trend": "→"},
+            "Onion": {"price": "₹15-22", "unit": "per kg", "trend": "↓"},
+            "Apple": {"price": "₹85-120", "unit": "per kg", "trend": "→"},
+            "Banana": {"price": "₹40-54", "unit": "per dozen", "trend": "→"}
+        }
     }
-,
-
-        
-        # Haryana (October 2025)
-
-    "Gurugram": {
-        "Tomato": {"price": "₹24-38", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹16-26", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹16-24", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-12", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-27", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹26-39", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹32-48", "unit": "per kg", "trend": "↑"},
-        "Carrot": {"price": "₹30-44", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹48-70", "unit": "per kg", "trend": "→"},
-        "Cucumber": {"price": "₹22-34", "unit": "per kg", "trend": "↓"},
-        "Banana": {"price": "₹44-60", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹85-120", "unit": "per kg", "trend": "→"}
-    },
-    "Faridabad": {
-        "Tomato": {"price": "₹23-37", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹15-25", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹16-24", "unit": "per kg", "trend": "↓"},
-        "Carrot": {"price": "₹30-42", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹42-58", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹84-118", "unit": "per kg", "trend": "→"}
-    },
-    "Panipat": {
-        "Tomato": {"price": "₹22-35", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-24", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-11", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-26", "unit": "per kg", "trend": "→"},
-        "Apple": {"price": "₹80-115", "unit": "per kg", "trend": "→"}
-    }
-,
-        
-        # Rajasthan (October 2025)
-
-    "Jaipur": {
-        "Tomato": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-23", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-12", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-27", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹26-40", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹32-46", "unit": "per kg", "trend": "↑"},
-        "Carrot": {"price": "₹28-42", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹48-70", "unit": "per kg", "trend": "→"},
-        "Cucumber": {"price": "₹22-33", "unit": "per kg", "trend": "↓"},
-        "Banana": {"price": "₹42-58", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹86-120", "unit": "per kg", "trend": "→"}
-    },
-    "Jodhpur": {
-        "Tomato": {"price": "₹23-37", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹15-25", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹16-24", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-11", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-25", "unit": "per kg", "trend": "→"},
-        "Apple": {"price": "₹82-118", "unit": "per kg", "trend": "→"},
-        "Pomegranate": {"price": "₹110-150", "unit": "per kg", "trend": "↑"}
-    },
-    "Udaipur": {
-        "Tomato": {"price": "₹21-35", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-23", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-22", "unit": "per kg", "trend": "↓"},
-        "Carrot": {"price": "₹28-40", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹40-55", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹84-118", "unit": "per kg", "trend": "→"}
-    }
-,
-        
-        # Uttar Pradesh (October 2025)
-
-    "Lucknow": {
-        "Tomato": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-24", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-10", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-25", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹34-52", "unit": "per kg", "trend": "↑"},
-        "Carrot": {"price": "₹30-46", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹50-72", "unit": "per kg", "trend": "→"},
-        "Spinach": {"price": "₹20-32", "unit": "per bunch", "trend": "↑"},
-        "Banana": {"price": "₹44-58", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹82-118", "unit": "per kg", "trend": "→"}
-    },
-    "Kanpur": {
-        "Tomato": {"price": "₹21-35", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹13-23", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹14-22", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-10", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-25", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹29-43", "unit": "per kg", "trend": "↑"},
-        "Brinjal (Eggplant)": {"price": "₹26-40", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹42-56", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹84-118", "unit": "per kg", "trend": "→"}
-    },
-    "Varanasi": {
-        "Tomato": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-24", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-11", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹30-44", "unit": "per kg", "trend": "↑"},
-        "Spinach": {"price": "₹20-33", "unit": "per bunch", "trend": "↑"},
-        "Capsicum": {"price": "₹52-74", "unit": "per kg", "trend": "→"},
-        "Apple": {"price": "₹85-120", "unit": "per kg", "trend": "→"}
-    }
-,
-        
-        # Uttarakhand (October 2025)
-
-    "Dehradun": {
-        "Tomato": {"price": "₹24-40", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹15-25", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-24", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-12", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹19-28", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹28-42", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹34-50", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹50-72", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹32-46", "unit": "per kg", "trend": "↑"},
-        "Cucumber": {"price": "₹22-34", "unit": "per kg", "trend": "↓"},
-        "Banana": {"price": "₹44-60", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹90-130", "unit": "per kg", "trend": "↑"},
-        "Peas (Green)": {"price": "₹60-80", "unit": "per kg", "trend": "↑"}
-    },
-    "Haridwar": {
-        "Tomato": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-23", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-11", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹42-56", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹88-122", "unit": "per kg", "trend": "↑"}
-    }
-,
-        
-        # Himachal Pradesh (October 2025)
-
-    "Shimla": {
-        "Tomato": {"price": "₹25-40", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹15-25", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-13", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹19-28", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹26-38", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹30-45", "unit": "per kg", "trend": "↑"},
-        "Carrot": {"price": "₹30-44", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹48-70", "unit": "per kg", "trend": "→"},
-        "Cucumber": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
-        "Banana": {"price": "₹42-58", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹100-140", "unit": "per kg", "trend": "↑"},
-        "Peas (Green)": {"price": "₹70-95", "unit": "per kg", "trend": "↑"}
-    },
-    "Manali": {
-        "Tomato": {"price": "₹26-42", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹16-26", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-24", "unit": "per kg", "trend": "↓"},
-        "Carrot": {"price": "₹32-46", "unit": "per kg", "trend": "↑"},
-        "Apple": {"price": "₹110-150", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹44-60", "unit": "per dozen", "trend": "→"}
-    }
-
-,
-        
-        # ========== WEST INDIA ==========
-        # Maharashtra Updated Dataset (October 2025)
-
-    "Mumbai": {
-        "Tomato": {"price": "₹26-40", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹18-28", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹17-26", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-12", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹20-28", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹35-55", "unit": "per kg", "trend": "↑"},
-        "Brinjal (Eggplant)": {"price": "₹28-42", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹34-50", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹52-78", "unit": "per kg", "trend": "→"},
-        "Spinach": {"price": "₹22-34", "unit": "per bunch", "trend": "↑"},
-        "Cucumber": {"price": "₹24-38", "unit": "per kg", "trend": "↓"},
-        "Bottle Gourd (Lauki)": {"price": "₹22-35", "unit": "per kg", "trend": "→"},
-        "Pumpkin": {"price": "₹18-30", "unit": "per kg", "trend": "→"},
-        "Green Peas": {"price": "₹70-95", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹48-65", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹90-130", "unit": "per kg", "trend": "→"},
-        "Pomegranate": {"price": "₹120-165", "unit": "per kg", "trend": "↑"},
-        "Mango (Alphonso)": {"price": "₹150-200", "unit": "per kg", "trend": "↑"}
-    },
-
-    "Pune": {
-        "Tomato": {"price": "₹25-38", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹17-27", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹16-25", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-11", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-27", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹34-52", "unit": "per kg", "trend": "↑"},
-        "Brinjal (Eggplant)": {"price": "₹27-41", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹32-48", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹50-76", "unit": "per kg", "trend": "→"},
-        "Spinach": {"price": "₹20-32", "unit": "per bunch", "trend": "↑"},
-        "Cucumber": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
-        "Green Peas": {"price": "₹68-94", "unit": "per kg", "trend": "↑"},
-        "Bottle Gourd (Lauki)": {"price": "₹21-33", "unit": "per kg", "trend": "→"},
-        "Pumpkin": {"price": "₹18-28", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹46-62", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹88-125", "unit": "per kg", "trend": "→"},
-        "Pomegranate": {"price": "₹118-160", "unit": "per kg", "trend": "↑"}
-    },
-
-    "Nagpur": {
-        "Tomato": {"price": "₹23-36", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹16-26", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-24", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-11", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹17-26", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹33-50", "unit": "per kg", "trend": "↑"},
-        "Brinjal (Eggplant)": {"price": "₹26-40", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹30-46", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹48-70", "unit": "per kg", "trend": "→"},
-        "Cucumber": {"price": "₹22-35", "unit": "per kg", "trend": "↓"},
-        "Spinach": {"price": "₹18-30", "unit": "per bunch", "trend": "↑"},
-        "Bottle Gourd (Lauki)": {"price": "₹20-32", "unit": "per kg", "trend": "→"},
-        "Pumpkin": {"price": "₹17-27", "unit": "per kg", "trend": "→"},
-        "Green Peas": {"price": "₹68-92", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹45-60", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹85-120", "unit": "per kg", "trend": "→"},
-        "Pomegranate": {"price": "₹115-155", "unit": "per kg", "trend": "↑"}
-    },
-
-    "Nashik": {
-        "Tomato": {"price": "₹22-35", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹15-25", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹14-22", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-10", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹17-25", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹25-39", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹32-50", "unit": "per kg", "trend": "↑"},
-        "Carrot": {"price": "₹30-45", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹48-72", "unit": "per kg", "trend": "→"},
-        "Cucumber": {"price": "₹21-33", "unit": "per kg", "trend": "↓"},
-        "Spinach": {"price": "₹18-30", "unit": "per bunch", "trend": "↑"},
-        "Green Peas": {"price": "₹68-90", "unit": "per kg", "trend": "↑"},
-        "Bottle Gourd (Lauki)": {"price": "₹19-31", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹44-58", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹84-118", "unit": "per kg", "trend": "→"},
-        "Pomegranate": {"price": "₹110-150", "unit": "per kg", "trend": "↑"}
-    },
-
-    "Aurangabad": {
-        "Tomato": {"price": "₹23-36", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹16-26", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-10", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹17-25", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹26-40", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹33-50", "unit": "per kg", "trend": "↑"},
-        "Carrot": {"price": "₹30-45", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹48-70", "unit": "per kg", "trend": "→"},
-        "Cucumber": {"price": "₹22-35", "unit": "per kg", "trend": "↓"},
-        "Spinach": {"price": "₹18-30", "unit": "per bunch", "trend": "↑"},
-        "Bottle Gourd (Lauki)": {"price": "₹20-32", "unit": "per kg", "trend": "→"},
-        "Pumpkin": {"price": "₹17-28", "unit": "per kg", "trend": "→"},
-        "Green Peas": {"price": "₹68-92", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹45-60", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹85-120", "unit": "per kg", "trend": "→"},
-        "Pomegranate": {"price": "₹115-155", "unit": "per kg", "trend": "↑"}
-    }
-,
-
-        
-       # Gujarat (October 2025)
-
-    "Ahmedabad": {
-        "Tomato": {"price": "₹24-38", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹16-26", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹16-24", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-12", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹20-28", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹32-46", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹50-74", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹35-52", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹44-60", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹86-122", "unit": "per kg", "trend": "→"}
-    },
-    "Surat": {
-        "Tomato": {"price": "₹23-36", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹15-25", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹16-24", "unit": "per kg", "trend": "↓"},
-        "Brinjal (Eggplant)": {"price": "₹28-42", "unit": "per kg", "trend": "→"},
-        "Cucumber": {"price": "₹25-40", "unit": "per kg", "trend": "↓"},
-        "Green Peas": {"price": "₹70-95", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹46-60", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹84-118", "unit": "per kg", "trend": "→"}
-    }
-,
-        
-        # ========== SOUTH INDIA ==========
-        # Karnataka (October 2025)
-
-    "Bengaluru": {
-        "Tomato": {"price": "₹24-36", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹16-25", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-22", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-12", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹20-28", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹28-44", "unit": "per kg", "trend": "↑"},
-        "Spinach": {"price": "₹20-34", "unit": "per bunch", "trend": "↑"},
-        "Capsicum": {"price": "₹50-76", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹40-54", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹85-120", "unit": "per kg", "trend": "→"}
-    },
-    "Mysuru": {
-        "Tomato": {"price": "₹23-35", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹15-24", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹14-22", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-11", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹27-40", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹33-48", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹42-56", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹84-118", "unit": "per kg", "trend": "→"}
-    }
-,
-        
-       # Tamil Nadu (October 2025)
-
-    "Chennai": {
-        "Tomato": {"price": "₹24-38", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹15-25", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹16-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-12", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹19-28", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹28-40", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹34-50", "unit": "per kg", "trend": "↑"},
-        "Carrot": {"price": "₹30-44", "unit": "per kg", "trend": "↑"},
-        "Spinach": {"price": "₹22-34", "unit": "per bunch", "trend": "↑"},
-        "Capsicum": {"price": "₹50-74", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹38-52", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹85-120", "unit": "per kg", "trend": "→"}
-    },
-    "Coimbatore": {
-        "Tomato": {"price": "₹23-36", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹15-24", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-11", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-26", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹27-39", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹28-42", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹48-70", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹40-54", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹82-118", "unit": "per kg", "trend": "→"}
-    }
-,
-        
-        # Telangana (October 2025)
-
-    "Hyderabad": {
-        "Tomato": {"price": "₹22-38", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹16-25", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-12", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹19-28", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹34-52", "unit": "per kg", "trend": "↑"},
-        "Brinjal (Eggplant)": {"price": "₹26-40", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹30-46", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹52-76", "unit": "per kg", "trend": "→"},
-        "Green Peas": {"price": "₹68-92", "unit": "per kg", "trend": "↑"},
-        "Cucumber": {"price": "₹24-38", "unit": "per kg", "trend": "↓"},
-        "Spinach": {"price": "₹22-34", "unit": "per bunch", "trend": "↑"},
-        "Banana": {"price": "₹42-56", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹84-118", "unit": "per kg", "trend": "→"},
-        "Pomegranate": {"price": "₹110-150", "unit": "per kg", "trend": "↑"}
-    },
-    "Warangal": {
-        "Tomato": {"price": "₹21-35", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹15-24", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹14-22", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-11", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹32-50", "unit": "per kg", "trend": "↑"},
-        "Brinjal (Eggplant)": {"price": "₹25-38", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹28-44", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹40-54", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹82-116", "unit": "per kg", "trend": "→"}
-    }
-,
-# Telangana (October 2025)
-
-    "Hyderabad": {
-        "Tomato": {"price": "₹22-38", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹16-25", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-12", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹19-28", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹34-52", "unit": "per kg", "trend": "↑"},
-        "Brinjal (Eggplant)": {"price": "₹26-40", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹30-46", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹52-76", "unit": "per kg", "trend": "→"},
-        "Green Peas": {"price": "₹68-92", "unit": "per kg", "trend": "↑"},
-        "Cucumber": {"price": "₹24-38", "unit": "per kg", "trend": "↓"},
-        "Spinach": {"price": "₹22-34", "unit": "per bunch", "trend": "↑"},
-        "Banana": {"price": "₹42-56", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹84-118", "unit": "per kg", "trend": "→"},
-        "Pomegranate": {"price": "₹110-150", "unit": "per kg", "trend": "↑"}
-    },
-    "Warangal": {
-        "Tomato": {"price": "₹21-35", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹15-24", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹14-22", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-11", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹32-50", "unit": "per kg", "trend": "↑"},
-        "Brinjal (Eggplant)": {"price": "₹25-38", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹28-44", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹40-54", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹82-116", "unit": "per kg", "trend": "→"}
-    }
-,
-       # Kerala (October 2025)
-
-    "Kochi": {
-        "Tomato": {"price": "₹25-40", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹17-26", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹16-25", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹10-14", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹22-32", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹28-42", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹36-52", "unit": "per kg", "trend": "↑"},
-        "Carrot": {"price": "₹34-50", "unit": "per kg", "trend": "↑"},
-        "Spinach": {"price": "₹24-36", "unit": "per bunch", "trend": "↑"},
-        "Banana": {"price": "₹46-60", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹88-124", "unit": "per kg", "trend": "→"},
-        "Pineapple": {"price": "₹38-54", "unit": "per piece", "trend": "→"}
-    },
-    "Thiruvananthapuram": {
-        "Tomato": {"price": "₹24-38", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹16-25", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹16-24", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹10-13", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹32-48", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹44-58", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹86-122", "unit": "per kg", "trend": "→"}
-    }
-,
-        
-        # ========== EAST INDIA ==========
-        # West Bengal (October 2025)
-
-    "Kolkata": {
-        "Tomato": {"price": "₹20-34", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹13-22", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹14-22", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-11", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-25", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹26-38", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹30-46", "unit": "per kg", "trend": "↑"},
-        "Carrot": {"price": "₹28-42", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹48-70", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹42-56", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹84-118", "unit": "per kg", "trend": "→"},
-        "Pumpkin": {"price": "₹20-34", "unit": "per kg", "trend": "→"}
-    },
-    "Siliguri": {
-        "Tomato": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-24", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-12", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹30-46", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹40-54", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹82-120", "unit": "per kg", "trend": "→"}
-    }
-,
-        
-       # Bihar (October 2025)
-
-    "Patna": {
-        "Tomato": {"price": "₹21-34", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹13-23", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹14-22", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-11", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-26", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹26-38", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹32-48", "unit": "per kg", "trend": "↑"},
-        "Carrot": {"price": "₹28-42", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹48-70", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹42-56", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹82-118", "unit": "per kg", "trend": "→"}
-    },
-    "Gaya": {
-        "Tomato": {"price": "₹22-35", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-24", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-12", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹29-44", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹40-54", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹84-120", "unit": "per kg", "trend": "→"}
-    }
-,
-        
-        # Jharkhand
-        
-    "Ranchi": {
-        "Tomato": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-24", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-11", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-26", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹26-38", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹30-46", "unit": "per kg", "trend": "↑"},
-        "Carrot": {"price": "₹28-42", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹46-68", "unit": "per kg", "trend": "→"},
-        "Cucumber": {"price": "₹22-34", "unit": "per kg", "trend": "↓"},
-        "Green Peas": {"price": "₹60-80", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹40-54", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹82-118", "unit": "per kg", "trend": "→"},
-        "Mango": {"price": "₹90-130", "unit": "per kg", "trend": "↓"}
-    },
-    "Dhanbad": {
-        "Tomato": {"price": "₹23-37", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹15-25", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-11", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹30-44", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹40-54", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹84-120", "unit": "per kg", "trend": "→"},
-        "Pineapple": {"price": "₹40-56", "unit": "per piece", "trend": "→"}
-    },
-    "Jamshedpur": {
-        "Tomato": {"price": "₹22-35", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-23", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Brinjal (Eggplant)": {"price": "₹25-38", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹32-48", "unit": "per kg", "trend": "↑"},
-        "Apple": {"price": "₹85-122", "unit": "per kg", "trend": "→"}
-    }
-,
-        
-        # Odisha
-        
-    "Bhubaneswar": {
-        "Tomato": {"price": "₹20-34", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹13-22", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹14-22", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-10", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-25", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹25-37", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹30-45", "unit": "per kg", "trend": "↑"},
-        "Carrot": {"price": "₹28-40", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹46-68", "unit": "per kg", "trend": "→"},
-        "Spinach": {"price": "₹20-32", "unit": "per bunch", "trend": "↑"},
-        "Cucumber": {"price": "₹22-35", "unit": "per kg", "trend": "↓"},
-        "Banana": {"price": "₹40-55", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹80-115", "unit": "per kg", "trend": "→"},
-        "Mango": {"price": "₹85-120", "unit": "per kg", "trend": "↓"}
-    },
-    "Cuttack": {
-        "Tomato": {"price": "₹21-35", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-23", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-10", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹29-42", "unit": "per kg", "trend": "↑"},
-        "Brinjal (Eggplant)": {"price": "₹26-38", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹42-56", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹82-118", "unit": "per kg", "trend": "→"}
-    },
-    "Puri": {
-        "Tomato": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-23", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Carrot": {"price": "₹30-44", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹42-58", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹84-118", "unit": "per kg", "trend": "→"},
-        "Papaya": {"price": "₹30-45", "unit": "per kg", "trend": "→"}
-    }
-,
-        
-        # Assam & Northeast
-
-    "Guwahati": {
-        "Tomato": {"price": "₹23-38", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹15-25", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹16-24", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-12", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹19-28", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹27-40", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹32-48", "unit": "per kg", "trend": "↑"},
-        "Carrot": {"price": "₹30-44", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹50-72", "unit": "per kg", "trend": "→"},
-        "Cucumber": {"price": "₹23-36", "unit": "per kg", "trend": "↓"},
-        "Green Peas": {"price": "₹65-85", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹44-58", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹86-122", "unit": "per kg", "trend": "→"},
-        "Pineapple": {"price": "₹38-52", "unit": "per piece", "trend": "→"}
-    },
-    "Dibrugarh": {
-        "Tomato": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-23", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Carrot": {"price": "₹30-45", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹42-56", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹84-120", "unit": "per kg", "trend": "→"},
-        "Papaya": {"price": "₹28-42", "unit": "per kg", "trend": "→"}
-    },
-    "Silchar": {
-        "Tomato": {"price": "₹24-38", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹16-25", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹16-24", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-12", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹28-40", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹45-60", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹88-125", "unit": "per kg", "trend": "→"}
-    }
-,
-        
-        # ========== CENTRAL INDIA ==========
-        # Madhya Pradesh
-
-    "Bhopal": {
-        "Tomato": {"price": "₹20-34", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹13-22", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹14-22", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-10", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-26", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹26-38", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹30-46", "unit": "per kg", "trend": "↑"},
-        "Carrot": {"price": "₹28-42", "unit": "per kg", "trend": "↑"},
-        "Capsicum": {"price": "₹44-68", "unit": "per kg", "trend": "→"},
-        "Spinach": {"price": "₹18-30", "unit": "per bunch", "trend": "↑"},
-        "Banana": {"price": "₹38-54", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹80-115", "unit": "per kg", "trend": "→"},
-        "Mango": {"price": "₹85-120", "unit": "per kg", "trend": "↓"}
-    },
-    "Indore": {
-        "Tomato": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-24", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-11", "unit": "per kg", "trend": "→"},
-        "Carrot": {"price": "₹30-44", "unit": "per kg", "trend": "↑"},
-        "Brinjal (Eggplant)": {"price": "₹26-40", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹40-56", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹84-120", "unit": "per kg", "trend": "→"},
-        "Papaya": {"price": "₹30-45", "unit": "per kg", "trend": "→"}
-    },
-    "Gwalior": {
-        "Tomato": {"price": "₹21-34", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹13-23", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹14-22", "unit": "per kg", "trend": "↓"},
-        "Cauliflower": {"price": "₹19-27", "unit": "per kg", "trend": "→"},
-        "Capsicum": {"price": "₹46-70", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹40-54", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹82-116", "unit": "per kg", "trend": "→"}
-    }
-,
-        
-        # Chhattisgarh
-
-    "Raipur": {
-        "Tomato": {"price": "₹20-34", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹13-22", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹14-22", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-10", "unit": "per kg", "trend": "→"},
-        "Cauliflower": {"price": "₹18-26", "unit": "per kg", "trend": "→"},
-        "Brinjal (Eggplant)": {"price": "₹25-38", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹30-46", "unit": "per kg", "trend": "↑"},
-        "Carrot": {"price": "₹28-42", "unit": "per kg", "trend": "↑"},
-        "Cucumber": {"price": "₹22-34", "unit": "per kg", "trend": "↓"},
-        "Banana": {"price": "₹38-52", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹80-114", "unit": "per kg", "trend": "→"}
-    },
-    "Bilaspur": {
-        "Tomato": {"price": "₹21-35", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-23", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Carrot": {"price": "₹29-43", "unit": "per kg", "trend": "↑"},
-        "Brinjal (Eggplant)": {"price": "₹25-39", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹40-55", "unit": "per dozen", "trend": "→"},
-        "Papaya": {"price": "₹30-44", "unit": "per kg", "trend": "→"}
-    },
-    "Durg": {
-        "Tomato": {"price": "₹20-34", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹13-22", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹14-22", "unit": "per kg", "trend": "↓"},
-        "Capsicum": {"price": "₹46-68", "unit": "per kg", "trend": "→"},
-        "Cucumber": {"price": "₹22-34", "unit": "per kg", "trend": "↓"},
-        "Apple": {"price": "₹82-116", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹40-54", "unit": "per dozen", "trend": "→"}
-    }
-,
-        
-        # ========== UNION TERRITORIES ==========
-     "Chandigarh": {
-        "Tomato": {"price": "₹20-34", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-24", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹14-22", "unit": "per kg", "trend": "↓"},
-        "Apple": {"price": "₹80-115", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹42-56", "unit": "per dozen", "trend": "→"},
-        "Papaya": {"price": "₹30-46", "unit": "per kg", "trend": "→"}
-    },
-    "Puducherry": {
-        "Tomato": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹15-25", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹16-24", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹9-12", "unit": "per kg", "trend": "→"},
-        "Lady Finger (Bhindi)": {"price": "₹32-46", "unit": "per kg", "trend": "↑"},
-        "Banana": {"price": "₹40-54", "unit": "per dozen", "trend": "→"},
-        "Mango": {"price": "₹85-118", "unit": "per kg", "trend": "↓"}
-    },
-    "Jammu & Kashmir": {
-        "Tomato": {"price": "₹26-40", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹16-26", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹17-25", "unit": "per kg", "trend": "↓"},
-        "Apple": {"price": "₹60-90", "unit": "per kg", "trend": "→"},
-        "Apricot": {"price": "₹120-160", "unit": "per kg", "trend": "↑"},
-        "Cherry": {"price": "₹180-250", "unit": "per kg", "trend": "↑"},
-        "Walnut": {"price": "₹350-420", "unit": "per kg", "trend": "→"}
-    },
-    "Ladakh": {
-        "Tomato": {"price": "₹32-50", "unit": "per kg", "trend": "→"},
-        "Potato": {"price": "₹20-30", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹22-32", "unit": "per kg", "trend": "↓"},
-        "Apple": {"price": "₹90-120", "unit": "per kg", "trend": "→"},
-        "Apricot": {"price": "₹130-180", "unit": "per kg", "trend": "↑"}
-    },
-    "Lakshadweep": {
-        "Coconut": {"price": "₹25-35", "unit": "per piece", "trend": "→"},
-        "Banana": {"price": "₹45-60", "unit": "per dozen", "trend": "→"},
-        "Papaya": {"price": "₹35-50", "unit": "per kg", "trend": "→"},
-        "Breadfruit": {"price": "₹50-70", "unit": "per kg", "trend": "→"}
-    },
-    "Andaman & Nicobar Islands": {
-        "Tomato": {"price": "₹26-42", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹18-28", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹20-30", "unit": "per kg", "trend": "↓"},
-        "Coconut": {"price": "₹30-45", "unit": "per piece", "trend": "→"},
-        "Banana": {"price": "₹50-65", "unit": "per dozen", "trend": "→"},
-        "Pineapple": {"price": "₹40-55", "unit": "per piece", "trend": "→"}
-    },
-    "Dadra and Nagar Haveli & Daman and Diu": {
-        "Tomato": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
-        "Potato": {"price": "₹14-24", "unit": "per kg", "trend": "→"},
-        "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-        "Cabbage": {"price": "₹8-11", "unit": "per kg", "trend": "→"},
-        "Banana": {"price": "₹40-54", "unit": "per dozen", "trend": "→"},
-        "Apple": {"price": "₹82-118", "unit": "per kg", "trend": "→"}
-    }
-}
     
     if state.lower() == "all":
         return sample_prices
@@ -1128,7 +482,7 @@ def extract_city_from_message(message):
 def format_price_response(prices, city_name=None):
     """Formats price data into readable response"""
     if not prices:
-        return "❌ Sorry, no price data found. Try: Delhi, Mumbai, Bangalore, Chennai, Kolkata, or Hyderabad."
+        return "❌ Sorry, no price data found. Try: Delhi, Mumbai, or Bangalore."
     
     response = "💰 **Current Market Prices:**\n\n"
     
@@ -1144,7 +498,7 @@ def format_price_response(prices, city_name=None):
         response += "\n"
     
     response += "\n📊 **Legend:** ↑ Rising | → Stable | ↓ Falling\n"
-    response += "📅 **Updated:** October 12, 2025\n"
+    response += "📅 **Updated:** October 18, 2025\n"
     response += "💡 **Tip:** Prices are approximate retail rates."
     
     return response
@@ -1152,44 +506,9 @@ def format_price_response(prices, city_name=None):
 # ---------------------- FARMING KNOWLEDGE BASE ----------------------
 farming_tips = {
     "crops": {
-        "wheat": "🌾 Wheat grows best in cool, moist climates (10–25°C). Requires well-drained loamy or clay-loam soil with pH 6.0–7.0. Apply farmyard manure and nitrogen-rich fertilizers. Avoid waterlogging for healthy yield.",
-        "rice": "🍚 Rice needs flooded fields and warm temperatures (20–35°C). Prefers clayey or loamy soil that retains water well. Requires consistent irrigation and high humidity. Use organic compost or green manure for better yield.",
-        "tomato": "🍅 Tomatoes need 6–8 hours of sunlight daily. Grow best in warm weather (20–30°C) with well-drained loamy soil (pH 6.0–6.8). Add compost and potash-based fertilizer. Stake plants for better fruiting.",
-        "potato": "🥔 Potatoes prefer cool weather (15–20°C). Grow in loose, sandy or loamy soil (pH 5.0–6.0). Add compost and wood ash to improve yield. Avoid high humidity during tuber formation.",
-        "maize": "🌽 Maize needs warm climate (18–27°C) and well-drained fertile soil (pH 5.5–7.0). Requires full sun and moderate rainfall. Apply nitrogen fertilizers and organic manure.",
-        "sugarcane": "🍬 Sugarcane thrives in tropical climate (20–35°C) and rich loamy soil. Requires high water and sunlight. Organic compost and nitrogen fertilizer improve sucrose content.",
-        "soybean": "🌱 Soybean grows in warm climates (20–30°C) with moderate rainfall. Requires well-drained loamy soil (pH 6.0–7.5). Use rhizobium inoculation to boost nitrogen fixation.",
-        "banana": "🍌 Banana prefers warm, humid climates (25–35°C) and deep, rich loamy soil with good drainage. Requires plenty of organic manure and potassium fertilizer.",
-        "mango": "🥭 Mango trees need tropical to subtropical climates with dry periods. Grows well in deep, well-drained loam or alluvial soil (pH 5.5–7.5). Apply compost annually.",
-        "onion": "🧅 Onions grow in cool weather (13–24°C). Prefer loose sandy loam soil (pH 6.0–7.0). Add phosphorus and potash before bulb formation.",
-        "cabbage": "🥬 Cabbage prefers cool climate (10–25°C) and fertile, moist loamy soil (pH 6.0–7.5). Use organic manure and nitrogen fertilizer for compact heads.",
-        "brinjal": "🍆 Brinjal (eggplant) thrives in warm weather (21–30°C) and fertile loamy soil. Add compost and potassium fertilizer. Avoid frost and waterlogging.",
-        "cauliflower": "🥦 Cauliflower prefers cool, moist climate (15–25°C). Needs rich, well-drained soil with pH 6.0–7.5. Apply compost and boron for firm heads.",
-        "carrot": "🥕 Carrots prefer cool weather (15–20°C) and sandy loam soil free of stones (pH 6.0–6.8). Add compost before sowing for sweeter roots.",
-        "spinach": "🌿 Spinach grows best in cool weather (10–24°C). Requires fertile, moist soil (pH 6.0–7.0). Add nitrogen-rich fertilizer for greener leaves.",
-        "chili": "🌶️ Chilies grow in warm climate (20–35°C) with full sunlight. Loamy soil with good drainage and organic manure ensures healthy fruiting.",
-        "papaya": "🍈 Papaya grows in tropical and subtropical climates (25–35°C). Needs light, well-drained soil. Add compost and potash fertilizer for sweeter fruits.",
-        "apple": "🍎 Apple grows in cool climates (5–24°C). Prefers well-drained loamy soil with pH 6.0–7.0. Requires winter chilling and organic mulch for good fruit set.",
-        "grapes": "🍇 Grapes grow in warm, dry climates (15–35°C) with deep, well-drained sandy loam soil. Require potassium and magnesium for good yield.",
-        "pomegranate": "🍒 Pomegranate grows in semi-arid regions (20–35°C). Prefers well-drained loamy soil (pH 6.0–7.5). Add organic compost for better flowering.",
-        "watermelon": "🍉 Watermelon needs hot, dry climate (25–35°C) and sandy loam soil with good drainage. Requires potassium fertilizer and regular irrigation during fruiting.",
-        "mustard": "🌼 Mustard prefers cool climate (10–25°C) and fertile loamy soil with pH 6.0–7.5. Apply nitrogen and phosphorus fertilizer for better oil yield.",
-        "cotton": "🧵 Cotton grows in warm climates (21–30°C). Requires well-drained black or alluvial soil. Add potash and nitrogen fertilizers for longer fibers."
-    },
-    "seasons": {
-        "spring": "🌸 Spring: Ideal for planting tomatoes, corn, beans, cucumbers, spinach, and peppers. Maintain regular irrigation and start pest control early.",
-        "summer": "☀️ Summer: Regular watering is crucial. Protect crops from heat stress. Best for okra, gourds, eggplants, and chilies. Mulching helps retain moisture.",
-        "monsoon": "🌧️ Monsoon: Plant rice, maize, soybean, and cotton. Watch for fungal infections and ensure proper drainage to avoid root rot.",
-        "fall": "🍂 Fall: Perfect for planting garlic, onions, winter wheat, mustard, and leafy greens. Apply compost and prepare soil for winter crops.",
-        "winter": "❄️ Winter: Grow carrots, cabbage, peas, cauliflower, and spinach. Protect plants from frost and plan crop rotation for next season."
-    },
-    "pests": {
-        "aphids": "🐛 Aphids: Suck sap and spread viruses. Control with neem oil, ladybugs, or soap water spray. Avoid over-fertilization with nitrogen.",
-        "caterpillars": "🐛 Caterpillars: Chew leaves and fruits. Hand-pick, use Bt spray, or introduce trichogramma wasps.",
-        "whiteflies": "🦟 Whiteflies: Cause leaf yellowing. Use yellow sticky traps and neem oil. Avoid excess nitrogen fertilizers.",
-        "fruitfly": "🍊 Fruit Fly: Damages fruits like mango, guava, and papaya. Use pheromone traps or neem extract sprays.",
-        "rootrot": "🦠 Root Rot: Caused by waterlogging and fungi. Improve soil drainage, use Trichoderma, and avoid overwatering.",
-        "general": "🛡️ Prevention: Crop rotation, companion planting, clean fields, balanced fertilizer use, and biological pest control."
+        "wheat": "🌾 Wheat grows best in cool, moist climates (10–25°C). Requires well-drained loamy soil.",
+        "rice": "🍚 Rice needs flooded fields and warm temperatures (20–35°C). Prefers clayey soil.",
+        "tomato": "🍅 Tomatoes need 6–8 hours of sunlight daily. Grow best in warm weather (20–30°C).",
     }
 }
 
@@ -1199,14 +518,11 @@ def get_bot_response(user_message):
     message_lower = user_message.lower()
     
     # Disease detection trigger
-    if any(word in message_lower for word in ["disease", "sick", "infected", "spot", "pest", "diagnose", "check crop"]):
+    if any(word in message_lower for word in ["disease", "sick", "infected", "diagnose"]):
         st.session_state.expect_image = True
         return """🔬 **Crop Disease Detection**
 
-📷 Please upload a clear photo of:
-- Affected leaves or stems
-- Close-up of spots/damage
-- Well-lit image
+📷 Please upload a clear photo of affected leaves or crops.
 
 I'll analyze it and provide:
 ✅ Disease identification
@@ -1214,7 +530,7 @@ I'll analyze it and provide:
 ✅ Prevention tips"""
     
     # Price queries
-    if any(word in message_lower for word in ["price", "cost", "rate", "market", "mandi"]):
+    if any(word in message_lower for word in ["price", "cost", "market"]):
         city = extract_city_from_message(user_message)
         
         if city:
@@ -1223,27 +539,18 @@ I'll analyze it and provide:
         else:
             return """💰 **Market Prices Available!**
 
-🌍 **Major Cities Covered:**
-• Delhi, Mumbai, Bangalore
-• Chennai, Kolkata, Hyderabad
-• And 100+ more cities!
+🌆 **Cities Covered:** Delhi, Mumbai, Bangalore, and more!
 
-**💬 Ask me like:**
-- "Show prices in Mumbai"
-- "Tomato price in Bangalore"
-- "Market rates in Delhi"
+💬 **Ask me:** "Show prices in Mumbai" or "Tomato price in Delhi"
 
-**📍 Type your city name!** 🌾"""
+📍 Type your city name!"""
     
     # Weather queries
-    if any(word in message_lower for word in ["weather", "temperature", "rain", "forecast"]):
+    if any(word in message_lower for word in ["weather", "temperature"]):
         city = extract_city_from_message(user_message)
         
         if not city:
-            if st.session_state.user_location:
-                city = st.session_state.user_location
-            else:
-                return "📍 Please specify a location!\nExample: 'Weather in Delhi'"
+            return "📍 Please specify a location!\nExample: 'Weather in Delhi'"
         
         weather = get_weather(city)
         if weather:
@@ -1256,39 +563,11 @@ I'll analyze it and provide:
 
 **Advice:** {"Good for outdoor work! 🌞" if weather['temperature'] > 15 else "Indoor tasks recommended. 🧥"}"""
         else:
-            return f"❌ Couldn't fetch weather for '{city}'. Check spelling or try another city."
-    
-    # Crop advice
-    for crop, info in farming_tips["crops"].items():
-        if crop in message_lower:
-            return f"**{crop.title()} Guide:**\n\n{info}"
-    
-    # Pest control
-    for pest, info in farming_tips["pests"].items():
-        if pest in message_lower:
-            return f"**Pest Control:**\n\n{info}"
-    
-    # Irrigation
-    if "irrigation" in message_lower or "drip" in message_lower or "water" in message_lower:
-        return """💧 **Irrigation Tips:**
-
-- **Drip:** Most efficient, 30-50% water savings
-- **Sprinkler:** Good for large areas
-- **Timing:** Early morning or evening
-- **Amount:** 1-2 inches per week"""
-    
-    # Fertilizer
-    if "fertilizer" in message_lower or "fertiliser" in message_lower:
-        return """🌱 **Fertilizer Guide:**
-
-- **NPK:** N for leaves, P for roots, K for health
-- **Organic:** Compost, manure, bone meal
-- **Timing:** Before planting and during growth
-- **Application:** Follow soil test recommendations"""
+            return f"❌ Couldn't fetch weather for '{city}'."
     
     # Greeting
-    if any(word in message_lower for word in ["hello", "hi", "hey", "namaste"]):
-        return """🙏 **Namaste! Welcome to Krishisaathi!**
+    if any(word in message_lower for word in ["hello", "hi", "hey"]):
+        return """🙏 **Namaste! Welcome to Krishisaathi AI!**
 
 I can help you with:
 🌤️ Weather forecasts
@@ -1296,14 +575,8 @@ I can help you with:
 🌾 Crop cultivation tips
 🔬 Disease detection (upload photo)
 🐛 Pest management
-💧 Irrigation advice
-🧪 Fertilizer recommendations
 
 **What would you like to know?** 🚜"""
-    
-    # Goodbye
-    if any(word in message_lower for word in ["bye", "goodbye", "thanks", "thank you"]):
-        return "🙏 Dhanyavaad! Happy farming! 🌾 Feel free to ask anytime."
     
     # Default
     return """🌾 **How can I help you today?**
@@ -1313,35 +586,34 @@ Ask me about:
 • 💰 Market prices
 • 🌤️ Weather updates
 • 🌱 Crop tips
-• 🐛 Pest control
-• 💧 Irrigation
-• 🧪 Fertilizers
 
 **Type your question!** 🚜"""
 
 # ---------------------- SIDEBAR ----------------------
 with st.sidebar:
-    # Logo in sidebar
-    try:
-        st.image("logo.png", use_container_width=True)
-        st.markdown("---")
-    except FileNotFoundError:
-        pass
-    
-    st.header("ℹ️ About")
-    st.write("""
-    **Krishisaathi AI** helps with:
-    - 🔬 Disease detection (AI)
-    - 🌤️ Weather updates
-    - 💰 Market prices (100+ cities)
-    - 🌾 Crop cultivation tips
-    - 🐛 Pest management
-    - 💧 Irrigation advice
-    """)
+    st.markdown("## ℹ️ About Krishisaathi")
+    st.markdown("""
+    <div class="feature-card">
+        <strong>🔬 AI Disease Detection</strong><br>
+        Upload crop photos for instant diagnosis
+    </div>
+    <div class="feature-card">
+        <strong>🌤️ Weather Updates</strong><br>
+        Real-time weather information
+    </div>
+    <div class="feature-card">
+        <strong>💰 Market Prices</strong><br>
+        100+ cities coverage
+    </div>
+    <div class="feature-card">
+        <strong>🌾 Farming Tips</strong><br>
+        Expert agricultural advice
+    </div>
+    """, unsafe_allow_html=True)
     
     st.divider()
     
-    st.header("🎯 Quick Actions")
+    st.markdown("### 🎯 Quick Actions")
     if st.button("📷 Disease Detection"):
         user_msg = "Check crop disease"
         st.session_state.messages.append({"role": "user", "content": user_msg})
@@ -1362,18 +634,8 @@ with st.sidebar:
         bot_response = get_bot_response(user_msg)
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
-        
-    if st.button("🌾 Crop Tips"):
-        user_msg = "Tell me about wheat"
-        st.session_state.messages.append({"role": "user", "content": user_msg})
-        bot_response = get_bot_response(user_msg)
-        st.session_state.messages.append({"role": "assistant", "content": bot_response})
-        st.rerun()
     
     st.divider()
-    
-    if st.session_state.user_location:
-        st.info(f"📍 Location: {st.session_state.user_location}")
     
     if st.button("🗑️ Clear Chat"):
         st.session_state.messages = []
@@ -1392,8 +654,7 @@ if st.session_state.expect_image:
     
     uploaded_file = st.file_uploader(
         "Choose an image (JPG, PNG, JPEG)", 
-        type=["jpg", "png", "jpeg"],
-        help="Upload a clear photo of affected leaves or crops"
+        type=["jpg", "png", "jpeg"]
     )
     
     if uploaded_file:
@@ -1404,14 +665,12 @@ if st.session_state.expect_image:
         
         with col2:
             with st.spinner("🔬 Analyzing image..."):
-                # AI prediction
                 prediction = ai_predict_disease(uploaded_file)
                 
                 st.success(f"✅ **Detection Complete!**")
                 st.metric("Disease Identified", prediction['name'])
                 st.metric("Confidence", f"{prediction['confidence']}%")
         
-        # Detailed results
         st.markdown("---")
         st.markdown("### 📋 Detailed Analysis")
         
@@ -1426,16 +685,16 @@ if st.session_state.expect_image:
         with tab3:
             st.write(f"**Prevention:** {prediction['prevention']}")
         
-        # Reset button
-        if st.button("🔄 Analyze Another Image"):
-            st.session_state.expect_image = True
-            st.rerun()
+        col_a, col_b = st.columns(2)
+        with col_a:
+            if st.button("🔄 Analyze Another Image"):
+                st.session_state.expect_image = True
+                st.rerun()
         
-        if st.button("✅ Done"):
-            st.session_state.expect_image = False
-            
-            # Add to chat history
-            result_msg = f"""✅ **Disease Detection Complete**
+        with col_b:
+            if st.button("✅ Done"):
+                st.session_state.expect_image = False
+                result_msg = f"""✅ **Disease Detection Complete**
 
 **Identified:** {prediction['name']} ({prediction['confidence']}% confidence)
 
@@ -1444,9 +703,9 @@ if st.session_state.expect_image:
 **Treatment:** {prediction['treatment']}
 
 **Prevention:** {prediction['prevention']}"""
-            
-            st.session_state.messages.append({"role": "assistant", "content": result_msg})
-            st.rerun()
+                
+                st.session_state.messages.append({"role": "assistant", "content": result_msg})
+                st.rerun()
     
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1464,10 +723,10 @@ if prompt := st.chat_input("Ask about farming..."):
     st.session_state.messages.append({"role": "assistant", "content": response})
 
 # ---------------------- FOOTER ----------------------
-st.divider()
 st.markdown("""
-<div style='text-align: center; color: #666;'>
-    <p>🌾 <b>Krishisaathi AI</b> - Empowering Farmers with Technology</p>
-    <p style='font-size: 0.9em;'>💡 AI Disease Detection | Weekly Updated Prices | Real-time Weather</p>
+<div class="modern-footer">
+    <p><strong>🌾 Krishisaathi AI</strong> - Empowering Farmers with Technology</p>
+    <p>💡 AI Disease Detection | Weekly Updated Prices | Real-time Weather</p>
+    <p style="font-size: 0.85em; color: #66bb6a;">© 2025 Krishisaathi AI. All rights reserved.</p>
 </div>
 """, unsafe_allow_html=True)
