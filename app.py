@@ -249,15 +249,27 @@ st.markdown("""
     
     [data-testid="stSidebar"] .stButton > button {
         width: 100%;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
         background: rgba(76, 175, 80, 0.1) !important;
         border: 1px solid rgba(76, 175, 80, 0.2) !important;
         color: #81c784 !important;
+        padding: 0.6rem 1rem !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        text-align: left !important;
+        border-radius: 12px !important;
+        transition: all 0.3s ease !important;
+        height: auto !important;
+        min-height: 45px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
     }
     
     [data-testid="stSidebar"] .stButton > button:hover {
         background: rgba(76, 175, 80, 0.2) !important;
         border-color: #4caf50 !important;
+        transform: translateX(5px);
     }
     
     [data-testid="stSidebar"] h2 {
