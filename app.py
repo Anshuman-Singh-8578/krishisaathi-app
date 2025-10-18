@@ -218,11 +218,18 @@ st.markdown("""
     /* Sidebar */
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #1a1f3a 0%, #0f1419 100%) !important;
-        border-right: 1px solid rgba(76, 175, 80, 0.1) !important;
     }
     
     [data-testid="stSidebar"] > div:first-child {
-        background: linear-gradient(180deg, #1a1f3a 0%, #0f1419 100%);
+        background: linear-gradient(180deg, #1a1f3a 0%, #0f1419 100%) !important;
+    }
+    
+    [data-testid="stSidebarNav"] {
+        background: transparent !important;
+    }
+    
+    section[data-testid="stSidebar"] > div {
+        background: linear-gradient(180deg, #1a1f3a 0%, #0f1419 100%) !important;
     }
     
     [data-testid="stSidebar"] img {
@@ -416,25 +423,40 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Display modern header with logo
-st.markdown('<div style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5f3f 100%); border-radius: 20px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 10px 40px rgba(46, 125, 50, 0.3); border: 1px solid rgba(76, 175, 80, 0.2);">', unsafe_allow_html=True)
+header_col1, header_col2 = st.columns([1, 4])
 
-col_logo, col_title = st.columns([1, 3])
-
-with col_logo:
+with header_col1:
     try:
         st.image("logo.png", use_container_width=True)
     except FileNotFoundError:
         st.markdown('<div style="font-size: 4rem; text-align: center;">🌾</div>', unsafe_allow_html=True)
 
-with col_title:
+with header_col2:
     st.markdown("""
-    <div style="display: flex; flex-direction: column; justify-content: center; height: 100%; padding-left: 1rem;">
-        <h1 class="app-title" style="margin-bottom: 0.5rem;">KRISHISAATHI AI</h1>
-        <p class="app-tagline" style="margin: 0;">Connecting Farmers, Empowering Growth</p>
+    <div style="padding-left: 2rem;">
+        <h1 style="
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4caf50 0%, #81c784 50%, #66bb6a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+            letter-spacing: 2px;
+        ">KRISHISAATHI AI</h1>
+        <p style="
+            color: #a5d6a7;
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-top: 0.5rem;
+            letter-spacing: 0.5px;
+            font-style: italic;
+        ">Connecting Farmers, Empowering Growth</p>
     </div>
     """, unsafe_allow_html=True)
 
-st.markdown('</div>', unsafe_allow_html=True)
+st.markdown('<hr style="margin: 2rem 0; border: none; height: 1px; background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.3), transparent);">', unsafe_allow_html=True)
 
 # ---------------------- INITIALIZE SESSION ----------------------
 if "messages" not in st.session_state:
