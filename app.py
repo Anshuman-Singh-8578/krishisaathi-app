@@ -65,6 +65,10 @@ st.markdown("""
     .header-content {
         position: relative;
         z-index: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
     }
     
     .app-title {
@@ -76,16 +80,28 @@ st.markdown("""
         -webkit-text-fill-color: transparent;
         background-clip: text;
         margin: 0;
-        letter-spacing: 1px;
+        letter-spacing: 2px;
         text-shadow: 0 0 30px rgba(76, 175, 80, 0.5);
     }
     
     .app-tagline {
         color: #a5d6a7;
-        font-size: 1rem;
+        font-size: 1.1rem;
         font-weight: 400;
         margin-top: 0.5rem;
         letter-spacing: 0.5px;
+        font-style: italic;
+    }
+    
+    /* Logo styling in header */
+    .modern-header img {
+        filter: drop-shadow(0 4px 20px rgba(76, 175, 80, 0.4));
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
     }
     
     /* Chat Message Styling */
@@ -162,6 +178,20 @@ st.markdown("""
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #1a1f3a 0%, #0f1419 100%);
         border-right: 1px solid rgba(76, 175, 80, 0.1);
+    }
+    
+    [data-testid="stSidebar"] img {
+        border-radius: 50%;
+        padding: 10px;
+        background: rgba(76, 175, 80, 0.1);
+        border: 2px solid rgba(76, 175, 80, 0.3);
+        box-shadow: 0 4px 20px rgba(76, 175, 80, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    [data-testid="stSidebar"] img:hover {
+        transform: scale(1.05) rotate(5deg);
+        box-shadow: 0 6px 30px rgba(76, 175, 80, 0.5);
     }
     
     [data-testid="stSidebar"] .stButton > button {
@@ -331,15 +361,26 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Display modern header
-st.markdown("""
-<div class="modern-header">
+# Display modern header with logo
+st.markdown('<div class="modern-header">', unsafe_allow_html=True)
+
+col_logo, col_title = st.columns([1, 3])
+
+with col_logo:
+    try:
+        st.image("logo.png", use_container_width=True)
+    except FileNotFoundError:
+        st.markdown('<div style="font-size: 4rem; text-align: center;">🌾</div>', unsafe_allow_html=True)
+
+with col_title:
+    st.markdown("""
     <div class="header-content">
-        <h1 class="app-title">🌾 KRISHISAATHI AI</h1>
-        <p class="app-tagline">Your Intelligent Farming Companion powered by AI</p>
+        <h1 class="app-title">KRISHISAATHI AI</h1>
+        <p class="app-tagline">Connecting Farmers, Empowering Growth</p>
     </div>
-</div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------------------- INITIALIZE SESSION ----------------------
 if "messages" not in st.session_state:
@@ -591,6 +632,14 @@ Ask me about:
 
 # ---------------------- SIDEBAR ----------------------
 with st.sidebar:
+    # Logo in sidebar
+    st.markdown('<div style="text-align: center; margin-bottom: 1.5rem;">', unsafe_allow_html=True)
+    try:
+        st.image("logo.png", width=150)
+    except FileNotFoundError:
+        st.markdown('<div style="font-size: 3rem;">🌾</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+    
     st.markdown("## ℹ️ About Krishisaathi")
     st.markdown("""
     <div class="feature-card">
