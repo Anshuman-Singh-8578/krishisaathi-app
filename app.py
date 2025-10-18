@@ -422,7 +422,7 @@ col_logo, col_title = st.columns([1, 3])
 
 with col_logo:
     try:
-        st.image("logo.png", use_column_width=True)
+        st.image("logo.png", use_container_width=True)
     except FileNotFoundError:
         st.markdown('<div style="font-size: 4rem; text-align: center;">🌾</div>', unsafe_allow_html=True)
 
@@ -689,7 +689,7 @@ with st.sidebar:
     # Logo in sidebar
     st.markdown('<div style="text-align: center; margin-bottom: 1.5rem; margin-top: 1rem;">', unsafe_allow_html=True)
     try:
-        st.image("logo.png", use_column_width=True)
+        st.image("logo.png", use_container_width=True)
     except FileNotFoundError:
         st.markdown('<div style="font-size: 3rem;">🌾</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
