@@ -5,7 +5,12 @@ from datetime import datetime
 import re
 
 # ---------------------- STREAMLIT CONFIG ----------------------
-st.set_page_config(page_title="🌾 Krishisaathi AI", page_icon="🌱", layout="centered")
+st.set_page_config(
+    page_title="🌾 Krishisaathi AI", 
+    page_icon="🌱", 
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # ---------------------- MODERN CUSTOM CSS ----------------------
 st.markdown("""
@@ -20,7 +25,6 @@ st.markdown("""
     /* Hide default Streamlit elements */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    header {visibility: hidden;}
     
     /* Main container styling */
     .main {
@@ -29,21 +33,25 @@ st.markdown("""
     }
     
     .block-container {
-        padding-top: 2rem !important;
+        padding-top: 1rem !important;
         padding-bottom: 2rem !important;
-        max-width: 900px;
+        max-width: 1200px !important;
+        margin: 0 auto;
     }
     
     /* Modern Header */
     .modern-header {
         background: linear-gradient(135deg, #1e3a5f 0%, #2d5f3f 100%);
         border-radius: 20px;
-        padding: 2rem;
+        padding: 1.5rem 2rem;
         margin-bottom: 2rem;
         box-shadow: 0 10px 40px rgba(46, 125, 50, 0.3);
         border: 1px solid rgba(76, 175, 80, 0.2);
         position: relative;
         overflow: hidden;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
     }
     
     .modern-header::before {
@@ -97,11 +105,25 @@ st.markdown("""
     .modern-header img {
         filter: drop-shadow(0 4px 20px rgba(76, 175, 80, 0.4));
         animation: float 3s ease-in-out infinite;
+        max-width: 120px;
+        height: auto;
     }
     
     @keyframes float {
         0%, 100% { transform: translateY(0px); }
         50% { transform: translateY(-10px); }
+    }
+    
+    /* Responsive header */
+    @media (max-width: 768px) {
+        .modern-header {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .app-title {
+            font-size: 1.8rem !important;
+        }
     }
     
     /* Chat Message Styling */
@@ -176,8 +198,12 @@ st.markdown("""
     
     /* Sidebar */
     [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #1a1f3a 0%, #0f1419 100%) !important;
+        border-right: 1px solid rgba(76, 175, 80, 0.1) !important;
+    }
+    
+    [data-testid="stSidebar"] > div:first-child {
         background: linear-gradient(180deg, #1a1f3a 0%, #0f1419 100%);
-        border-right: 1px solid rgba(76, 175, 80, 0.1);
     }
     
     [data-testid="stSidebar"] img {
@@ -197,14 +223,22 @@ st.markdown("""
     [data-testid="stSidebar"] .stButton > button {
         width: 100%;
         margin-bottom: 0.5rem;
-        background: rgba(76, 175, 80, 0.1);
-        border: 1px solid rgba(76, 175, 80, 0.2);
-        color: #81c784;
+        background: rgba(76, 175, 80, 0.1) !important;
+        border: 1px solid rgba(76, 175, 80, 0.2) !important;
+        color: #81c784 !important;
     }
     
     [data-testid="stSidebar"] .stButton > button:hover {
-        background: rgba(76, 175, 80, 0.2);
-        border-color: #4caf50;
+        background: rgba(76, 175, 80, 0.2) !important;
+        border-color: #4caf50 !important;
+    }
+    
+    [data-testid="stSidebar"] h2 {
+        color: #4caf50 !important;
+    }
+    
+    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
+        color: #a5d6a7 !important;
     }
     
     /* Disease Detection Section */
@@ -362,25 +396,23 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Display modern header with logo
-st.markdown('<div class="modern-header">', unsafe_allow_html=True)
-
-col_logo, col_title = st.columns([1, 3])
+col_logo, col_title = st.columns([1, 4])
 
 with col_logo:
     try:
-        st.image("logo.png", use_container_width=True)
+        st.image("logo.png", width=120)
     except FileNotFoundError:
         st.markdown('<div style="font-size: 4rem; text-align: center;">🌾</div>', unsafe_allow_html=True)
 
 with col_title:
     st.markdown("""
-    <div class="header-content">
+    <div style="padding-top: 10px;">
         <h1 class="app-title">KRISHISAATHI AI</h1>
         <p class="app-tagline">Connecting Farmers, Empowering Growth</p>
     </div>
     """, unsafe_allow_html=True)
 
-st.markdown('</div>', unsafe_allow_html=True)
+st.markdown('<hr style="margin: 2rem 0; opacity: 0.3;">', unsafe_allow_html=True)
 
 # ---------------------- INITIALIZE SESSION ----------------------
 if "messages" not in st.session_state:
