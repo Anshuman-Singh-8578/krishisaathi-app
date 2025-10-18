@@ -105,8 +105,23 @@ st.markdown("""
     .modern-header img {
         filter: drop-shadow(0 4px 20px rgba(76, 175, 80, 0.4));
         animation: float 3s ease-in-out infinite;
-        max-width: 120px;
-        height: auto;
+        width: 100% !important;
+        max-width: 180px !important;
+        height: auto !important;
+        object-fit: contain !important;
+    }
+    
+    /* Streamlit image container */
+    [data-testid="stImage"] {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    [data-testid="stImage"] img {
+        width: 100% !important;
+        height: auto !important;
+        max-width: none !important;
     }
     
     @keyframes float {
@@ -123,6 +138,10 @@ st.markdown("""
         
         .app-title {
             font-size: 1.8rem !important;
+        }
+        
+        .modern-header img {
+            max-width: 150px !important;
         }
     }
     
@@ -207,17 +226,18 @@ st.markdown("""
     }
     
     [data-testid="stSidebar"] img {
-        border-radius: 50%;
-        padding: 10px;
-        background: rgba(76, 175, 80, 0.1);
-        border: 2px solid rgba(76, 175, 80, 0.3);
-        box-shadow: 0 4px 20px rgba(76, 175, 80, 0.3);
         transition: all 0.3s ease;
+        width: 100% !important;
+        max-width: 140px !important;
+        height: auto !important;
+        margin: 0 auto;
+        display: block;
+        filter: drop-shadow(0 4px 15px rgba(76, 175, 80, 0.3));
     }
     
     [data-testid="stSidebar"] img:hover {
-        transform: scale(1.05) rotate(5deg);
-        box-shadow: 0 6px 30px rgba(76, 175, 80, 0.5);
+        transform: scale(1.05);
+        filter: drop-shadow(0 6px 25px rgba(76, 175, 80, 0.5));
     }
     
     [data-testid="stSidebar"] .stButton > button {
@@ -396,23 +416,25 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Display modern header with logo
-col_logo, col_title = st.columns([1, 4])
+st.markdown('<div style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5f3f 100%); border-radius: 20px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 10px 40px rgba(46, 125, 50, 0.3); border: 1px solid rgba(76, 175, 80, 0.2);">', unsafe_allow_html=True)
+
+col_logo, col_title = st.columns([1, 3])
 
 with col_logo:
     try:
-        st.image("logo.png", width=120)
+        st.image("logo.png", use_column_width=True)
     except FileNotFoundError:
         st.markdown('<div style="font-size: 4rem; text-align: center;">🌾</div>', unsafe_allow_html=True)
 
 with col_title:
     st.markdown("""
-    <div style="padding-top: 10px;">
-        <h1 class="app-title">KRISHISAATHI AI</h1>
-        <p class="app-tagline">Connecting Farmers, Empowering Growth</p>
+    <div style="display: flex; flex-direction: column; justify-content: center; height: 100%; padding-left: 1rem;">
+        <h1 class="app-title" style="margin-bottom: 0.5rem;">KRISHISAATHI AI</h1>
+        <p class="app-tagline" style="margin: 0;">Connecting Farmers, Empowering Growth</p>
     </div>
     """, unsafe_allow_html=True)
 
-st.markdown('<hr style="margin: 2rem 0; opacity: 0.3;">', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------------------- INITIALIZE SESSION ----------------------
 if "messages" not in st.session_state:
@@ -665,9 +687,9 @@ Ask me about:
 # ---------------------- SIDEBAR ----------------------
 with st.sidebar:
     # Logo in sidebar
-    st.markdown('<div style="text-align: center; margin-bottom: 1.5rem;">', unsafe_allow_html=True)
+    st.markdown('<div style="text-align: center; margin-bottom: 1.5rem; margin-top: 1rem;">', unsafe_allow_html=True)
     try:
-        st.image("logo.png", width=150)
+        st.image("logo.png", use_column_width=True)
     except FileNotFoundError:
         st.markdown('<div style="font-size: 3rem;">🌾</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
