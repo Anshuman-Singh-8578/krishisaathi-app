@@ -253,17 +253,21 @@ st.markdown("""
         background: rgba(76, 175, 80, 0.1) !important;
         border: 1px solid rgba(76, 175, 80, 0.2) !important;
         color: #81c784 !important;
-        padding: 0.6rem 1rem !important;
-        font-size: 0.9rem !important;
+        padding: 1rem 1.2rem !important;
+        font-size: 0.85rem !important;
         font-weight: 500 !important;
         text-align: left !important;
         border-radius: 12px !important;
         transition: all 0.3s ease !important;
-        height: auto !important;
-        min-height: 45px !important;
+        height: 55px !important;
+        min-height: 55px !important;
+        max-height: 55px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: flex-start !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
     
     [data-testid="stSidebar"] .stButton > button:hover {
