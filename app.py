@@ -845,7 +845,7 @@ if st.session_state.expect_image:
 
 **Treatment:** {prediction['treatment']}
 
-**Prevention:** {prediction['prevention'])}"""
+**Prevention:** {prediction['prevention']}"""
                 
                 st.session_state.messages.append({"role": "assistant", "content": result_msg})
                 st.rerun()
