@@ -25,6 +25,30 @@ st.markdown("""
     /* Hide Streamlit branding */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    /* Hide Streamlit top-right menu */
+    [data-testid="stToolbar"] {
+        display: none;
+    }
+    
+    /* Hide "Manage app" button */
+    [data-testid="manage-app-button"] {
+        display: none;
+    }
+    
+    button[kind="header"] {
+        display: none;
+    }
+    
+    /* Hide Deploy button and other header buttons */
+    .viewerBadge_container__r5tak {
+        display: none;
+    }
+    
+    .stActionButton {
+        display: none;
+    }
     
     /* Main Background */
     .main {
