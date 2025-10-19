@@ -3,6 +3,7 @@ import random
 import requests
 from datetime import datetime
 import re
+from langdetect import detect, LangDetectException
 
 # ---------------------- STREAMLIT CONFIG ----------------------
 st.set_page_config(
@@ -243,6 +244,18 @@ st.markdown("""
         background: #f1f8f4;
     }
     
+    /* Language Badge */
+    .lang-badge {
+        display: inline-block;
+        background: #e8f5e9;
+        color: #2e7d32;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
     /* Metrics */
     [data-testid="stMetric"] {
         background: white;
@@ -252,42 +265,7 @@ st.markdown("""
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
     }
     
-    [data-testid="stMetricLabel"] {
-        color: #66bb6a;
-        font-weight: 600;
-        font-size: 0.85rem;
-    }
-    
-    [data-testid="stMetricValue"] {
-        color: #2e7d32;
-        font-size: 1.75rem;
-        font-weight: 700;
-    }
-    
-    /* Tabs */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 0.5rem;
-        background: #f1f8f4;
-        border-radius: 10px;
-        padding: 0.25rem;
-    }
-    
-    .stTabs [data-baseweb="tab"] {
-        background: transparent;
-        border-radius: 8px;
-        color: #66bb6a;
-        font-weight: 600;
-        padding: 0.6rem 1.25rem;
-        font-size: 0.9rem;
-    }
-    
-    .stTabs [aria-selected="true"] {
-        background: white;
-        color: #2e7d32;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-    
-    /* Disease Detection Section */
+    /* Disease Section */
     .disease-section {
         background: white;
         border-radius: 12px;
@@ -295,59 +273,6 @@ st.markdown("""
         border: 1px solid #e8f5e9;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         margin: 1.5rem 0;
-    }
-    
-    /* Success/Info Boxes */
-    .stSuccess, .stInfo {
-        background: white;
-        border-radius: 10px;
-        border-left: 4px solid #4caf50;
-        padding: 1rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-    }
-    
-    /* Divider */
-    hr {
-        border: none;
-        height: 1px;
-        background: #e8f5e9;
-        margin: 2rem 0;
-    }
-    
-    /* Text Colors */
-    p, li, span {
-        color: #37474f;
-    }
-    
-    h1, h2, h3, h4, h5, h6 {
-        color: #1b5e20;
-    }
-    
-    /* Spinner */
-    .stSpinner > div {
-        border-top-color: #4caf50 !important;
-    }
-    
-    /* Footer */
-    .pro-footer {
-        text-align: center;
-        padding: 2rem;
-        background: white;
-        border-radius: 12px;
-        margin-top: 3rem;
-        border: 1px solid #e8f5e9;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-    }
-    
-    .pro-footer p {
-        margin: 0.5rem 0;
-        color: #66bb6a;
-        font-size: 0.9rem;
-    }
-    
-    .pro-footer strong {
-        color: #2e7d32;
-        font-weight: 700;
     }
     
     /* Scrollbar */
@@ -368,219 +293,6 @@ st.markdown("""
     ::-webkit-scrollbar-thumb:hover {
         background: #4caf50;
     }
-    
-    /* Image Styling */
-    img {
-        border-radius: 10px;
-    }
-    
-    /* Subheader Styling */
-    .stSubheader {
-        color: #2e7d32 !important;
-        font-weight: 700 !important;
-    }
-    
-    /* Clear Chat Button Special Style */
-    [data-testid="stSidebar"] .stButton:last-child > button {
-        background: #ffebee !important;
-        border-color: #ffcdd2 !important;
-        color: #c62828 !important;
-        margin-top: 1rem;
-    }
-    
-    [data-testid="stSidebar"] .stButton:last-child > button:hover {
-        background: #ef5350 !important;
-        border-color: #ef5350 !important;
-        color: white !important;
-    }
-    
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .block-container {
-            padding: 1rem !important;
-        }
-        
-        .app-title {
-            font-size: 1.5rem;
-        }
-        
-        .pro-header {
-            flex-direction: column;
-            text-align: center;
-        }
-    }
-    
-    /* Dark Theme Support */
-    @media (prefers-color-scheme: dark) {
-        .main {
-            background: #0a0e27 !important;
-        }
-        
-        .block-container {
-            background: transparent !important;
-        }
-        
-        /* Sidebar Dark */
-        [data-testid="stSidebar"] {
-            background: #1a1f3a !important;
-        }
-        
-        [data-testid="stSidebar"] > div:first-child {
-            background: #1a1f3a !important;
-        }
-        
-        section[data-testid="stSidebar"] > div {
-            background: #1a1f3a !important;
-        }
-        
-        [data-testid="stSidebar"] h3 {
-            color: #66bb6a !important;
-        }
-        
-        /* Sidebar Buttons Dark */
-        [data-testid="stSidebar"] .stButton > button {
-            background: rgba(76, 175, 80, 0.15) !important;
-            border: 1px solid rgba(76, 175, 80, 0.3) !important;
-            color: #81c784 !important;
-        }
-        
-        [data-testid="stSidebar"] .stButton > button:hover {
-            background: #4caf50 !important;
-            border-color: #4caf50 !important;
-            color: white !important;
-        }
-        
-        /* Header Dark */
-        .pro-header {
-            background: #1e2533 !important;
-            border-color: rgba(76, 175, 80, 0.2) !important;
-        }
-        
-        .app-title {
-            color: #66bb6a !important;
-        }
-        
-        .app-tagline {
-            color: #81c784 !important;
-        }
-        
-        /* Chat Messages Dark */
-        .stChatMessage {
-            background: #1e2533 !important;
-            border-color: rgba(76, 175, 80, 0.2) !important;
-        }
-        
-        [data-testid="user-message"] {
-            background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(76, 175, 80, 0.1) 100%) !important;
-            border-left: 3px solid #4caf50 !important;
-        }
-        
-        [data-testid="assistant-message"] {
-            background: #1e2533 !important;
-            border-left: 3px solid #81c784 !important;
-        }
-        
-        /* Chat Input Dark */
-        .stChatInputContainer {
-            background: #1e2533 !important;
-            border: 2px solid rgba(76, 175, 80, 0.3) !important;
-        }
-        
-        .stChatInputContainer:focus-within {
-            border-color: #4caf50 !important;
-        }
-        
-        /* Disease Section Dark */
-        .disease-section {
-            background: #1e2533 !important;
-            border-color: rgba(76, 175, 80, 0.2) !important;
-        }
-        
-        /* Footer Dark */
-        .pro-footer {
-            background: #1e2533 !important;
-            border-color: rgba(76, 175, 80, 0.2) !important;
-        }
-        
-        .pro-footer p {
-            color: #81c784 !important;
-        }
-        
-        .pro-footer strong {
-            color: #66bb6a !important;
-        }
-        
-        /* Metrics Dark */
-        [data-testid="stMetric"] {
-            background: #1e2533 !important;
-            border-color: rgba(76, 175, 80, 0.2) !important;
-        }
-        
-        /* File Uploader Dark */
-        [data-testid="stFileUploader"] {
-            background: #1e2533 !important;
-            border-color: rgba(76, 175, 80, 0.3) !important;
-        }
-        
-        [data-testid="stFileUploader"]:hover {
-            border-color: #4caf50 !important;
-            background: rgba(76, 175, 80, 0.1) !important;
-        }
-        
-        /* Tabs Dark */
-        .stTabs [data-baseweb="tab-list"] {
-            background: rgba(76, 175, 80, 0.1) !important;
-        }
-        
-        .stTabs [aria-selected="true"] {
-            background: rgba(76, 175, 80, 0.2) !important;
-            color: #66bb6a !important;
-        }
-        
-        .stTabs [data-baseweb="tab"] {
-            color: #81c784 !important;
-        }
-        
-        /* Text Colors Dark */
-        p, li, span {
-            color: #e0e0e0 !important;
-        }
-        
-        h1, h2, h3, h4, h5, h6 {
-            color: #66bb6a !important;
-        }
-        
-        /* Divider Dark */
-        hr {
-            background: rgba(76, 175, 80, 0.2) !important;
-        }
-        
-        /* Scrollbar Dark */
-        ::-webkit-scrollbar-track {
-            background: #1a1f3a !important;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: rgba(76, 175, 80, 0.3) !important;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #4caf50 !important;
-        }
-        
-        /* Clear Button Dark */
-        [data-testid="stSidebar"] .stButton:last-child > button {
-            background: rgba(239, 83, 80, 0.15) !important;
-            border-color: rgba(239, 83, 80, 0.3) !important;
-            color: #ef5350 !important;
-        }
-        
-        [data-testid="stSidebar"] .stButton:last-child > button:hover {
-            background: #ef5350 !important;
-            border-color: #ef5350 !important;
-            color: white !important;
-        }
-    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -597,7 +309,7 @@ with header_col2:
     st.markdown("""
     <div style="display: flex; flex-direction: column; justify-content: center; height: 100%;">
         <h1 class="app-title">KRISHISAATHI AI</h1>
-        <p class="app-tagline">Connecting Farmers, Empowering Growth</p>
+        <p class="app-tagline">Connecting Farmers, Empowering Growth | किसानों को जोड़ना, विकास को सशक्त बनाना</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -610,6 +322,52 @@ if "user_location" not in st.session_state:
     st.session_state.user_location = None
 if "expect_image" not in st.session_state:
     st.session_state.expect_image = False
+if "user_entities" not in st.session_state:
+    st.session_state.user_entities = {}
+
+# ---------------------- LANGUAGE DETECTION & ENTITY EXTRACTION ----------------------
+def detect_language(text):
+    """Detect language of the input text"""
+    try:
+        lang = detect(text)
+        if lang == 'hi':
+            return 'hi'
+        else:
+            return 'en'
+    except LangDetectException:
+        return 'en'
+
+# Language-specific patterns for entity extraction
+ENTITY_PATTERNS = {
+    'en': {
+        'name': r'\b(?:my name is|i am|i\'m|this is|call me)\s+([A-Za-z\s]+?)(?:\.|,|$|\s+and)',
+        'phone': r'\b(?:\+?91[-.\s]?)?[6-9]\d{9}\b',
+        'location': r'\b(?:from|in|at|live in|located in)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)',
+        'crop': r'\b(?:growing|cultivating|planting|farming)\s+([a-z]+)',
+    },
+    'hi': {
+        'name': r'(?:मेरा नाम|मैं|नाम)\s+([ा-ॿA-Za-z\s]+?)(?:\s+है|\.|,|$)',
+        'phone': r'\b(?:\+?91[-.\s]?)?[6-9]\d{9}\b',
+        'location': r'(?:से हूं|रहता हूं|रहती हूं|में रहता)\s+([ा-ॿA-Za-z\s]+)',
+        'crop': r'(?:उगा रहा|खेती|फसल)\s+([ा-ॿA-Za-z]+)',
+    }
+}
+
+def extract_entities(text, lang):
+    """Extract entities from text based on language"""
+    entities = {}
+    patterns = ENTITY_PATTERNS.get(lang, ENTITY_PATTERNS['en'])
+    
+    for entity_type, pattern in patterns.items():
+        match = re.search(pattern, text, re.IGNORECASE)
+        if match:
+            entities[entity_type] = match.group(1).strip()
+    
+    # Update session state with extracted entities
+    for key, value in entities.items():
+        st.session_state.user_entities[key] = value
+    
+    return entities
 
 # ---------------------- WEATHER FUNCTION ----------------------
 def get_weather(city):
@@ -642,17 +400,26 @@ def ai_predict_disease(image_file):
         "Tomato - Late Blight": {
             "symptoms": "Dark brown spots on leaves, white mold on undersides",
             "treatment": "Remove infected leaves, apply copper-based fungicide, improve air circulation",
-            "prevention": "Avoid overhead watering, use resistant varieties"
+            "prevention": "Avoid overhead watering, use resistant varieties",
+            "symptoms_hi": "पत्तियों पर गहरे भूरे धब्बे, निचली सतह पर सफेद फफूंद",
+            "treatment_hi": "संक्रमित पत्तियों को हटाएं, तांबे आधारित कवकनाशी लगाएं",
+            "prevention_hi": "ऊपर से पानी देने से बचें, प्रतिरोधी किस्मों का उपयोग करें"
         },
         "Potato - Early Blight": {
             "symptoms": "Circular brown spots with concentric rings on older leaves",
             "treatment": "Apply fungicide (Mancozeb), remove infected leaves",
-            "prevention": "Crop rotation, proper spacing, mulching"
+            "prevention": "Crop rotation, proper spacing, mulching",
+            "symptoms_hi": "पुरानी पत्तियों पर गोलाकार भूरे धब्बे",
+            "treatment_hi": "कवकनाशी (मैंकोजेब) लगाएं, संक्रमित पत्तियां हटाएं",
+            "prevention_hi": "फसल चक्र, उचित दूरी, मल्चिंग"
         },
         "Healthy Crop": {
             "symptoms": "No disease detected",
             "treatment": "Continue regular care and monitoring",
-            "prevention": "Maintain good agricultural practices"
+            "prevention": "Maintain good agricultural practices",
+            "symptoms_hi": "कोई बीमारी नहीं पाई गई",
+            "treatment_hi": "नियमित देखभाल जारी रखें",
+            "prevention_hi": "अच्छी कृषि पद्धतियों को बनाए रखें"
         }
     }
     
@@ -712,26 +479,31 @@ def extract_city_from_message(message):
     message_lower = message.lower()
     
     patterns = [
-        r"(?:in|at|for)\s+([a-zA-Z\s]+)",
-        r"([a-zA-Z]+)\s+(?:price|weather|market)",
+        r"(?:in|at|for|का|में)\s+([a-zA-Zा-ॿ\s]+)",
+        r"([a-zA-Z]+)\s+(?:price|weather|market|मौसम|कीमत)",
     ]
     
     for pattern in patterns:
         match = re.search(pattern, message_lower)
         if match:
             city = match.group(1).strip()
-            city = re.sub(r'\b(today|tomorrow|now|current|latest|price|prices|weather)\b', '', city).strip()
+            city = re.sub(r'\b(today|tomorrow|now|current|latest|price|prices|weather|आज|कल|मौसम|कीमत)\b', '', city).strip()
             if city and len(city) > 2:
                 return city
     return None
 
 # ---------------------- FORMAT PRICE RESPONSE ----------------------
-def format_price_response(prices, city_name=None):
+def format_price_response(prices, city_name=None, lang='en'):
     """Formats price data into readable response"""
     if not prices:
+        if lang == 'hi':
+            return "❌ क्षमा करें, कोई मूल्य डेटा नहीं मिला। कोशिश करें: दिल्ली, मुंबई, या बैंगलोर।"
         return "❌ Sorry, no price data found. Try: Delhi, Mumbai, or Bangalore."
     
-    response = "💰 **Current Market Prices:**\n\n"
+    if lang == 'hi':
+        response = "💰 **वर्तमान बाजार मूल्य:**\n\n"
+    else:
+        response = "💰 **Current Market Prices:**\n\n"
     
     for city, produce_data in prices.items():
         if city_name and city_name.lower() not in city.lower():
@@ -744,20 +516,43 @@ def format_price_response(prices, city_name=None):
         
         response += "\n"
     
-    response += "\n📊 **Legend:** ↑ Rising | → Stable | ↓ Falling\n"
-    response += "📅 **Updated:** October 19, 2025\n"
-    response += "💡 **Tip:** Prices are approximate retail rates."
+    if lang == 'hi':
+        response += "\n📊 **किंवदंती:** ↑ बढ़ रहा | → स्थिर | ↓ गिर रहा\n"
+        response += "📅 **अपडेट:** 19 अक्टूबर, 2025\n"
+        response += "💡 **सुझाव:** कीमतें अनुमानित खुदरा दरें हैं।"
+    else:
+        response += "\n📊 **Legend:** ↑ Rising | → Stable | ↓ Falling\n"
+        response += "📅 **Updated:** October 19, 2025\n"
+        response += "💡 **Tip:** Prices are approximate retail rates."
     
     return response
 
 # ---------------------- CHATBOT RESPONSE LOGIC ----------------------
-def get_bot_response(user_message):
-    """Generates intelligent responses"""
+def get_bot_response(user_message, lang='en'):
+    """Generates intelligent bilingual responses"""
     message_lower = user_message.lower()
     
+    # Detect language
+    detected_lang = detect_language(user_message)
+    
+    # Extract entities
+    entities = extract_entities(user_message, detected_lang)
+    
     # Disease detection trigger
-    if any(word in message_lower for word in ["disease", "sick", "infected", "diagnose"]):
+    disease_keywords_en = ["disease", "sick", "infected", "diagnose", "problem", "leaf"]
+    disease_keywords_hi = ["बीमारी", "रोग", "संक्रमित", "समस्या", "पत्ती"]
+    
+    if any(word in message_lower for word in disease_keywords_en + disease_keywords_hi):
         st.session_state.expect_image = True
+        if detected_lang == 'hi':
+            return """🔬 **फसल रोग पहचान**
+
+📷 कृपया प्रभावित पत्तियों या फसलों की स्पष्ट तस्वीर अपलोड करें।
+
+मैं इसका विश्लेषण करूंगा और प्रदान करूंगा:
+✅ रोग की पहचान
+✅ उपचार की सिफारिशें
+✅ रोकथाम के टिप्स"""
         return """🔬 **Crop Disease Detection**
 
 📷 Please upload a clear photo of affected leaves or crops.
@@ -768,13 +563,24 @@ I'll analyze it and provide:
 ✅ Prevention tips"""
     
     # Price queries
-    if any(word in message_lower for word in ["price", "cost", "market"]):
+    price_keywords_en = ["price", "cost", "market", "rate"]
+    price_keywords_hi = ["कीमत", "मूल्य", "दाम", "भाव", "बाजार"]
+    
+    if any(word in message_lower for word in price_keywords_en + price_keywords_hi):
         city = extract_city_from_message(user_message)
         
         if city:
             prices = get_produce_prices(city)
-            return format_price_response(prices, city)
+            return format_price_response(prices, city, detected_lang)
         else:
+            if detected_lang == 'hi':
+                return """💰 **बाजार मूल्य उपलब्ध!**
+
+🌆 **शहर शामिल:** दिल्ली, मुंबई, बैंगलोर, और अधिक!
+
+💬 **मुझसे पूछें:** "मुंबई में कीमत दिखाएं" या "दिल्ली में टमाटर की कीमत"
+
+📍 अपने शहर का नाम टाइप करें!"""
             return """💰 **Market Prices Available!**
 
 🌆 **Cities Covered:** Delhi, Mumbai, Bangalore, and more!
@@ -784,14 +590,28 @@ I'll analyze it and provide:
 📍 Type your city name!"""
     
     # Weather queries
-    if any(word in message_lower for word in ["weather", "temperature"]):
+    weather_keywords_en = ["weather", "temperature", "climate", "forecast"]
+    weather_keywords_hi = ["मौसम", "तापमान", "जलवायु"]
+    
+    if any(word in message_lower for word in weather_keywords_en + weather_keywords_hi):
         city = extract_city_from_message(user_message)
         
         if not city:
-            return "📍 Please specify a location!\nExample: 'Weather in Delhi'"
+            if detected_lang == 'hi':
+                return "🌍 कृपया एक स्थान निर्दिष्ट करें!\nउदाहरण: 'दिल्ली का मौसम'"
+            return "🌍 Please specify a location!\nExample: 'Weather in Delhi'"
         
         weather = get_weather(city)
         if weather:
+            if detected_lang == 'hi':
+                return f"""🌤️ **{weather['city']} में मौसम:**
+            
+- तापमान: {weather['temperature']}°C (महसूस होता है {weather['feels_like']}°C)
+- स्थिति: {weather['description'].title()}
+- आर्द्रता: {weather['humidity']}%
+- हवा: {weather['wind_speed']} m/s
+
+**सलाह:** {"बाहर काम के लिए अच्छा! 🌞" if weather['temperature'] > 15 else "घर के अंदर के कार्य अनुशंसित। 🧥"}"""
             return f"""🌤️ **Weather in {weather['city']}:**
             
 - Temperature: {weather['temperature']}°C (feels like {weather['feels_like']}°C)
@@ -801,22 +621,55 @@ I'll analyze it and provide:
 
 **Advice:** {"Good for outdoor work! 🌞" if weather['temperature'] > 15 else "Indoor tasks recommended. 🧥"}"""
         else:
+            if detected_lang == 'hi':
+                return f"❌ '{city}' के लिए मौसम नहीं मिल सका।"
             return f"❌ Couldn't fetch weather for '{city}'."
     
     # Greeting
-    if any(word in message_lower for word in ["hello", "hi", "hey", "namaste"]):
-        return """🙏 **Namaste! Welcome to Krishisaathi AI!**
+    greeting_keywords_en = ["hello", "hi", "hey"]
+    greeting_keywords_hi = ["नमस्ते", "हैलो", "हाय", "प्रणाम"]
+    
+    if any(word in message_lower for word in greeting_keywords_en + greeting_keywords_hi):
+        name_greeting = ""
+        if 'name' in st.session_state.user_entities:
+            if detected_lang == 'hi':
+                name_greeting = f" {st.session_state.user_entities['name']} जी"
+            else:
+                name_greeting = f" {st.session_state.user_entities['name']}"
+        
+        if detected_lang == 'hi':
+            return f"""🙏 **नमस्ते{name_greeting}! कृषिसाथी AI में आपका स्वागत है!**
+
+मैं आपकी मदद कर सकता हूं:
+🌤️ मौसम पूर्वानुमान
+💰 बाजार मूल्य (100+ शहर)
+🌾 फसल की खेती के टिप्स
+🔬 रोग का पता लगाना (फोटो अपलोड करें)
+🛡️ कीट प्रबंधन
+
+**आप क्या जानना चाहते हैं?** 🚜"""
+        return f"""🙏 **Namaste{name_greeting}! Welcome to Krishisaathi AI!**
 
 I can help you with:
 🌤️ Weather forecasts
 💰 Market prices (100+ cities)
 🌾 Crop cultivation tips
 🔬 Disease detection (upload photo)
-🐛 Pest management
+🛡️ Pest management
 
 **What would you like to know?** 🚜"""
     
     # Default
+    if detected_lang == 'hi':
+        return """🌾 **मैं आज आपकी कैसे मदद कर सकता हूं?**
+
+मुझसे पूछें:
+• 🔬 फसल रोग (फोटो अपलोड करें)
+• 💰 बाजार मूल्य
+• 🌤️ मौसम अपडेट
+• 🌱 फसल टिप्स
+
+**अपना सवाल टाइप करें!** 🚜"""
     return """🌾 **How can I help you today?**
 
 Ask me about:
@@ -845,34 +698,48 @@ with st.sidebar:
             color: #81c784;
             margin: 0.4rem 0 0 0;
             font-weight: 500;
-        ">Smart Farming Assistant</p>
+        ">Smart Farming Assistant | स्मार्ट खेती सहायक</p>
     </div>
     """, unsafe_allow_html=True)
     
-    st.markdown("### 🎯 Quick Actions")
+    # Show extracted user info
+    if st.session_state.user_entities:
+        st.markdown("### 👤 Your Information")
+        for key, value in st.session_state.user_entities.items():
+            entity_labels = {
+                'name': '📛 Name | नाम',
+                'phone': '📞 Phone | फोन',
+                'location': '📍 Location | स्थान',
+                'crop': '🌾 Crop | फसल'
+            }
+            label = entity_labels.get(key, key.capitalize())
+            st.info(f"{label}: **{value}**")
+        st.divider()
     
-    if st.button("📷 Disease Detection"):
+    st.markdown("### 🎯 Quick Actions | त्वरित कार्रवाई")
+    
+    if st.button("🔬 Disease Detection | रोग पहचान"):
         user_msg = "Check crop disease"
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg)
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
     
-    if st.button("📍 Delhi Prices"):
+    if st.button("💰 Delhi Prices | दिल्ली के दाम"):
         user_msg = "Show prices in Delhi"
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg)
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
         
-    if st.button("🌤️ Mumbai Weather"):
+    if st.button("🌤️ Mumbai Weather | मुंबई का मौसम"):
         user_msg = "Weather in Mumbai"
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg)
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
         
-    if st.button("🌾 Crop Tips"):
+    if st.button("🌾 Crop Tips | फसल टिप्स"):
         user_msg = "Tell me about wheat"
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg)
@@ -881,23 +748,29 @@ with st.sidebar:
     
     st.divider()
     
-    if st.button("🗑️ Clear Chat"):
+    if st.button("🗑️ Clear Chat | चैट साफ़ करें"):
         st.session_state.messages = []
         st.session_state.expect_image = False
+        st.session_state.user_entities = {}
         st.rerun()
 
 # ---------------------- CHAT INTERFACE ----------------------
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
+        # Detect language and show badge
+        if message["role"] == "user":
+            detected_lang = detect_language(message["content"])
+            lang_display = "🇮🇳 हिंदी" if detected_lang == 'hi' else "🇬🇧 English"
+            st.markdown(f'<span class="lang-badge">{lang_display}</span>', unsafe_allow_html=True)
         st.markdown(message["content"])
 
 # ---------------------- IMAGE UPLOAD SECTION ----------------------
 if st.session_state.expect_image:
     st.markdown('<div class="disease-section">', unsafe_allow_html=True)
-    st.subheader("📸 Upload Crop Image for Disease Detection")
+    st.subheader("📸 Upload Crop Image for Disease Detection | रोग पहचान के लिए फसल की तस्वीर अपलोड करें")
     
     uploaded_file = st.file_uploader(
-        "Choose an image (JPG, PNG, JPEG)", 
+        "Choose an image (JPG, PNG, JPEG) | एक छवि चुनें", 
         type=["jpg", "png", "jpeg"]
     )
     
@@ -905,40 +778,66 @@ if st.session_state.expect_image:
         col1, col2 = st.columns([1, 1])
         
         with col1:
-            st.image(uploaded_file, caption="Uploaded Crop Image", use_container_width=True)
+            st.image(uploaded_file, caption="Uploaded Crop Image | अपलोड की गई फसल छवि", use_container_width=True)
         
         with col2:
-            with st.spinner("🔬 Analyzing image..."):
+            with st.spinner("🔬 Analyzing image... | छवि का विश्लेषण कर रहे हैं..."):
                 prediction = ai_predict_disease(uploaded_file)
                 
-                st.success(f"✅ **Detection Complete!**")
-                st.metric("Disease Identified", prediction['name'])
-                st.metric("Confidence", f"{prediction['confidence']}%")
+                st.success(f"✅ **Detection Complete! | पहचान पूर्ण!**")
+                st.metric("Disease Identified | पहचानी गई बीमारी", prediction['name'])
+                st.metric("Confidence | विश्वास", f"{prediction['confidence']}%")
         
         st.markdown("---")
-        st.markdown("### 📋 Detailed Analysis")
+        st.markdown("### 📋 Detailed Analysis | विस्तृत विश्लेषण")
         
-        tab1, tab2, tab3 = st.tabs(["🔍 Symptoms", "💊 Treatment", "🛡️ Prevention"])
+        tab1, tab2, tab3 = st.tabs(["🔍 Symptoms | लक्षण", "💊 Treatment | उपचार", "🛡️ Prevention | रोकथाम"])
+        
+        # Check if user prefers Hindi based on last message
+        last_lang = 'en'
+        if st.session_state.messages:
+            last_lang = detect_language(st.session_state.messages[-1]["content"])
         
         with tab1:
-            st.write(f"**Symptoms:** {prediction['symptoms']}")
+            if last_lang == 'hi':
+                st.write(f"**लक्षण:** {prediction.get('symptoms_hi', prediction['symptoms'])}")
+            else:
+                st.write(f"**Symptoms:** {prediction['symptoms']}")
         
         with tab2:
-            st.write(f"**Treatment:** {prediction['treatment']}")
+            if last_lang == 'hi':
+                st.write(f"**उपचार:** {prediction.get('treatment_hi', prediction['treatment'])}")
+            else:
+                st.write(f"**Treatment:** {prediction['treatment']}")
         
         with tab3:
-            st.write(f"**Prevention:** {prediction['prevention']}")
+            if last_lang == 'hi':
+                st.write(f"**रोकथाम:** {prediction.get('prevention_hi', prediction['prevention'])}")
+            else:
+                st.write(f"**Prevention:** {prediction['prevention']}")
         
         col_a, col_b = st.columns(2)
         with col_a:
-            if st.button("🔄 Analyze Another Image"):
+            if st.button("🔄 Analyze Another Image | दूसरी छवि का विश्लेषण करें"):
                 st.session_state.expect_image = True
                 st.rerun()
         
         with col_b:
-            if st.button("✅ Done"):
+            if st.button("✅ Done | हो गया"):
                 st.session_state.expect_image = False
-                result_msg = f"""✅ **Disease Detection Complete**
+                
+                if last_lang == 'hi':
+                    result_msg = f"""✅ **रोग पहचान पूर्ण**
+
+**पहचाना गया:** {prediction['name']} ({prediction['confidence']}% विश्वास)
+
+**लक्षण:** {prediction.get('symptoms_hi', prediction['symptoms'])}
+
+**उपचार:** {prediction.get('treatment_hi', prediction['treatment'])}
+
+**रोकथाम:** {prediction.get('prevention_hi', prediction['prevention'])}"""
+                else:
+                    result_msg = f"""✅ **Disease Detection Complete**
 
 **Identified:** {prediction['name']} ({prediction['confidence']}% confidence)
 
@@ -946,7 +845,7 @@ if st.session_state.expect_image:
 
 **Treatment:** {prediction['treatment']}
 
-**Prevention:** {prediction['prevention']}"""
+**Prevention:** {prediction['prevention'])}"""
                 
                 st.session_state.messages.append({"role": "assistant", "content": result_msg})
                 st.rerun()
@@ -954,14 +853,19 @@ if st.session_state.expect_image:
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------------------- CHAT INPUT ----------------------
-if prompt := st.chat_input("Ask about farming..."):
+if prompt := st.chat_input("Ask about farming... | खेती के बारे में पूछें..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
+    
     with st.chat_message("user"):
+        # Detect and show language badge
+        detected_lang = detect_language(prompt)
+        lang_display = "🇮🇳 हिंदी" if detected_lang == 'hi' else "🇬🇧 English"
+        st.markdown(f'<span class="lang-badge">{lang_display}</span>', unsafe_allow_html=True)
         st.markdown(prompt)
     
     with st.chat_message("assistant"):
-        with st.spinner("🌱 Thinking..."):
-            response = get_bot_response(prompt)
+        with st.spinner("🌱 Thinking... | सोच रहे हैं..."):
+            response = get_bot_response(prompt, detected_lang)
             st.markdown(response)
     
     st.session_state.messages.append({"role": "assistant", "content": response})
@@ -969,8 +873,9 @@ if prompt := st.chat_input("Ask about farming..."):
 # ---------------------- FOOTER ----------------------
 st.markdown("""
 <div class="pro-footer">
-    <p><strong>🌾 Krishisaathi AI</strong> - Empowering Farmers with Technology</p>
+    <p><strong>🌾 Krishisaathi AI</strong> - Empowering Farmers with Technology | प्रौद्योगिकी के साथ किसानों को सशक्त बनाना</p>
     <p>💡 AI Disease Detection | Weekly Updated Prices | Real-time Weather</p>
+    <p>💡 एआई रोग पहचान | साप्ताहिक अपडेट मूल्य | वास्तविक समय मौसम</p>
     <p style="font-size: 0.85em;">© 2025 Krishisaathi AI. All rights reserved.</p>
 </div>
 """, unsafe_allow_html=True)
