@@ -12,367 +12,291 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ---------------------- MODERN CUSTOM CSS ----------------------
+# ---------------------- PROFESSIONAL MODERN CSS ----------------------
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     
     /* Global Styles */
     * {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Plus Jakarta Sans', sans-serif;
     }
     
-    /* Hide default Streamlit elements */
+    /* Hide Streamlit branding */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     
-    /* Main container styling */
+    /* Main Background */
     .main {
-        background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1419 100%);
+        background: #f8faf9;
         padding: 0;
     }
     
     .block-container {
-        padding-top: 1rem !important;
-        padding-bottom: 2rem !important;
-        max-width: 1200px !important;
+        padding: 2rem 3rem !important;
+        max-width: 1400px !important;
         margin: 0 auto;
     }
     
-    /* Modern Header */
-    .modern-header {
-        background: linear-gradient(135deg, #1e3a5f 0%, #2d5f3f 100%);
-        border-radius: 20px;
+    /* Professional Header */
+    .pro-header {
+        background: white;
+        border-radius: 16px;
         padding: 1.5rem 2rem;
         margin-bottom: 2rem;
-        box-shadow: 0 10px 40px rgba(46, 125, 50, 0.3);
-        border: 1px solid rgba(76, 175, 80, 0.2);
-        position: relative;
-        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        border: 1px solid #e8f5e9;
         display: flex;
         align-items: center;
-        gap: 2rem;
+        gap: 1.5rem;
     }
     
-    .modern-header::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(76, 175, 80, 0.1) 0%, transparent 70%);
-        animation: pulse 4s ease-in-out infinite;
-    }
-    
-    @keyframes pulse {
-        0%, 100% { opacity: 0.5; transform: scale(1); }
-        50% { opacity: 1; transform: scale(1.1); }
+    .header-logo {
+        flex-shrink: 0;
     }
     
     .header-content {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: 100%;
+        flex-grow: 1;
     }
     
     .app-title {
-        font-family: 'Space Grotesk', sans-serif;
-        font-size: 2.5rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #4caf50 0%, #81c784 50%, #66bb6a 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        font-size: 2rem;
+        font-weight: 800;
+        color: #2e7d32;
         margin: 0;
-        letter-spacing: 2px;
-        text-shadow: 0 0 30px rgba(76, 175, 80, 0.5);
+        letter-spacing: -0.5px;
     }
     
     .app-tagline {
-        color: #a5d6a7;
-        font-size: 1.1rem;
-        font-weight: 400;
-        margin-top: 0.5rem;
-        letter-spacing: 0.5px;
-        font-style: italic;
+        color: #66bb6a;
+        font-size: 0.95rem;
+        font-weight: 500;
+        margin: 0.25rem 0 0 0;
     }
     
-    /* Logo styling in header */
-    .modern-header img {
-        filter: drop-shadow(0 4px 20px rgba(76, 175, 80, 0.4));
-        animation: float 3s ease-in-out infinite;
-        width: 100% !important;
-        max-width: 180px !important;
-        height: auto !important;
-        object-fit: contain !important;
+    /* Sidebar Styling */
+    [data-testid="stSidebar"] {
+        background: white !important;
+        border-right: 1px solid #e8f5e9 !important;
     }
     
-    /* Streamlit image container */
-    [data-testid="stImage"] {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    [data-testid="stSidebar"] > div:first-child {
+        background: white !important;
     }
     
-    [data-testid="stImage"] img {
-        width: 100% !important;
-        height: auto !important;
-        max-width: none !important;
+    section[data-testid="stSidebar"] > div {
+        background: white !important;
     }
     
-    @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-    }
-    
-    /* Responsive header */
-    @media (max-width: 768px) {
-        .modern-header {
-            flex-direction: column;
-            text-align: center;
-        }
-        
-        .app-title {
-            font-size: 1.8rem !important;
-        }
-        
-        .modern-header img {
-            max-width: 150px !important;
-        }
-    }
-    
-    /* Chat Message Styling */
-    .stChatMessage {
-        background: rgba(30, 40, 60, 0.6) !important;
-        border-radius: 16px !important;
-        border: 1px solid rgba(76, 175, 80, 0.1) !important;
-        backdrop-filter: blur(10px);
-        margin-bottom: 1rem !important;
-        padding: 1.5rem !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    /* Sidebar Logo */
+    [data-testid="stSidebar"] img {
         transition: all 0.3s ease;
+        width: 100% !important;
+        max-width: 120px !important;
+        height: auto !important;
+        margin: 0 auto;
+        display: block;
     }
     
-    .stChatMessage:hover {
-        border-color: rgba(76, 175, 80, 0.3) !important;
-        box-shadow: 0 8px 25px rgba(76, 175, 80, 0.2);
-        transform: translateY(-2px);
+    [data-testid="stSidebar"] img:hover {
+        transform: scale(1.03);
     }
     
-    /* User message */
+    /* Sidebar Headers */
+    [data-testid="stSidebar"] h3 {
+        color: #1b5e20 !important;
+        font-size: 0.85rem !important;
+        font-weight: 700 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top: 2rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    /* Sidebar Buttons */
+    [data-testid="stSidebar"] .stButton > button {
+        width: 100%;
+        background: #f1f8f4 !important;
+        border: 1px solid #e8f5e9 !important;
+        color: #2e7d32 !important;
+        padding: 0.85rem 1rem !important;
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+        text-align: left !important;
+        border-radius: 10px !important;
+        transition: all 0.2s ease !important;
+        height: 48px !important;
+        min-height: 48px !important;
+        max-height: 48px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        margin-bottom: 0.5rem !important;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+    }
+    
+    [data-testid="stSidebar"] .stButton > button:hover {
+        background: #4caf50 !important;
+        border-color: #4caf50 !important;
+        color: white !important;
+        transform: translateX(3px);
+        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25) !important;
+    }
+    
+    [data-testid="stSidebar"] .stButton > button:active {
+        transform: translateX(1px);
+    }
+    
+    /* Chat Messages */
+    .stChatMessage {
+        background: white !important;
+        border-radius: 12px !important;
+        border: 1px solid #e8f5e9 !important;
+        margin-bottom: 1rem !important;
+        padding: 1.25rem !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02) !important;
+    }
+    
+    /* User Message */
     [data-testid="user-message"] {
-        background: linear-gradient(135deg, rgba(46, 125, 50, 0.2) 0%, rgba(76, 175, 80, 0.1) 100%) !important;
+        background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%) !important;
         border-left: 3px solid #4caf50 !important;
     }
     
-    /* Assistant message */
+    /* Assistant Message */
     [data-testid="assistant-message"] {
-        background: linear-gradient(135deg, rgba(30, 40, 60, 0.8) 0%, rgba(20, 30, 50, 0.6) 100%) !important;
-        border-left: 3px solid #66bb6a !important;
+        background: white !important;
+        border-left: 3px solid #81c784 !important;
     }
     
-    /* Chat input */
+    /* Chat Input */
     .stChatInputContainer {
-        background: rgba(30, 40, 60, 0.8) !important;
-        border-radius: 16px !important;
-        border: 2px solid rgba(76, 175, 80, 0.3) !important;
-        backdrop-filter: blur(10px);
+        background: white !important;
+        border: 2px solid #e8f5e9 !important;
+        border-radius: 12px !important;
         padding: 0.5rem !important;
-        box-shadow: 0 4px 20px rgba(76, 175, 80, 0.2);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
     }
     
     .stChatInputContainer:focus-within {
         border-color: #4caf50 !important;
-        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1), 0 4px 20px rgba(76, 175, 80, 0.3);
+        box-shadow: 0 4px 16px rgba(76, 175, 80, 0.15) !important;
     }
     
-    /* Buttons */
+    /* Main Buttons */
     .stButton > button {
-        background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+        background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
         color: white;
         border: none;
-        border-radius: 12px;
-        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        padding: 0.75rem 1.75rem;
         font-weight: 600;
         font-size: 0.95rem;
-        letter-spacing: 0.5px;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-        text-transform: uppercase;
+        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25);
     }
     
     .stButton > button:hover {
-        background: linear-gradient(135deg, #388e3c 0%, #2e7d32 100%);
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.35);
     }
     
     .stButton > button:active {
         transform: translateY(0);
     }
     
-    /* Sidebar */
-    [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #1a1f3a 0%, #0f1419 100%) !important;
-    }
-    
-    [data-testid="stSidebar"] > div:first-child {
-        background: linear-gradient(180deg, #1a1f3a 0%, #0f1419 100%) !important;
-    }
-    
-    [data-testid="stSidebarNav"] {
-        background: transparent !important;
-    }
-    
-    section[data-testid="stSidebar"] > div {
-        background: linear-gradient(180deg, #1a1f3a 0%, #0f1419 100%) !important;
-    }
-    
-    [data-testid="stSidebar"] img {
-        transition: all 0.3s ease;
-        width: 100% !important;
-        max-width: 140px !important;
-        height: auto !important;
-        margin: 0 auto;
-        display: block;
-        filter: drop-shadow(0 4px 15px rgba(76, 175, 80, 0.3));
-    }
-    
-    [data-testid="stSidebar"] img:hover {
-        transform: scale(1.05);
-        filter: drop-shadow(0 6px 25px rgba(76, 175, 80, 0.5));
-    }
-    
-    [data-testid="stSidebar"] .stButton > button {
-        width: 100%;
-        margin-bottom: 0.75rem;
-        background: rgba(76, 175, 80, 0.1) !important;
-        border: 1px solid rgba(76, 175, 80, 0.2) !important;
-        color: #81c784 !important;
-        padding: 1rem 1.2rem !important;
-        font-size: 0.85rem !important;
-        font-weight: 500 !important;
-        text-align: left !important;
-        border-radius: 12px !important;
-        transition: all 0.3s ease !important;
-        height: 55px !important;
-        min-height: 55px !important;
-        max-height: 55px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-    }
-    
-    [data-testid="stSidebar"] .stButton > button:hover {
-        background: rgba(76, 175, 80, 0.2) !important;
-        border-color: #4caf50 !important;
-        transform: translateX(5px);
-    }
-    
-    [data-testid="stSidebar"] h2 {
-        color: #4caf50 !important;
-    }
-    
-    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
-        color: #a5d6a7 !important;
-    }
-    
-    /* Disease Detection Section */
-    .disease-section {
-        background: linear-gradient(135deg, rgba(30, 60, 80, 0.4) 0%, rgba(20, 40, 60, 0.4) 100%);
-        border-radius: 20px;
-        padding: 2rem;
-        border: 2px solid rgba(76, 175, 80, 0.2);
-        backdrop-filter: blur(10px);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        margin: 1.5rem 0;
-    }
-    
     /* File Uploader */
     [data-testid="stFileUploader"] {
-        background: rgba(30, 40, 60, 0.6);
-        border-radius: 16px;
-        border: 2px dashed rgba(76, 175, 80, 0.3);
+        background: white;
+        border: 2px dashed #c8e6c9;
+        border-radius: 12px;
         padding: 2rem;
         transition: all 0.3s ease;
     }
     
     [data-testid="stFileUploader"]:hover {
         border-color: #4caf50;
-        background: rgba(30, 40, 60, 0.8);
+        background: #f1f8f4;
     }
     
     /* Metrics */
     [data-testid="stMetric"] {
-        background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(46, 125, 50, 0.1) 100%);
-        border-radius: 12px;
+        background: white;
+        border-radius: 10px;
         padding: 1rem;
-        border: 1px solid rgba(76, 175, 80, 0.2);
+        border: 1px solid #e8f5e9;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
     }
     
     [data-testid="stMetricLabel"] {
-        color: #a5d6a7;
+        color: #66bb6a;
         font-weight: 600;
+        font-size: 0.85rem;
     }
     
     [data-testid="stMetricValue"] {
-        color: #4caf50;
-        font-size: 2rem;
+        color: #2e7d32;
+        font-size: 1.75rem;
         font-weight: 700;
     }
     
     /* Tabs */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        background: rgba(30, 40, 60, 0.4);
-        border-radius: 12px;
-        padding: 0.5rem;
+        gap: 0.5rem;
+        background: #f1f8f4;
+        border-radius: 10px;
+        padding: 0.25rem;
     }
     
     .stTabs [data-baseweb="tab"] {
         background: transparent;
         border-radius: 8px;
-        color: #a5d6a7;
+        color: #66bb6a;
         font-weight: 600;
-        padding: 0.75rem 1.5rem;
+        padding: 0.6rem 1.25rem;
+        font-size: 0.9rem;
     }
     
     .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
-        color: white;
+        background: white;
+        color: #2e7d32;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Disease Detection Section */
+    .disease-section {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        border: 1px solid #e8f5e9;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        margin: 1.5rem 0;
+    }
+    
+    /* Success/Info Boxes */
+    .stSuccess, .stInfo {
+        background: white;
+        border-radius: 10px;
+        border-left: 4px solid #4caf50;
+        padding: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
     }
     
     /* Divider */
     hr {
         border: none;
         height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.3), transparent);
+        background: #e8f5e9;
         margin: 2rem 0;
     }
     
-    /* Text colors */
+    /* Text Colors */
     p, li, span {
-        color: #e0e0e0;
+        color: #37474f;
     }
     
     h1, h2, h3, h4, h5, h6 {
-        color: #4caf50;
-        font-family: 'Space Grotesk', sans-serif;
-    }
-    
-    /* Success/Info/Warning boxes */
-    .stSuccess, .stInfo, .stWarning {
-        background: rgba(30, 40, 60, 0.6);
-        border-radius: 12px;
-        border-left: 4px solid #4caf50;
-        backdrop-filter: blur(10px);
+        color: #1b5e20;
     }
     
     /* Spinner */
@@ -381,65 +305,91 @@ st.markdown("""
     }
     
     /* Footer */
-    .modern-footer {
+    .pro-footer {
         text-align: center;
         padding: 2rem;
-        background: rgba(30, 40, 60, 0.4);
-        border-radius: 16px;
-        margin-top: 2rem;
-        border: 1px solid rgba(76, 175, 80, 0.1);
+        background: white;
+        border-radius: 12px;
+        margin-top: 3rem;
+        border: 1px solid #e8f5e9;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
     }
     
-    .modern-footer p {
+    .pro-footer p {
         margin: 0.5rem 0;
-        color: #a5d6a7;
+        color: #66bb6a;
+        font-size: 0.9rem;
+    }
+    
+    .pro-footer strong {
+        color: #2e7d32;
+        font-weight: 700;
     }
     
     /* Scrollbar */
     ::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
+        width: 8px;
+        height: 8px;
     }
     
     ::-webkit-scrollbar-track {
-        background: rgba(30, 40, 60, 0.4);
-        border-radius: 10px;
+        background: #f1f8f4;
     }
     
     ::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, #4caf50 0%, #388e3c 100%);
+        background: #c8e6c9;
         border-radius: 10px;
     }
     
     ::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(180deg, #66bb6a 0%, #4caf50 100%);
+        background: #4caf50;
     }
     
-    /* Image styling */
+    /* Image Styling */
     img {
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
     }
     
-    /* Feature cards in sidebar */
-    .feature-card {
-        background: rgba(76, 175, 80, 0.1);
-        border-radius: 12px;
-        padding: 1rem;
-        margin: 0.5rem 0;
-        border: 1px solid rgba(76, 175, 80, 0.2);
-        transition: all 0.3s ease;
+    /* Subheader Styling */
+    .stSubheader {
+        color: #2e7d32 !important;
+        font-weight: 700 !important;
     }
     
-    .feature-card:hover {
-        background: rgba(76, 175, 80, 0.2);
-        transform: translateX(5px);
+    /* Clear Chat Button Special Style */
+    [data-testid="stSidebar"] .stButton:last-child > button {
+        background: #ffebee !important;
+        border-color: #ffcdd2 !important;
+        color: #c62828 !important;
+        margin-top: 1rem;
+    }
+    
+    [data-testid="stSidebar"] .stButton:last-child > button:hover {
+        background: #ef5350 !important;
+        border-color: #ef5350 !important;
+        color: white !important;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .block-container {
+            padding: 1rem !important;
+        }
+        
+        .app-title {
+            font-size: 1.5rem;
+        }
+        
+        .pro-header {
+            flex-direction: column;
+            text-align: center;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Display modern header with logo
-header_col1, header_col2 = st.columns([1, 4])
+# Display professional header
+header_col1, header_col2 = st.columns([1, 5])
 
 with header_col1:
     try:
@@ -449,30 +399,13 @@ with header_col1:
 
 with header_col2:
     st.markdown("""
-    <div style="padding-left: 2rem;">
-        <h1 style="
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 3rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #4caf50 0%, #81c784 50%, #66bb6a 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin: 0;
-            letter-spacing: 2px;
-        ">KRISHISAATHI AI</h1>
-        <p style="
-            color: #a5d6a7;
-            font-size: 1.2rem;
-            font-weight: 400;
-            margin-top: 0.5rem;
-            letter-spacing: 0.5px;
-            font-style: italic;
-        ">Connecting Farmers, Empowering Growth</p>
+    <div style="display: flex; flex-direction: column; justify-content: center; height: 100%;">
+        <h1 class="app-title">KRISHISAATHI AI</h1>
+        <p class="app-tagline">Connecting Farmers, Empowering Growth</p>
     </div>
     """, unsafe_allow_html=True)
 
-st.markdown('<hr style="margin: 2rem 0; border: none; height: 1px; background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.3), transparent);">', unsafe_allow_html=True)
+st.markdown('<hr>', unsafe_allow_html=True)
 
 # ---------------------- INITIALIZE SESSION ----------------------
 if "messages" not in st.session_state:
@@ -519,21 +452,6 @@ def ai_predict_disease(image_file):
             "symptoms": "Circular brown spots with concentric rings on older leaves",
             "treatment": "Apply fungicide (Mancozeb), remove infected leaves",
             "prevention": "Crop rotation, proper spacing, mulching"
-        },
-        "Apple - Cedar Apple Rust": {
-            "symptoms": "Orange spots on leaves, premature leaf drop",
-            "treatment": "Apply fungicide in spring, remove infected leaves",
-            "prevention": "Remove nearby cedar trees, use resistant varieties"
-        },
-        "Rice - Brown Spot": {
-            "symptoms": "Oval brown spots on leaves and grains",
-            "treatment": "Apply Tricyclazole or Mancozeb, ensure proper nutrition",
-            "prevention": "Use disease-free seeds, balanced fertilizer"
-        },
-        "Wheat - Leaf Rust": {
-            "symptoms": "Orange-red pustules on leaves",
-            "treatment": "Apply Propiconazole fungicide at first sign",
-            "prevention": "Use resistant varieties, early sowing"
         },
         "Healthy Crop": {
             "symptoms": "No disease detected",
@@ -631,19 +549,10 @@ def format_price_response(prices, city_name=None):
         response += "\n"
     
     response += "\n📊 **Legend:** ↑ Rising | → Stable | ↓ Falling\n"
-    response += "📅 **Updated:** October 18, 2025\n"
+    response += "📅 **Updated:** October 19, 2025\n"
     response += "💡 **Tip:** Prices are approximate retail rates."
     
     return response
-
-# ---------------------- FARMING KNOWLEDGE BASE ----------------------
-farming_tips = {
-    "crops": {
-        "wheat": "🌾 Wheat grows best in cool, moist climates (10–25°C). Requires well-drained loamy soil.",
-        "rice": "🍚 Rice needs flooded fields and warm temperatures (20–35°C). Prefers clayey soil.",
-        "tomato": "🍅 Tomatoes need 6–8 hours of sunlight daily. Grow best in warm weather (20–30°C).",
-    }
-}
 
 # ---------------------- CHATBOT RESPONSE LOGIC ----------------------
 def get_bot_response(user_message):
@@ -699,7 +608,7 @@ I'll analyze it and provide:
             return f"❌ Couldn't fetch weather for '{city}'."
     
     # Greeting
-    if any(word in message_lower for word in ["hello", "hi", "hey"]):
+    if any(word in message_lower for word in ["hello", "hi", "hey", "namaste"]):
         return """🙏 **Namaste! Welcome to Krishisaathi AI!**
 
 I can help you with:
@@ -725,36 +634,15 @@ Ask me about:
 # ---------------------- SIDEBAR ----------------------
 with st.sidebar:
     # Logo in sidebar
-    st.markdown('<div style="text-align: center; margin-bottom: 1.5rem; margin-top: 1rem;">', unsafe_allow_html=True)
+    st.markdown('<div style="text-align: center; margin: 1.5rem 0 2rem 0;">', unsafe_allow_html=True)
     try:
         st.image("logo.png", use_container_width=True)
     except FileNotFoundError:
         st.markdown('<div style="font-size: 3rem;">🌾</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
     
-    st.markdown("## ℹ️ About Krishisaathi")
-    st.markdown("""
-    <div class="feature-card">
-        <strong>🔬 AI Disease Detection</strong><br>
-        Upload crop photos for instant diagnosis
-    </div>
-    <div class="feature-card">
-        <strong>🌤️ Weather Updates</strong><br>
-        Real-time weather information
-    </div>
-    <div class="feature-card">
-        <strong>💰 Market Prices</strong><br>
-        100+ cities coverage
-    </div>
-    <div class="feature-card">
-        <strong>🌾 Farming Tips</strong><br>
-        Expert agricultural advice
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.divider()
-    
     st.markdown("### 🎯 Quick Actions")
+    
     if st.button("📷 Disease Detection"):
         user_msg = "Check crop disease"
         st.session_state.messages.append({"role": "user", "content": user_msg})
@@ -771,6 +659,13 @@ with st.sidebar:
         
     if st.button("🌤️ Mumbai Weather"):
         user_msg = "Weather in Mumbai"
+        st.session_state.messages.append({"role": "user", "content": user_msg})
+        bot_response = get_bot_response(user_msg)
+        st.session_state.messages.append({"role": "assistant", "content": bot_response})
+        st.rerun()
+        
+    if st.button("🌾 Crop Tips"):
+        user_msg = "Tell me about wheat"
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg)
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
@@ -865,9 +760,9 @@ if prompt := st.chat_input("Ask about farming..."):
 
 # ---------------------- FOOTER ----------------------
 st.markdown("""
-<div class="modern-footer">
+<div class="pro-footer">
     <p><strong>🌾 Krishisaathi AI</strong> - Empowering Farmers with Technology</p>
     <p>💡 AI Disease Detection | Weekly Updated Prices | Real-time Weather</p>
-    <p style="font-size: 0.85em; color: #66bb6a;">© 2025 Krishisaathi AI. All rights reserved.</p>
+    <p style="font-size: 0.85em;">© 2025 Krishisaathi AI. All rights reserved.</p>
 </div>
 """, unsafe_allow_html=True)
