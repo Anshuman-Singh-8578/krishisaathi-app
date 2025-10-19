@@ -807,18 +807,19 @@ Ask me about:
 with st.sidebar:
     # App Name Header
     st.markdown("""
-    <div style="text-align: center; padding: 1.5rem 0 2rem 0; border-bottom: 1px solid rgba(76, 175, 80, 0.2);">
+    <div style="padding: 1.5rem 0 1.5rem 0; border-bottom: 1px solid rgba(76, 175, 80, 0.2);">
         <h2 style="
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 800;
             color: #66bb6a;
             margin: 0;
             letter-spacing: 0.5px;
+            line-height: 1.2;
         ">🌾 KRISHISAATHI AI</h2>
         <p style="
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: #81c784;
-            margin: 0.5rem 0 0 0;
+            margin: 0.4rem 0 0 0;
             font-weight: 500;
         ">Smart Farming Assistant</p>
     </div>
