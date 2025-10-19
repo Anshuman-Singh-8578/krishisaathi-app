@@ -385,6 +385,178 @@ st.markdown("""
             text-align: center;
         }
     }
+    
+    /* Dark Theme Support */
+    @media (prefers-color-scheme: dark) {
+        .main {
+            background: #0a0e27 !important;
+        }
+        
+        .block-container {
+            background: transparent !important;
+        }
+        
+        /* Sidebar Dark */
+        [data-testid="stSidebar"] {
+            background: #1a1f3a !important;
+        }
+        
+        [data-testid="stSidebar"] > div:first-child {
+            background: #1a1f3a !important;
+        }
+        
+        section[data-testid="stSidebar"] > div {
+            background: #1a1f3a !important;
+        }
+        
+        [data-testid="stSidebar"] h3 {
+            color: #66bb6a !important;
+        }
+        
+        /* Sidebar Buttons Dark */
+        [data-testid="stSidebar"] .stButton > button {
+            background: rgba(76, 175, 80, 0.15) !important;
+            border: 1px solid rgba(76, 175, 80, 0.3) !important;
+            color: #81c784 !important;
+        }
+        
+        [data-testid="stSidebar"] .stButton > button:hover {
+            background: #4caf50 !important;
+            border-color: #4caf50 !important;
+            color: white !important;
+        }
+        
+        /* Header Dark */
+        .pro-header {
+            background: #1e2533 !important;
+            border-color: rgba(76, 175, 80, 0.2) !important;
+        }
+        
+        .app-title {
+            color: #66bb6a !important;
+        }
+        
+        .app-tagline {
+            color: #81c784 !important;
+        }
+        
+        /* Chat Messages Dark */
+        .stChatMessage {
+            background: #1e2533 !important;
+            border-color: rgba(76, 175, 80, 0.2) !important;
+        }
+        
+        [data-testid="user-message"] {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(76, 175, 80, 0.1) 100%) !important;
+            border-left: 3px solid #4caf50 !important;
+        }
+        
+        [data-testid="assistant-message"] {
+            background: #1e2533 !important;
+            border-left: 3px solid #81c784 !important;
+        }
+        
+        /* Chat Input Dark */
+        .stChatInputContainer {
+            background: #1e2533 !important;
+            border: 2px solid rgba(76, 175, 80, 0.3) !important;
+        }
+        
+        .stChatInputContainer:focus-within {
+            border-color: #4caf50 !important;
+        }
+        
+        /* Disease Section Dark */
+        .disease-section {
+            background: #1e2533 !important;
+            border-color: rgba(76, 175, 80, 0.2) !important;
+        }
+        
+        /* Footer Dark */
+        .pro-footer {
+            background: #1e2533 !important;
+            border-color: rgba(76, 175, 80, 0.2) !important;
+        }
+        
+        .pro-footer p {
+            color: #81c784 !important;
+        }
+        
+        .pro-footer strong {
+            color: #66bb6a !important;
+        }
+        
+        /* Metrics Dark */
+        [data-testid="stMetric"] {
+            background: #1e2533 !important;
+            border-color: rgba(76, 175, 80, 0.2) !important;
+        }
+        
+        /* File Uploader Dark */
+        [data-testid="stFileUploader"] {
+            background: #1e2533 !important;
+            border-color: rgba(76, 175, 80, 0.3) !important;
+        }
+        
+        [data-testid="stFileUploader"]:hover {
+            border-color: #4caf50 !important;
+            background: rgba(76, 175, 80, 0.1) !important;
+        }
+        
+        /* Tabs Dark */
+        .stTabs [data-baseweb="tab-list"] {
+            background: rgba(76, 175, 80, 0.1) !important;
+        }
+        
+        .stTabs [aria-selected="true"] {
+            background: rgba(76, 175, 80, 0.2) !important;
+            color: #66bb6a !important;
+        }
+        
+        .stTabs [data-baseweb="tab"] {
+            color: #81c784 !important;
+        }
+        
+        /* Text Colors Dark */
+        p, li, span {
+            color: #e0e0e0 !important;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            color: #66bb6a !important;
+        }
+        
+        /* Divider Dark */
+        hr {
+            background: rgba(76, 175, 80, 0.2) !important;
+        }
+        
+        /* Scrollbar Dark */
+        ::-webkit-scrollbar-track {
+            background: #1a1f3a !important;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(76, 175, 80, 0.3) !important;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4caf50 !important;
+        }
+        
+        /* Clear Button Dark */
+        [data-testid="stSidebar"] .stButton:last-child > button {
+            background: rgba(239, 83, 80, 0.15) !important;
+            border-color: rgba(239, 83, 80, 0.3) !important;
+            color: #ef5350 !important;
+        }
+        
+        [data-testid="stSidebar"] .stButton:last-child > button:hover {
+            background: #ef5350 !important;
+            border-color: #ef5350 !important;
+            color: white !important;
+        }
+    }
 </style>
 """, unsafe_allow_html=True)
 
