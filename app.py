@@ -92,7 +92,7 @@ st.markdown("""
     [data-testid="stSidebar"] img {
         transition: all 0.3s ease;
         width: 100% !important;
-        max-width: 120px !important;
+        max-width: 160px !important;
         height: auto !important;
         margin: 0 auto;
         display: block;
