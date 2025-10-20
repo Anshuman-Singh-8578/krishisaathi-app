@@ -68,6 +68,15 @@ st.markdown("""
         background: #f8faf9 !important;
     }
     
+    /* Force light theme */
+    [data-testid="stAppViewContainer"] {
+        background: #f8faf9 !important;
+    }
+    
+    [data-testid="stHeader"] {
+        background: transparent !important;
+    }
+    
     /* Professional Header */
     .pro-header {
         background: white;
