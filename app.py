@@ -50,6 +50,11 @@ st.markdown("""
         display: none;
     }
     
+    /* Show sidebar toggle button */
+    button[data-testid="baseButton-header"] {
+        display: block !important;
+    }
+    
     /* Main Background */
     .main {
         background: #f8faf9;
@@ -110,6 +115,23 @@ st.markdown("""
     
     section[data-testid="stSidebar"] > div {
         background: white !important;
+    }
+    
+    /* Sidebar Collapse Button - Make it visible */
+    [data-testid="collapsedControl"] {
+        background: #4caf50 !important;
+        color: white !important;
+        border-radius: 0 8px 8px 0 !important;
+        padding: 0.5rem !important;
+    }
+    
+    button[kind="header"] {
+        display: block !important;
+    }
+    
+    [data-testid="baseButton-header"] {
+        display: block !important;
+        background: transparent !important;
     }
     
     /* Sidebar Logo */
