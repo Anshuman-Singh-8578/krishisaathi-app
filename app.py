@@ -230,6 +230,33 @@ st.markdown("""
         box-shadow: 0 4px 16px rgba(76, 175, 80, 0.15) !important;
     }
     
+    .stChatInputContainer textarea {
+        background: white !important;
+        color: #37474f !important;
+    }
+    
+    .stChatInputContainer textarea::placeholder {
+        color: #81c784 !important;
+    }
+    
+    /* Chat input wrapper */
+    [data-testid="stChatInput"] {
+        background: white !important;
+    }
+    
+    [data-testid="stChatInput"] > div {
+        background: white !important;
+    }
+    
+    /* Bottom area styling */
+    .stBottom {
+        background: #f8faf9 !important;
+    }
+    
+    [data-testid="stBottom"] {
+        background: #f8faf9 !important;
+    }
+    
     /* Main Buttons */
     .stButton > button {
         background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
