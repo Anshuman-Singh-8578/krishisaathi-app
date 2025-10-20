@@ -53,14 +53,19 @@ st.markdown("""
     
     /* Main Background */
     .main {
-        background: #f8faf9;
+        background: #f8faf9 !important;
         padding: 0;
+    }
+    
+    .stApp {
+        background: #f8faf9 !important;
     }
     
     .block-container {
         padding: 2rem 3rem !important;
         max-width: 1400px !important;
         margin: 0 auto;
+        background: #f8faf9 !important;
     }
     
     /* Professional Header */
@@ -180,6 +185,14 @@ st.markdown("""
         margin-bottom: 1rem !important;
         padding: 1.25rem !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02) !important;
+    }
+    
+    .stChatMessage p {
+        color: #37474f !important;
+    }
+    
+    .stChatMessage strong {
+        color: #1b5e20 !important;
     }
     
     /* User Message */
