@@ -6,9 +6,9 @@ import re
 
 # ---------------------- STREAMLIT CONFIG ----------------------
 st.set_page_config(
-    page_title="🌾 Krishisaathi AI", 
-    page_icon="🌱", 
-    layout="wide",
+    page_title="🌾 Krishisaathi AI",
+    page_icon="🌱",
+    layout="wide",                      # <-- changed to wide
     initial_sidebar_state="expanded"
 )
 
@@ -16,56 +16,54 @@ st.set_page_config(
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-    
+
     /* Global Styles */
     * {
         font-family: 'Plus Jakarta Sans', sans-serif;
     }
-    
-    /* Hide Streamlit branding */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    
-    /* Hide Streamlit top-right menu */
-    [data-testid="stToolbar"] {
-        display: none;
-    }
-    
-    /* Hide "Manage app" button */
-    [data-testid="manage-app-button"] {
-        display: none;
-    }
-    
-    /* Hide Deploy button and other header buttons */
-    .viewerBadge_container__r5tak {
-        display: none;
-    }
-    
-    .stDeployButton {
-        display: none;
-    }
-    
-    /* Make sure sidebar toggle is visible */
-    [data-testid="collapsedControl"] {
-        display: block !important;
-    }
-    
+
+    /* Hide Streamlit branding (ok to keep) */
+    #MainMenu { visibility: hidden; }
+    footer { visibility: hidden; }
+
+    /* Ensure sidebar is visible and pinned */
     section[data-testid="stSidebar"] {
         display: block !important;
+        width: 280px !important;
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        height: 100vh !important;
+        overflow: auto !important;
+        z-index: 9999 !important;
+        background: white !important;
+        border-right: 1px solid #e8f5e9 !important;
+        padding: 1rem !important;
     }
-    
-    /* Main Background */
-    .main {
-        background: #f8faf9;
-        padding: 0;
+
+    /* Make main content account for sidebar width */
+    .reportview-container .main, .main, .block-container {
+        margin-left: 300px !important; /* leave space for sidebar */
+        max-width: calc(100% - 300px) !important;
     }
-    
+
+    /* Keep collapsed control visible (if present) */
+    [data-testid="collapsedControl"] {
+        display: block !important;
+        background: #4caf50 !important;
+        color: white !important;
+        border-radius: 0 8px 8px 0 !important;
+        padding: 0.5rem !important;
+        z-index: 10000 !important;
+    }
+
+    /* Header / block container adjustments */
     .block-container {
         padding: 2rem 3rem !important;
         max-width: 1400px !important;
         margin: 0 auto;
     }
-    
+
     /* Professional Header */
     .pro-header {
         background: white;
@@ -78,15 +76,10 @@ st.markdown("""
         align-items: center;
         gap: 1.5rem;
     }
-    
-    .header-logo {
-        flex-shrink: 0;
-    }
-    
-    .header-content {
-        flex-grow: 1;
-    }
-    
+
+    .header-logo { flex-shrink: 0; }
+    .header-content { flex-grow: 1; }
+
     .app-title {
         font-size: 2rem;
         font-weight: 800;
@@ -94,71 +87,19 @@ st.markdown("""
         margin: 0;
         letter-spacing: -0.5px;
     }
-    
+
     .app-tagline {
         color: #66bb6a;
         font-size: 0.95rem;
         font-weight: 500;
         margin: 0.25rem 0 0 0;
     }
-    
-    /* Sidebar Styling */
-    [data-testid="stSidebar"] {
-        background: white !important;
-        border-right: 1px solid #e8f5e9 !important;
-    }
-    
-    [data-testid="stSidebar"] > div:first-child {
-        background: white !important;
-    }
-    
-    section[data-testid="stSidebar"] > div {
-        background: white !important;
-    }
-    
-    /* Sidebar Collapse Button - Make it visible */
-    [data-testid="collapsedControl"] {
-        background: #4caf50 !important;
-        color: white !important;
-        border-radius: 0 8px 8px 0 !important;
-        padding: 0.5rem !important;
-    }
-    
-    button[kind="header"] {
-        display: block !important;
-    }
-    
-    [data-testid="baseButton-header"] {
-        display: block !important;
-        background: transparent !important;
-    }
-    
-    /* Sidebar Logo */
-    [data-testid="stSidebar"] img {
-        transition: all 0.3s ease;
-        width: 100% !important;
-        max-width: 160px !important;
-        height: auto !important;
-        margin: 0 auto;
-        display: block;
-    }
-    
-    [data-testid="stSidebar"] img:hover {
-        transform: scale(1.03);
-    }
-    
-    /* Sidebar Headers */
-    [data-testid="stSidebar"] h3 {
+
+    /* Sidebar internal styling */
+    [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
         color: #1b5e20 !important;
-        font-size: 0.85rem !important;
-        font-weight: 700 !important;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-top: 2rem !important;
-        margin-bottom: 1rem !important;
     }
-    
-    /* Sidebar Buttons */
+
     [data-testid="stSidebar"] .stButton > button {
         width: 100%;
         background: #f1f8f4 !important;
@@ -171,28 +112,16 @@ st.markdown("""
         border-radius: 10px !important;
         transition: all 0.2s ease !important;
         height: 48px !important;
-        min-height: 48px !important;
-        max-height: 48px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
         margin-bottom: 0.5rem !important;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
     }
-    
+
     [data-testid="stSidebar"] .stButton > button:hover {
         background: #4caf50 !important;
         border-color: #4caf50 !important;
         color: white !important;
-        transform: translateX(3px);
-        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25) !important;
     }
-    
-    [data-testid="stSidebar"] .stButton > button:active {
-        transform: translateX(1px);
-    }
-    
-    /* Chat Messages */
+
+    /* Chat Messages and chat input */
     .stChatMessage {
         background: white !important;
         border-radius: 12px !important;
@@ -201,20 +130,7 @@ st.markdown("""
         padding: 1.25rem !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02) !important;
     }
-    
-    /* User Message */
-    [data-testid="user-message"] {
-        background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%) !important;
-        border-left: 3px solid #4caf50 !important;
-    }
-    
-    /* Assistant Message */
-    [data-testid="assistant-message"] {
-        background: white !important;
-        border-left: 3px solid #81c784 !important;
-    }
-    
-    /* Chat Input */
+
     .stChatInputContainer {
         background: white !important;
         border: 2px solid #e8f5e9 !important;
@@ -222,133 +138,7 @@ st.markdown("""
         padding: 0.5rem !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
     }
-    
-    .stChatInputContainer:focus-within {
-        border-color: #4caf50 !important;
-        box-shadow: 0 4px 16px rgba(76, 175, 80, 0.15) !important;
-    }
-    
-    /* Main Buttons */
-    .stButton > button {
-        background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        padding: 0.75rem 1.75rem;
-        font-weight: 600;
-        font-size: 0.95rem;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25);
-    }
-    
-    .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.35);
-    }
-    
-    .stButton > button:active {
-        transform: translateY(0);
-    }
-    
-    /* File Uploader */
-    [data-testid="stFileUploader"] {
-        background: white;
-        border: 2px dashed #c8e6c9;
-        border-radius: 12px;
-        padding: 2rem;
-        transition: all 0.3s ease;
-    }
-    
-    [data-testid="stFileUploader"]:hover {
-        border-color: #4caf50;
-        background: #f1f8f4;
-    }
-    
-    /* Metrics */
-    [data-testid="stMetric"] {
-        background: white;
-        border-radius: 10px;
-        padding: 1rem;
-        border: 1px solid #e8f5e9;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-    }
-    
-    [data-testid="stMetricLabel"] {
-        color: #66bb6a;
-        font-weight: 600;
-        font-size: 0.85rem;
-    }
-    
-    [data-testid="stMetricValue"] {
-        color: #2e7d32;
-        font-size: 1.75rem;
-        font-weight: 700;
-    }
-    
-    /* Tabs */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 0.5rem;
-        background: #f1f8f4;
-        border-radius: 10px;
-        padding: 0.25rem;
-    }
-    
-    .stTabs [data-baseweb="tab"] {
-        background: transparent;
-        border-radius: 8px;
-        color: #66bb6a;
-        font-weight: 600;
-        padding: 0.6rem 1.25rem;
-        font-size: 0.9rem;
-    }
-    
-    .stTabs [aria-selected="true"] {
-        background: white;
-        color: #2e7d32;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-    
-    /* Disease Detection Section */
-    .disease-section {
-        background: white;
-        border-radius: 12px;
-        padding: 2rem;
-        border: 1px solid #e8f5e9;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        margin: 1.5rem 0;
-    }
-    
-    /* Success/Info Boxes */
-    .stSuccess, .stInfo {
-        background: white;
-        border-radius: 10px;
-        border-left: 4px solid #4caf50;
-        padding: 1rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-    }
-    
-    /* Divider */
-    hr {
-        border: none;
-        height: 1px;
-        background: #e8f5e9;
-        margin: 2rem 0;
-    }
-    
-    /* Text Colors */
-    p, li, span {
-        color: #37474f;
-    }
-    
-    h1, h2, h3, h4, h5, h6 {
-        color: #1b5e20;
-    }
-    
-    /* Spinner */
-    .stSpinner > div {
-        border-top-color: #4caf50 !important;
-    }
-    
+
     /* Footer */
     .pro-footer {
         text-align: center;
@@ -359,253 +149,16 @@ st.markdown("""
         border: 1px solid #e8f5e9;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
     }
-    
-    .pro-footer p {
-        margin: 0.5rem 0;
-        color: #66bb6a;
-        font-size: 0.9rem;
-    }
-    
-    .pro-footer strong {
-        color: #2e7d32;
-        font-weight: 700;
-    }
-    
-    /* Scrollbar */
-    ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
-    
-    ::-webkit-scrollbar-track {
-        background: #f1f8f4;
-    }
-    
-    ::-webkit-scrollbar-thumb {
-        background: #c8e6c9;
-        border-radius: 10px;
-    }
-    
-    ::-webkit-scrollbar-thumb:hover {
-        background: #4caf50;
-    }
-    
-    /* Image Styling */
-    img {
-        border-radius: 10px;
-    }
-    
-    /* Subheader Styling */
-    .stSubheader {
-        color: #2e7d32 !important;
-        font-weight: 700 !important;
-    }
-    
-    /* Clear Chat Button Special Style */
-    [data-testid="stSidebar"] .stButton:last-child > button {
-        background: #ffebee !important;
-        border-color: #ffcdd2 !important;
-        color: #c62828 !important;
-        margin-top: 1rem;
-    }
-    
-    [data-testid="stSidebar"] .stButton:last-child > button:hover {
-        background: #ef5350 !important;
-        border-color: #ef5350 !important;
-        color: white !important;
-    }
-    
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .block-container {
-            padding: 1rem !important;
-        }
-        
-        .app-title {
-            font-size: 1.5rem;
-        }
-        
-        .pro-header {
-            flex-direction: column;
-            text-align: center;
-        }
-    }
-    
-    /* Dark Theme Support */
-    @media (prefers-color-scheme: dark) {
-        .main {
-            background: #0a0e27 !important;
-        }
-        
-        .block-container {
-            background: transparent !important;
-        }
-        
-        /* Sidebar Dark */
-        [data-testid="stSidebar"] {
-            background: #1a1f3a !important;
-        }
-        
-        [data-testid="stSidebar"] > div:first-child {
-            background: #1a1f3a !important;
-        }
-        
-        section[data-testid="stSidebar"] > div {
-            background: #1a1f3a !important;
-        }
-        
-        [data-testid="stSidebar"] h3 {
-            color: #66bb6a !important;
-        }
-        
-        /* Sidebar Buttons Dark */
-        [data-testid="stSidebar"] .stButton > button {
-            background: rgba(76, 175, 80, 0.15) !important;
-            border: 1px solid rgba(76, 175, 80, 0.3) !important;
-            color: #81c784 !important;
-        }
-        
-        [data-testid="stSidebar"] .stButton > button:hover {
-            background: #4caf50 !important;
-            border-color: #4caf50 !important;
-            color: white !important;
-        }
-        
-        /* Header Dark */
-        .pro-header {
-            background: #1e2533 !important;
-            border-color: rgba(76, 175, 80, 0.2) !important;
-        }
-        
-        .app-title {
-            color: #66bb6a !important;
-        }
-        
-        .app-tagline {
-            color: #81c784 !important;
-        }
-        
-        /* Chat Messages Dark */
-        .stChatMessage {
-            background: #1e2533 !important;
-            border-color: rgba(76, 175, 80, 0.2) !important;
-        }
-        
-        [data-testid="user-message"] {
-            background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(76, 175, 80, 0.1) 100%) !important;
-            border-left: 3px solid #4caf50 !important;
-        }
-        
-        [data-testid="assistant-message"] {
-            background: #1e2533 !important;
-            border-left: 3px solid #81c784 !important;
-        }
-        
-        /* Chat Input Dark */
-        .stChatInputContainer {
-            background: #1e2533 !important;
-            border: 2px solid rgba(76, 175, 80, 0.3) !important;
-        }
-        
-        .stChatInputContainer:focus-within {
-            border-color: #4caf50 !important;
-        }
-        
-        /* Disease Section Dark */
-        .disease-section {
-            background: #1e2533 !important;
-            border-color: rgba(76, 175, 80, 0.2) !important;
-        }
-        
-        /* Footer Dark */
-        .pro-footer {
-            background: #1e2533 !important;
-            border-color: rgba(76, 175, 80, 0.2) !important;
-        }
-        
-        .pro-footer p {
-            color: #81c784 !important;
-        }
-        
-        .pro-footer strong {
-            color: #66bb6a !important;
-        }
-        
-        /* Metrics Dark */
-        [data-testid="stMetric"] {
-            background: #1e2533 !important;
-            border-color: rgba(76, 175, 80, 0.2) !important;
-        }
-        
-        /* File Uploader Dark */
-        [data-testid="stFileUploader"] {
-            background: #1e2533 !important;
-            border-color: rgba(76, 175, 80, 0.3) !important;
-        }
-        
-        [data-testid="stFileUploader"]:hover {
-            border-color: #4caf50 !important;
-            background: rgba(76, 175, 80, 0.1) !important;
-        }
-        
-        /* Tabs Dark */
-        .stTabs [data-baseweb="tab-list"] {
-            background: rgba(76, 175, 80, 0.1) !important;
-        }
-        
-        .stTabs [aria-selected="true"] {
-            background: rgba(76, 175, 80, 0.2) !important;
-            color: #66bb6a !important;
-        }
-        
-        .stTabs [data-baseweb="tab"] {
-            color: #81c784 !important;
-        }
-        
-        /* Text Colors Dark */
-        p, li, span {
-            color: #e0e0e0 !important;
-        }
-        
-        h1, h2, h3, h4, h5, h6 {
-            color: #66bb6a !important;
-        }
-        
-        /* Divider Dark */
-        hr {
-            background: rgba(76, 175, 80, 0.2) !important;
-        }
-        
-        /* Scrollbar Dark */
-        ::-webkit-scrollbar-track {
-            background: #1a1f3a !important;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: rgba(76, 175, 80, 0.3) !important;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #4caf50 !important;
-        }
-        
-        /* Clear Button Dark */
-        [data-testid="stSidebar"] .stButton:last-child > button {
-            background: rgba(239, 83, 80, 0.15) !important;
-            border-color: rgba(239, 83, 80, 0.3) !important;
-            color: #ef5350 !important;
-        }
-        
-        [data-testid="stSidebar"] .stButton:last-child > button:hover {
-            background: #ef5350 !important;
-            border-color: #ef5350 !important;
-            color: white !important;
-        }
+
+    /* Responsive adjustments */
+    @media (max-width: 1100px) {
+        section[data-testid="stSidebar"] { position: relative !important; width: 100% !important; height: auto !important; }
+        .block-container { margin-left: 0 !important; padding: 1rem !important; }
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Display professional header
+# ---------------------- DISPLAY HEADER ----------------------
 header_col1, header_col2 = st.columns([1, 5])
 
 with header_col1:
@@ -634,14 +187,11 @@ if "expect_image" not in st.session_state:
 
 # ---------------------- WEATHER FUNCTION ----------------------
 def get_weather(city):
-    """Fetches real-time weather data"""
     API_KEY = "bc072ed23f5983aac7f32d666efe49af"
     BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
-    
     try:
         params = {"q": city, "appid": API_KEY, "units": "metric"}
         response = requests.get(BASE_URL, params=params, timeout=5)
-        
         if response.status_code == 200:
             data = response.json()
             return {
@@ -658,7 +208,6 @@ def get_weather(city):
 
 # ---------------------- DISEASE DETECTION (PLACEHOLDER) ----------------------
 def ai_predict_disease(image_file):
-    """Placeholder for future ML model"""
     diseases = {
         "Tomato - Late Blight": {
             "symptoms": "Dark brown spots on leaves, white mold on undersides",
@@ -676,10 +225,10 @@ def ai_predict_disease(image_file):
             "prevention": "Maintain good agricultural practices"
         }
     }
-    
+
     disease_name = random.choice(list(diseases.keys()))
     disease_info = diseases[disease_name]
-    
+
     return {
         "name": disease_name,
         "confidence": random.randint(75, 98),
@@ -688,8 +237,6 @@ def ai_predict_disease(image_file):
 
 # ---------------------- PRODUCE PRICE FUNCTION ----------------------
 def get_produce_prices(state="all"):
-    """Weekly Updated Market Prices"""
-    
     sample_prices = {
         "Delhi": {
             "Tomato": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
@@ -714,69 +261,55 @@ def get_produce_prices(state="all"):
             "Banana": {"price": "₹40-54", "unit": "per dozen", "trend": "→"}
         }
     }
-    
+
     if state.lower() == "all":
         return sample_prices
     else:
         matched_cities = {}
         search_term = state.lower()
-        
         for city, prices in sample_prices.items():
             if search_term in city.lower():
                 matched_cities[city] = prices
-        
         return matched_cities if matched_cities else None
 
 # ---------------------- EXTRACT CITY FROM MESSAGE ----------------------
 def extract_city_from_message(message):
-    """Extracts city name from user message"""
     message_lower = message.lower()
-    
     patterns = [
         r"(?:in|at|for)\s+([a-zA-Z\s]+)",
         r"([a-zA-Z]+)\s+(?:price|weather|market)",
     ]
-    
     for pattern in patterns:
         match = re.search(pattern, message_lower)
         if match:
             city = match.group(1).strip()
-            city = re.sub(r'\b(today|tomorrow|now|current|latest|price|prices|weather)\b', '', city).strip()
+            city = re.sub(r'\\b(today|tomorrow|now|current|latest|price|prices|weather)\\b', '', city).strip()
             if city and len(city) > 2:
                 return city
     return None
 
 # ---------------------- FORMAT PRICE RESPONSE ----------------------
 def format_price_response(prices, city_name=None):
-    """Formats price data into readable response"""
     if not prices:
         return "❌ Sorry, no price data found. Try: Delhi, Mumbai, or Bangalore."
-    
-    response = "💰 **Current Market Prices:**\n\n"
-    
+
+    response = "💰 **Current Market Prices:**\\n\\n"
     for city, produce_data in prices.items():
         if city_name and city_name.lower() not in city.lower():
             continue
-            
-        response += f"📍 **{city}**\n\n"
-        
+        response += f"📍 **{city}**\\n\\n"
         for item, data in produce_data.items():
-            response += f"• **{item}**: {data['price']} {data['unit']} {data['trend']}\n"
-        
-        response += "\n"
-    
-    response += "\n📊 **Legend:** ↑ Rising | → Stable | ↓ Falling\n"
-    response += "📅 **Updated:** October 19, 2025\n"
+            response += f"• **{item}**: {data['price']} {data['unit']} {data['trend']}\\n"
+        response += "\\n"
+    response += "\\n📊 **Legend:** ↑ Rising | → Stable | ↓ Falling\\n"
+    response += "📅 **Updated:** October 19, 2025\\n"
     response += "💡 **Tip:** Prices are approximate retail rates."
-    
     return response
 
 # ---------------------- CHATBOT RESPONSE LOGIC ----------------------
 def get_bot_response(user_message):
-    """Generates intelligent responses"""
     message_lower = user_message.lower()
-    
-    # Disease detection trigger
+
     if any(word in message_lower for word in ["disease", "sick", "infected", "diagnose"]):
         st.session_state.expect_image = True
         return """🔬 **Crop Disease Detection**
@@ -787,11 +320,9 @@ I'll analyze it and provide:
 ✅ Disease identification
 ✅ Treatment recommendations
 ✅ Prevention tips"""
-    
-    # Price queries
+
     if any(word in message_lower for word in ["price", "cost", "market"]):
         city = extract_city_from_message(user_message)
-        
         if city:
             prices = get_produce_prices(city)
             return format_price_response(prices, city)
@@ -803,28 +334,24 @@ I'll analyze it and provide:
 💬 **Ask me:** "Show prices in Mumbai" or "Tomato price in Delhi"
 
 📍 Type your city name!"""
-    
-    # Weather queries
+
     if any(word in message_lower for word in ["weather", "temperature"]):
         city = extract_city_from_message(user_message)
-        
         if not city:
-            return "📍 Please specify a location!\nExample: 'Weather in Delhi'"
-        
+            return "📍 Please specify a location!\\nExample: 'Weather in Delhi'"
         weather = get_weather(city)
         if weather:
-            return f"""🌤️ **Weather in {weather['city']}:**
-            
+            return f\"\"\"🌤️ **Weather in {weather['city']}:**
+
 - Temperature: {weather['temperature']}°C (feels like {weather['feels_like']}°C)
 - Conditions: {weather['description'].title()}
 - Humidity: {weather['humidity']}%
 - Wind: {weather['wind_speed']} m/s
 
-**Advice:** {"Good for outdoor work! 🌞" if weather['temperature'] > 15 else "Indoor tasks recommended. 🧥"}"""
+**Advice:** {\"Good for outdoor work! 🌞\" if weather['temperature'] > 15 else \"Indoor tasks recommended. 🧥\"}\"\"\"
         else:
             return f"❌ Couldn't fetch weather for '{city}'."
-    
-    # Greeting
+
     if any(word in message_lower for word in ["hello", "hi", "hey", "namaste"]):
         return """🙏 **Namaste! Welcome to Krishisaathi AI!**
 
@@ -836,8 +363,7 @@ I can help you with:
 🐛 Pest management
 
 **What would you like to know?** 🚜"""
-    
-    # Default
+
     return """🌾 **How can I help you today?**
 
 Ask me about:
@@ -850,7 +376,6 @@ Ask me about:
 
 # ---------------------- SIDEBAR ----------------------
 with st.sidebar:
-    # App Name Header
     st.markdown("""
     <div style="padding: 1.5rem 0 1.5rem 0; border-bottom: 1px solid rgba(76, 175, 80, 0.2);">
         <h2 style="
@@ -869,39 +394,39 @@ with st.sidebar:
         ">Smart Farming Assistant</p>
     </div>
     """, unsafe_allow_html=True)
-    
+
     st.markdown("### 🎯 Quick Actions")
-    
+
     if st.button("📷 Disease Detection"):
         user_msg = "Check crop disease"
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg)
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
-    
+
     if st.button("📍 Delhi Prices"):
         user_msg = "Show prices in Delhi"
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg)
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
-        
+
     if st.button("🌤️ Mumbai Weather"):
         user_msg = "Weather in Mumbai"
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg)
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
-        
+
     if st.button("🌾 Crop Tips"):
         user_msg = "Tell me about wheat"
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg)
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
-    
+
     st.divider()
-    
+
     if st.button("🗑️ Clear Chat"):
         st.session_state.messages = []
         st.session_state.expect_image = False
@@ -916,50 +441,50 @@ for message in st.session_state.messages:
 if st.session_state.expect_image:
     st.markdown('<div class="disease-section">', unsafe_allow_html=True)
     st.subheader("📸 Upload Crop Image for Disease Detection")
-    
+
     uploaded_file = st.file_uploader(
-        "Choose an image (JPG, PNG, JPEG)", 
+        "Choose an image (JPG, PNG, JPEG)",
         type=["jpg", "png", "jpeg"]
     )
-    
+
     if uploaded_file:
         col1, col2 = st.columns([1, 1])
-        
+
         with col1:
             st.image(uploaded_file, caption="Uploaded Crop Image", use_container_width=True)
-        
+
         with col2:
             with st.spinner("🔬 Analyzing image..."):
                 prediction = ai_predict_disease(uploaded_file)
-                
+
                 st.success(f"✅ **Detection Complete!**")
                 st.metric("Disease Identified", prediction['name'])
                 st.metric("Confidence", f"{prediction['confidence']}%")
-        
+
         st.markdown("---")
         st.markdown("### 📋 Detailed Analysis")
-        
+
         tab1, tab2, tab3 = st.tabs(["🔍 Symptoms", "💊 Treatment", "🛡️ Prevention"])
-        
+
         with tab1:
             st.write(f"**Symptoms:** {prediction['symptoms']}")
-        
+
         with tab2:
             st.write(f"**Treatment:** {prediction['treatment']}")
-        
+
         with tab3:
             st.write(f"**Prevention:** {prediction['prevention']}")
-        
+
         col_a, col_b = st.columns(2)
         with col_a:
             if st.button("🔄 Analyze Another Image"):
                 st.session_state.expect_image = True
                 st.rerun()
-        
+
         with col_b:
             if st.button("✅ Done"):
                 st.session_state.expect_image = False
-                result_msg = f"""✅ **Disease Detection Complete**
+                result_msg = f\"\"\"✅ **Disease Detection Complete**
 
 **Identified:** {prediction['name']} ({prediction['confidence']}% confidence)
 
@@ -967,11 +492,11 @@ if st.session_state.expect_image:
 
 **Treatment:** {prediction['treatment']}
 
-**Prevention:** {prediction['prevention']}"""
-                
+**Prevention:** {prediction['prevention']}\"\"\"
+
                 st.session_state.messages.append({"role": "assistant", "content": result_msg})
                 st.rerun()
-    
+
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------------------- CHAT INPUT ----------------------
@@ -979,12 +504,12 @@ if prompt := st.chat_input("Ask about farming..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
-    
+
     with st.chat_message("assistant"):
         with st.spinner("🌱 Thinking..."):
             response = get_bot_response(prompt)
             st.markdown(response)
-    
+
     st.session_state.messages.append({"role": "assistant", "content": response})
 
 # ---------------------- FOOTER ----------------------
