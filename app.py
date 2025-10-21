@@ -25,7 +25,6 @@ st.markdown("""
     /* Hide Streamlit branding */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    header {visibility: hidden;}
     
     /* Hide Streamlit top-right menu */
     [data-testid="stToolbar"] {
@@ -37,21 +36,21 @@ st.markdown("""
         display: none;
     }
     
-    button[kind="header"] {
-        display: none;
-    }
-    
     /* Hide Deploy button and other header buttons */
     .viewerBadge_container__r5tak {
         display: none;
     }
     
-    .stActionButton {
+    .stDeployButton {
         display: none;
     }
     
-    /* Show sidebar toggle button */
-    button[data-testid="baseButton-header"] {
+    /* Make sure sidebar toggle is visible */
+    [data-testid="collapsedControl"] {
+        display: block !important;
+    }
+    
+    section[data-testid="stSidebar"] {
         display: block !important;
     }
     
