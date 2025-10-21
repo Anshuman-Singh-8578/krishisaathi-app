@@ -122,15 +122,18 @@ st.markdown("""
         color: white !important;
         border-radius: 0 8px 8px 0 !important;
         padding: 0.5rem !important;
-    }
-    
-    button[kind="header"] {
         display: block !important;
     }
     
-    [data-testid="baseButton-header"] {
+    /* Ensure sidebar is visible */
+    [data-testid="stSidebar"][aria-expanded="true"] {
         display: block !important;
-        background: transparent !important;
+        width: 21rem !important;
+    }
+    
+    [data-testid="stSidebar"][aria-expanded="false"] {
+        display: block !important;
+        width: 0 !important;
     }
     
     /* Sidebar Logo */
@@ -824,6 +827,240 @@ I'll analyze it and provide:
         else:
             return f"❌ Couldn't fetch weather for '{city}'."
     
+    # Crop tips
+    if any(word in message_lower for word in ["wheat", "rice", "tomato", "potato", "crop", "farming", "cultivation"]):
+        if "wheat" in message_lower:
+            return """🌾 **Wheat Cultivation Guide**
+
+**Climate Requirements:**
+• Temperature: 10-25°C (ideal)
+• Rainfall: 50-75 cm annually
+• Cool, moist climate preferred
+
+**Soil:**
+• Well-drained loamy or clay-loam soil
+• pH: 6.0-7.0
+• Deep soil with good water retention
+
+**Planting:**
+• Sowing time: October-November (Rabi season)
+• Seed rate: 100-125 kg/hectare
+• Row spacing: 20-22 cm
+
+**Fertilizers:**
+• Nitrogen: 120-150 kg/ha
+• Phosphorus: 60 kg/ha
+• Potassium: 40 kg/ha
+• Apply farmyard manure before sowing
+
+**Irrigation:**
+• 4-6 irrigations needed
+• Critical stages: Crown root, tillering, flowering, grain filling
+• Avoid waterlogging
+
+**Harvesting:**
+• 120-150 days after sowing
+• When grains are hard and golden
+• Moisture content: 20-25%
+
+**Common Issues:**
+• Rust diseases: Use resistant varieties
+• Aphids: Apply neem oil or insecticides
+• Weeds: Manual weeding or herbicides
+
+💡 **Pro Tips:**
+✅ Use certified seeds
+✅ Crop rotation with legumes
+✅ Proper drainage to prevent diseases
+✅ Store in dry, cool place"""
+        
+        elif "rice" in message_lower:
+            return """🍚 **Rice Cultivation Guide**
+
+**Climate:**
+• Temperature: 20-35°C
+• High humidity (80-90%)
+• Warm, tropical/subtropical regions
+
+**Soil:**
+• Clayey or loamy soil that retains water
+• pH: 5.5-6.5
+• Flooded fields (puddled soil)
+
+**Planting:**
+• Kharif season: June-July
+• Transplanting: 21-25 days old seedlings
+• Spacing: 15×15 cm or 20×15 cm
+
+**Water Management:**
+• Continuous flooding during growth
+• 5-10 cm water depth
+• Drain before harvesting
+
+**Fertilizers:**
+• Nitrogen: 80-120 kg/ha (in splits)
+• Phosphorus: 40-60 kg/ha
+• Potassium: 40 kg/ha
+• Zinc: 25 kg/ha (if deficient)
+
+**Harvesting:**
+• 110-140 days (variety dependent)
+• When 80% grains turn golden
+• Sun-dry to 14% moisture
+
+**Pest Control:**
+• Stem borer: Pheromone traps
+• Brown plant hopper: Neem extracts
+• Blast disease: Use resistant varieties
+
+💡 **Best Practices:**
+✅ System of Rice Intensification (SRI)
+✅ Alternate wetting and drying
+✅ Proper leveling of fields
+✅ Use disease-free seeds"""
+        
+        elif "tomato" in message_lower:
+            return """🍅 **Tomato Cultivation Guide**
+
+**Climate:**
+• Temperature: 20-30°C (day), 15-20°C (night)
+• Warm, sunny weather
+• Avoid frost and excessive rain
+
+**Soil:**
+• Well-drained loamy soil
+• pH: 6.0-6.8
+• Rich in organic matter
+
+**Planting:**
+• Nursery: Raise seedlings first (3-4 weeks)
+• Transplanting: 15-20 cm tall seedlings
+• Spacing: 60×45 cm or 75×60 cm
+• Season: Feb-Mar (summer), Jun-Jul (rainy)
+
+**Support:**
+• Use stakes or cages for support
+• Height: 4-5 feet
+• Tie plants gently
+
+**Fertilizers:**
+• Compost: 20-25 tons/ha
+• NPK: 100:50:50 kg/ha
+• Calcium for preventing blossom end rot
+
+**Irrigation:**
+• Regular, moderate watering
+• Drip irrigation recommended
+• Avoid overhead watering (disease risk)
+• Mulching helps retain moisture
+
+**Common Diseases:**
+• Late blight: Remove infected leaves, copper fungicide
+• Early blight: Mancozeb spray
+• Leaf curl virus: Control whiteflies
+
+**Pests:**
+• Fruit borer: Bt spray
+• Aphids: Neem oil
+• Whiteflies: Yellow sticky traps
+
+**Harvesting:**
+• 60-90 days after transplanting
+• Pick when firm and colored
+• Harvest regularly (2-3 days interval)
+
+💡 **Tips:**
+✅ 6-8 hours daily sunlight
+✅ Prune suckers for better yield
+✅ Rotate crops annually
+✅ Use resistant varieties"""
+        
+        elif "potato" in message_lower:
+            return """🥔 **Potato Cultivation Guide**
+
+**Climate:**
+• Temperature: 15-20°C (ideal)
+• Cool weather crop
+• Avoid high temperatures during tuber formation
+
+**Soil:**
+• Loose, well-drained sandy loam
+• pH: 5.0-6.0 (slightly acidic)
+• Good organic matter content
+
+**Planting:**
+• Season: October-November (plains), April-May (hills)
+• Seed rate: 2-2.5 tons/ha
+• Spacing: 50×20 cm
+• Depth: 5-7 cm
+
+**Seed Treatment:**
+• Use disease-free seed tubers
+• Cut large tubers (50-60g pieces)
+• Treat with fungicide before planting
+
+**Earthing Up:**
+• Important operation 2-3 times
+• Prevents greening of tubers
+• Controls weeds
+
+**Fertilizers:**
+• FYM: 20-25 tons/ha
+• Nitrogen: 120-150 kg/ha
+• Phosphorus: 80 kg/ha
+• Potassium: 100 kg/ha
+
+**Irrigation:**
+• 6-8 irrigations needed
+• Critical: Flowering and tuber formation
+• Avoid waterlogging
+
+**Diseases:**
+• Late blight: Mancozeb spray
+• Early blight: Crop rotation
+• Black scurf: Seed treatment
+
+**Harvesting:**
+• 90-120 days after planting
+• When leaves turn yellow
+• Cure tubers in shade 10-15 days
+
+💡 **Storage:**
+✅ Cool (2-4°C), dark place
+✅ Prevent sprouting
+✅ Good ventilation
+✅ Check regularly for rot"""
+        
+        else:
+            return """🌾 **Crop Cultivation Tips**
+
+I can help you with detailed cultivation guides for:
+
+**Major Crops:**
+• 🌾 Wheat - Rabi crop
+• 🍚 Rice - Kharif crop
+• 🍅 Tomato - Vegetable crop
+• 🥔 Potato - Tuber crop
+• 🌽 Maize - Cereal crop
+• 🌶️ Chili - Spice crop
+
+**What I can tell you:**
+• Climate and soil requirements
+• Planting time and methods
+• Fertilizer recommendations
+• Irrigation schedules
+• Pest and disease management
+• Harvesting techniques
+• Storage tips
+
+**Ask me like:**
+• "Tell me about wheat cultivation"
+• "How to grow rice?"
+• "Tomato farming tips"
+• "Best time to plant potato"
+
+**Type your crop name to get started!** 🚜"""
+    
     # Greeting
     if any(word in message_lower for word in ["hello", "hi", "hey", "namaste"]):
         return """🙏 **Namaste! Welcome to Krishisaathi AI!**
@@ -844,7 +1081,7 @@ Ask me about:
 • 🔬 Crop disease (upload photo)
 • 💰 Market prices
 • 🌤️ Weather updates
-• 🌱 Crop tips
+• 🌱 Crop tips (wheat, rice, tomato, potato)
 
 **Type your question!** 🚜"""
 
