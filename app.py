@@ -8,7 +8,7 @@ import re
 st.set_page_config(
     page_title="🌾 Krishisaathi AI", 
     page_icon="🌱", 
-    layout="wide",
+    layout="centered",
     initial_sidebar_state="expanded"
 )
 
