@@ -341,16 +341,17 @@ I'll analyze it and provide:
             return "📍 Please specify a location!\\nExample: 'Weather in Delhi'"
         weather = get_weather(city)
         if weather:
-            return f\"\"\"🌤️ **Weather in {weather['city']}:**
-
+            return f"""🌤️ **Weather in {weather['city']}:**
+            
 - Temperature: {weather['temperature']}°C (feels like {weather['feels_like']}°C)
 - Conditions: {weather['description'].title()}
 - Humidity: {weather['humidity']}%
 - Wind: {weather['wind_speed']} m/s
 
-**Advice:** {\"Good for outdoor work! 🌞\" if weather['temperature'] > 15 else \"Indoor tasks recommended. 🧥\"}\"\"\"
+**Advice:** {"Good for outdoor work! 🌞" if weather['temperature'] > 15 else "Indoor tasks recommended. 🧥"}"""
         else:
             return f"❌ Couldn't fetch weather for '{city}'."
+
 
     if any(word in message_lower for word in ["hello", "hi", "hey", "namaste"]):
         return """🙏 **Namaste! Welcome to Krishisaathi AI!**
