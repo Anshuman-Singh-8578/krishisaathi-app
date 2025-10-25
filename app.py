@@ -17,17 +17,44 @@ st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     
+    /* Global Styles */
     * {
         font-family: 'Plus Jakarta Sans', sans-serif;
     }
     
+    /* Hide Streamlit branding */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    [data-testid="stToolbar"] {display: none;}
-    [data-testid="manage-app-button"] {display: none;}
-    .viewerBadge_container__r5tak {display: none;}
-    .stDeployButton {display: none;}
     
+    /* Hide Streamlit top-right menu */
+    [data-testid="stToolbar"] {
+        display: none;
+    }
+    
+    /* Hide "Manage app" button */
+    [data-testid="manage-app-button"] {
+        display: none;
+    }
+    
+    /* Hide Deploy button and other header buttons */
+    .viewerBadge_container__r5tak {
+        display: none;
+    }
+    
+    .stDeployButton {
+        display: none;
+    }
+    
+    /* Make sure sidebar toggle is visible */
+    [data-testid="collapsedControl"] {
+        display: block !important;
+    }
+    
+    section[data-testid="stSidebar"] {
+        display: block !important;
+    }
+    
+    /* Main Background */
     .main {
         background: #f8faf9;
         padding: 0;
@@ -37,6 +64,27 @@ st.markdown("""
         padding: 2rem 3rem !important;
         max-width: 1400px !important;
         margin: 0 auto;
+    }
+    
+    /* Professional Header */
+    .pro-header {
+        background: white;
+        border-radius: 16px;
+        padding: 1.5rem 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        border: 1px solid #e8f5e9;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+    
+    .header-logo {
+        flex-shrink: 0;
+    }
+    
+    .header-content {
+        flex-grow: 1;
     }
     
     .app-title {
@@ -54,6 +102,7 @@ st.markdown("""
         margin: 0.25rem 0 0 0;
     }
     
+    /* Sidebar Styling */
     [data-testid="stSidebar"] {
         background: white !important;
         border-right: 1px solid #e8f5e9 !important;
@@ -63,6 +112,45 @@ st.markdown("""
         background: white !important;
     }
     
+    section[data-testid="stSidebar"] > div {
+        background: white !important;
+    }
+    
+    /* Sidebar Collapse Button - Make it visible */
+    [data-testid="collapsedControl"] {
+        background: #4caf50 !important;
+        color: white !important;
+        border-radius: 0 8px 8px 0 !important;
+        padding: 0.5rem !important;
+        display: block !important;
+    }
+    
+    /* Ensure sidebar is visible */
+    [data-testid="stSidebar"][aria-expanded="true"] {
+        display: block !important;
+        width: 21rem !important;
+    }
+    
+    [data-testid="stSidebar"][aria-expanded="false"] {
+        display: block !important;
+        width: 0 !important;
+    }
+    
+    /* Sidebar Logo */
+    [data-testid="stSidebar"] img {
+        transition: all 0.3s ease;
+        width: 100% !important;
+        max-width: 160px !important;
+        height: auto !important;
+        margin: 0 auto;
+        display: block;
+    }
+    
+    [data-testid="stSidebar"] img:hover {
+        transform: scale(1.03);
+    }
+    
+    /* Sidebar Headers */
     [data-testid="stSidebar"] h3 {
         color: #1b5e20 !important;
         font-size: 0.85rem !important;
@@ -73,6 +161,7 @@ st.markdown("""
         margin-bottom: 1rem !important;
     }
     
+    /* Sidebar Buttons */
     [data-testid="stSidebar"] .stButton > button {
         width: 100%;
         background: #f1f8f4 !important;
@@ -85,6 +174,11 @@ st.markdown("""
         border-radius: 10px !important;
         transition: all 0.2s ease !important;
         height: 48px !important;
+        min-height: 48px !important;
+        max-height: 48px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
         margin-bottom: 0.5rem !important;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
     }
@@ -97,6 +191,11 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25) !important;
     }
     
+    [data-testid="stSidebar"] .stButton > button:active {
+        transform: translateX(1px);
+    }
+    
+    /* Chat Messages */
     .stChatMessage {
         background: white !important;
         border-radius: 12px !important;
@@ -106,6 +205,19 @@ st.markdown("""
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02) !important;
     }
     
+    /* User Message */
+    [data-testid="user-message"] {
+        background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%) !important;
+        border-left: 3px solid #4caf50 !important;
+    }
+    
+    /* Assistant Message */
+    [data-testid="assistant-message"] {
+        background: white !important;
+        border-left: 3px solid #81c784 !important;
+    }
+    
+    /* Chat Input */
     .stChatInputContainer {
         background: white !important;
         border: 2px solid #e8f5e9 !important;
@@ -119,6 +231,29 @@ st.markdown("""
         box-shadow: 0 4px 16px rgba(76, 175, 80, 0.15) !important;
     }
     
+    /* Main Buttons */
+    .stButton > button {
+        background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 0.75rem 1.75rem;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25);
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.35);
+    }
+    
+    .stButton > button:active {
+        transform: translateY(0);
+    }
+    
+    /* File Uploader */
     [data-testid="stFileUploader"] {
         background: white;
         border: 2px dashed #c8e6c9;
@@ -132,6 +267,70 @@ st.markdown("""
         background: #f1f8f4;
     }
     
+    /* Metrics */
+    [data-testid="stMetric"] {
+        background: white;
+        border-radius: 10px;
+        padding: 1rem;
+        border: 1px solid #e8f5e9;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    }
+    
+    [data-testid="stMetricLabel"] {
+        color: #66bb6a;
+        font-weight: 600;
+        font-size: 0.85rem;
+    }
+    
+    [data-testid="stMetricValue"] {
+        color: #2e7d32;
+        font-size: 1.75rem;
+        font-weight: 700;
+    }
+    
+    /* Tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 0.5rem;
+        background: #f1f8f4;
+        border-radius: 10px;
+        padding: 0.25rem;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        background: transparent;
+        border-radius: 8px;
+        color: #66bb6a;
+        font-weight: 600;
+        padding: 0.6rem 1.25rem;
+        font-size: 0.9rem;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background: white;
+        color: #2e7d32;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Disease Detection Section */
+    .disease-section {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        border: 1px solid #e8f5e9;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        margin: 1.5rem 0;
+    }
+    
+    /* Success/Info Boxes */
+    .stSuccess, .stInfo {
+        background: white;
+        border-radius: 10px;
+        border-left: 4px solid #4caf50;
+        padding: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    }
+    
+    /* Divider */
     hr {
         border: none;
         height: 1px;
@@ -139,6 +338,21 @@ st.markdown("""
         margin: 2rem 0;
     }
     
+    /* Text Colors */
+    p, li, span {
+        color: #37474f;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        color: #1b5e20;
+    }
+    
+    /* Spinner */
+    .stSpinner > div {
+        border-top-color: #4caf50 !important;
+    }
+    
+    /* Footer */
     .pro-footer {
         text-align: center;
         padding: 2rem;
@@ -160,6 +374,37 @@ st.markdown("""
         font-weight: 700;
     }
     
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: #f1f8f4;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #c8e6c9;
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #4caf50;
+    }
+    
+    /* Image Styling */
+    img {
+        border-radius: 10px;
+    }
+    
+    /* Subheader Styling */
+    .stSubheader {
+        color: #2e7d32 !important;
+        font-weight: 700 !important;
+    }
+    
+    /* Clear Chat Button Special Style */
     [data-testid="stSidebar"] .stButton:last-child > button {
         background: #ffebee !important;
         border-color: #ffcdd2 !important;
@@ -171,6 +416,194 @@ st.markdown("""
         background: #ef5350 !important;
         border-color: #ef5350 !important;
         color: white !important;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .block-container {
+            padding: 1rem !important;
+        }
+        
+        .app-title {
+            font-size: 1.5rem;
+        }
+        
+        .pro-header {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+    
+    /* Dark Theme Support */
+    @media (prefers-color-scheme: dark) {
+        .main {
+            background: #0a0e27 !important;
+        }
+        
+        .block-container {
+            background: transparent !important;
+        }
+        
+        /* Sidebar Dark */
+        [data-testid="stSidebar"] {
+            background: #1a1f3a !important;
+        }
+        
+        [data-testid="stSidebar"] > div:first-child {
+            background: #1a1f3a !important;
+        }
+        
+        section[data-testid="stSidebar"] > div {
+            background: #1a1f3a !important;
+        }
+        
+        [data-testid="stSidebar"] h3 {
+            color: #66bb6a !important;
+        }
+        
+        /* Sidebar Buttons Dark */
+        [data-testid="stSidebar"] .stButton > button {
+            background: rgba(76, 175, 80, 0.15) !important;
+            border: 1px solid rgba(76, 175, 80, 0.3) !important;
+            color: #81c784 !important;
+        }
+        
+        [data-testid="stSidebar"] .stButton > button:hover {
+            background: #4caf50 !important;
+            border-color: #4caf50 !important;
+            color: white !important;
+        }
+        
+        /* Header Dark */
+        .pro-header {
+            background: #1e2533 !important;
+            border-color: rgba(76, 175, 80, 0.2) !important;
+        }
+        
+        .app-title {
+            color: #66bb6a !important;
+        }
+        
+        .app-tagline {
+            color: #81c784 !important;
+        }
+        
+        /* Chat Messages Dark */
+        .stChatMessage {
+            background: #1e2533 !important;
+            border-color: rgba(76, 175, 80, 0.2) !important;
+        }
+        
+        [data-testid="user-message"] {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(76, 175, 80, 0.1) 100%) !important;
+            border-left: 3px solid #4caf50 !important;
+        }
+        
+        [data-testid="assistant-message"] {
+            background: #1e2533 !important;
+            border-left: 3px solid #81c784 !important;
+        }
+        
+        /* Chat Input Dark */
+        .stChatInputContainer {
+            background: #1e2533 !important;
+            border: 2px solid rgba(76, 175, 80, 0.3) !important;
+        }
+        
+        .stChatInputContainer:focus-within {
+            border-color: #4caf50 !important;
+        }
+        
+        /* Disease Section Dark */
+        .disease-section {
+            background: #1e2533 !important;
+            border-color: rgba(76, 175, 80, 0.2) !important;
+        }
+        
+        /* Footer Dark */
+        .pro-footer {
+            background: #1e2533 !important;
+            border-color: rgba(76, 175, 80, 0.2) !important;
+        }
+        
+        .pro-footer p {
+            color: #81c784 !important;
+        }
+        
+        .pro-footer strong {
+            color: #66bb6a !important;
+        }
+        
+        /* Metrics Dark */
+        [data-testid="stMetric"] {
+            background: #1e2533 !important;
+            border-color: rgba(76, 175, 80, 0.2) !important;
+        }
+        
+        /* File Uploader Dark */
+        [data-testid="stFileUploader"] {
+            background: #1e2533 !important;
+            border-color: rgba(76, 175, 80, 0.3) !important;
+        }
+        
+        [data-testid="stFileUploader"]:hover {
+            border-color: #4caf50 !important;
+            background: rgba(76, 175, 80, 0.1) !important;
+        }
+        
+        /* Tabs Dark */
+        .stTabs [data-baseweb="tab-list"] {
+            background: rgba(76, 175, 80, 0.1) !important;
+        }
+        
+        .stTabs [aria-selected="true"] {
+            background: rgba(76, 175, 80, 0.2) !important;
+            color: #66bb6a !important;
+        }
+        
+        .stTabs [data-baseweb="tab"] {
+            color: #81c784 !important;
+        }
+        
+        /* Text Colors Dark */
+        p, li, span {
+            color: #e0e0e0 !important;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            color: #66bb6a !important;
+        }
+        
+        /* Divider Dark */
+        hr {
+            background: rgba(76, 175, 80, 0.2) !important;
+        }
+        
+        /* Scrollbar Dark */
+        ::-webkit-scrollbar-track {
+            background: #1a1f3a !important;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(76, 175, 80, 0.3) !important;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4caf50 !important;
+        }
+        
+        /* Clear Button Dark */
+        [data-testid="stSidebar"] .stButton:last-child > button {
+            background: rgba(239, 83, 80, 0.15) !important;
+            border-color: rgba(239, 83, 80, 0.3) !important;
+            color: #ef5350 !important;
+        }
+        
+        [data-testid="stSidebar"] .stButton:last-child > button:hover {
+            background: #ef5350 !important;
+            border-color: #ef5350 !important;
+            color: white !important;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
@@ -274,34 +707,7 @@ def get_produce_prices(state="all"):
             "Green Peas": {"price": "₹70-100", "unit": "per kg", "trend": "→"},
             "Capsicum": {"price": "₹50-75", "unit": "per kg", "trend": "→"},
             "Cucumber": {"price": "₹25-40", "unit": "per kg", "trend": "↓"},
-            "Apple": {"price": "₹85-120", "unit": "per kg", "trend": "→"},
-            "Banana": {"price": "₹45-60", "unit": "per dozen", "trend": "→"},
-        },
-        "Mumbai": {
-            "Tomato": {"price": "₹26-40", "unit": "per kg", "trend": "↓"},
-            "Potato": {"price": "₹18-28", "unit": "per kg", "trend": "→"},
-            "Onion": {"price": "₹17-26", "unit": "per kg", "trend": "↓"},
-            "Cabbage": {"price": "₹9-12", "unit": "per kg", "trend": "→"},
-            "Lady Finger (Bhindi)": {"price": "₹35-55", "unit": "per kg", "trend": "→"},
-            "Capsicum": {"price": "₹52-78", "unit": "per kg", "trend": "→"},
-            "Banana": {"price": "₹48-65", "unit": "per dozen", "trend": "→"},
-            "Apple": {"price": "₹90-130", "unit": "per kg", "trend": "→"},
-        },
-        "Bangalore": {
-            "Tomato": {"price": "₹24-36", "unit": "per kg", "trend": "↓"},
-            "Potato": {"price": "₹16-25", "unit": "per kg", "trend": "→"},
-            "Onion": {"price": "₹15-22", "unit": "per kg", "trend": "↓"},
-            "Cabbage": {"price": "₹9-12", "unit": "per kg", "trend": "→"},
-            "Carrot": {"price": "₹28-44", "unit": "per kg", "trend": "→"},
-            "Banana": {"price": "₹40-54", "unit": "per dozen", "trend": "→"},
-            "Apple": {"price": "₹85-120", "unit": "per kg", "trend": "→"}
-        },
-        "Chennai": {
-            "Tomato": {"price": "₹24-38", "unit": "per kg", "trend": "↓"},
-            "Potato": {"price": "₹15-25", "unit": "per kg", "trend": "→"},
-            "Onion": {"price": "₹16-23", "unit": "per kg", "trend": "↓"},
-            "Brinjal (Eggplant)": {"price": "₹28-40", "unit": "per kg", "trend": "→"},
-            "Banana": {"price": "₹38-52", "unit": "per dozen", "trend": "→"},
+            "Pumpkin": {"price": "₹18-30", "unit": "per kg", "trend": "→"},
             "Apple": {"price": "₹85-120", "unit": "per kg", "trend": "→"}
         },
         "Kolkata": {
@@ -309,7 +715,34 @@ def get_produce_prices(state="all"):
             "Potato": {"price": "₹13-22", "unit": "per kg", "trend": "→"},
             "Onion": {"price": "₹14-22", "unit": "per kg", "trend": "↓"},
             "Cabbage": {"price": "₹8-11", "unit": "per kg", "trend": "→"},
+            "Cauliflower": {"price": "₹18-25", "unit": "per kg", "trend": "→"},
+            "Brinjal (Eggplant)": {"price": "₹26-38", "unit": "per kg", "trend": "→"},
+            "Lady Finger (Bhindi)": {"price": "₹30-46", "unit": "per kg", "trend": "→"},
             "Carrot": {"price": "₹28-42", "unit": "per kg", "trend": "→"},
+            "Capsicum": {"price": "₹48-70", "unit": "per kg", "trend": "→"},
+            "Banana": {"price": "₹42-56", "unit": "per dozen", "trend": "→"},
+            "Apple": {"price": "₹84-118", "unit": "per kg", "trend": "→"},
+            "Pumpkin": {"price": "₹20-34", "unit": "per kg", "trend": "→"}
+        },
+        "Pune": {
+            "Tomato": {"price": "₹25-38", "unit": "per kg", "trend": "↓"},
+            "Potato": {"price": "₹17-27", "unit": "per kg", "trend": "→"},
+            "Onion": {"price": "₹16-25", "unit": "per kg", "trend": "↓"},
+            "Cabbage": {"price": "₹8-11", "unit": "per kg", "trend": "→"},
+            "Cauliflower": {"price": "₹18-27", "unit": "per kg", "trend": "→"},
+            "Lady Finger (Bhindi)": {"price": "₹34-52", "unit": "per kg", "trend": "→"},
+            "Carrot": {"price": "₹32-48", "unit": "per kg", "trend": "→"},
+            "Capsicum": {"price": "₹50-76", "unit": "per kg", "trend": "→"},
+            "Banana": {"price": "₹46-62", "unit": "per dozen", "trend": "→"},
+            "Apple": {"price": "₹88-125", "unit": "per kg", "trend": "→"}
+        },
+        "Hyderabad": {
+            "Tomato": {"price": "₹22-38", "unit": "per kg", "trend": "↓"},
+            "Potato": {"price": "₹16-25", "unit": "per kg", "trend": "→"},
+            "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
+            "Cabbage": {"price": "₹9-12", "unit": "per kg", "trend": "→"},
+            "Lady Finger (Bhindi)": {"price": "₹34-52", "unit": "per kg", "trend": "→"},
+            "Carrot": {"price": "₹30-46", "unit": "per kg", "trend": "→"},
             "Banana": {"price": "₹42-56", "unit": "per dozen", "trend": "→"},
             "Apple": {"price": "₹84-118", "unit": "per kg", "trend": "→"}
         }
@@ -435,7 +868,7 @@ I'll analyze it and provide:
         else:
             return """💰 **Market Prices Available!**
 
-🌆 **Cities Covered:** Delhi, Mumbai, Bangalore, Chennai, Kolkata, and more!
+🌆 **Cities Covered:** Delhi, Mumbai, Bangalore, Chennai, Kolkata, Pune, Hyderabad, and more!
 
 💬 **Ask me:** 
 • "Tomato price in Mumbai"
@@ -472,13 +905,44 @@ I'll analyze it and provide:
 **Climate Requirements:**
 • Temperature: 10-25°C (ideal)
 • Rainfall: 50-75 cm annually
+• Cool, moist climate preferred
+
+**Soil:**
+• Well-drained loamy or clay-loam soil
+• pH: 6.0-7.0
+• Deep soil with good water retention
 
 **Planting:**
-• Sowing time: October-November
+• Sowing time: October-November (Rabi season)
 • Seed rate: 100-125 kg/hectare
+• Row spacing: 20-22 cm
+
+**Fertilizers:**
+• Nitrogen: 120-150 kg/ha
+• Phosphorus: 60 kg/ha
+• Potassium: 40 kg/ha
+• Apply farmyard manure before sowing
+
+**Irrigation:**
+• 4-6 irrigations needed
+• Critical stages: Crown root, tillering, flowering, grain filling
+• Avoid waterlogging
 
 **Harvesting:**
-• 120-150 days after sowing"""
+• 120-150 days after sowing
+• When grains are hard and golden
+• Moisture content: 20-25%
+
+**Common Issues:**
+• Rust diseases: Use resistant varieties
+• Aphids: Apply neem oil or insecticides
+• Weeds: Manual weeding or herbicides
+
+💡 **Pro Tips:**
+✅ Use certified seeds
+✅ Crop rotation with legumes
+✅ Proper drainage to prevent diseases
+✅ Store in dry, cool place"""
         
         elif "rice" in message_lower:
             return """🍚 **Rice Cultivation Guide**
@@ -486,19 +950,184 @@ I'll analyze it and provide:
 **Climate:**
 • Temperature: 20-35°C
 • High humidity (80-90%)
+• Warm, tropical/subtropical regions
+
+**Soil:**
+• Clayey or loamy soil that retains water
+• pH: 5.5-6.5
+• Flooded fields (puddled soil)
 
 **Planting:**
 • Kharif season: June-July
-• Transplanting: 21-25 days old seedlings"""
+• Transplanting: 21-25 days old seedlings
+• Spacing: 15×15 cm or 20×15 cm
+
+**Water Management:**
+• Continuous flooding during growth
+• 5-10 cm water depth
+• Drain before harvesting
+
+**Fertilizers:**
+• Nitrogen: 80-120 kg/ha (in splits)
+• Phosphorus: 40-60 kg/ha
+• Potassium: 40 kg/ha
+• Zinc: 25 kg/ha (if deficient)
+
+**Harvesting:**
+• 110-140 days (variety dependent)
+• When 80% grains turn golden
+• Sun-dry to 14% moisture
+
+**Pest Control:**
+• Stem borer: Pheromone traps
+• Brown plant hopper: Neem extracts
+• Blast disease: Use resistant varieties
+
+💡 **Best Practices:**
+✅ System of Rice Intensification (SRI)
+✅ Alternate wetting and drying
+✅ Proper leveling of fields
+✅ Use disease-free seeds"""
+        
+        elif "tomato" in message_lower:
+            return """🍅 **Tomato Cultivation Guide**
+
+**Climate:**
+• Temperature: 20-30°C (day), 15-20°C (night)
+• Warm, sunny weather
+• Avoid frost and excessive rain
+
+**Soil:**
+• Well-drained loamy soil
+• pH: 6.0-6.8
+• Rich in organic matter
+
+**Planting:**
+• Nursery: Raise seedlings first (3-4 weeks)
+• Transplanting: 15-20 cm tall seedlings
+• Spacing: 60×45 cm or 75×60 cm
+• Season: Feb-Mar (summer), Jun-Jul (rainy)
+
+**Support:**
+• Use stakes or cages for support
+• Height: 4-5 feet
+• Tie plants gently
+
+**Fertilizers:**
+• Compost: 20-25 tons/ha
+• NPK: 100:50:50 kg/ha
+• Calcium for preventing blossom end rot
+
+**Irrigation:**
+• Regular, moderate watering
+• Drip irrigation recommended
+• Avoid overhead watering (disease risk)
+• Mulching helps retain moisture
+
+**Common Diseases:**
+• Late blight: Remove infected leaves, copper fungicide
+• Early blight: Mancozeb spray
+• Leaf curl virus: Control whiteflies
+
+**Pests:**
+• Fruit borer: Bt spray
+• Aphids: Neem oil
+• Whiteflies: Yellow sticky traps
+
+**Harvesting:**
+• 60-90 days after transplanting
+• Pick when firm and colored
+• Harvest regularly (2-3 days interval)
+
+💡 **Tips:**
+✅ 6-8 hours daily sunlight
+✅ Prune suckers for better yield
+✅ Rotate crops annually
+✅ Use resistant varieties"""
+        
+        elif "potato" in message_lower:
+            return """🥔 **Potato Cultivation Guide**
+
+**Climate:**
+• Temperature: 15-20°C (ideal)
+• Cool weather crop
+• Avoid high temperatures during tuber formation
+
+**Soil:**
+• Loose, well-drained sandy loam
+• pH: 5.0-6.0 (slightly acidic)
+• Good organic matter content
+
+**Planting:**
+• Season: October-November (plains), April-May (hills)
+• Seed rate: 2-2.5 tons/ha
+• Spacing: 50×20 cm
+• Depth: 5-7 cm
+
+**Seed Treatment:**
+• Use disease-free seed tubers
+• Cut large tubers (50-60g pieces)
+• Treat with fungicide before planting
+
+**Earthing Up:**
+• Important operation 2-3 times
+• Prevents greening of tubers
+• Controls weeds
+
+**Fertilizers:**
+• FYM: 20-25 tons/ha
+• Nitrogen: 120-150 kg/ha
+• Phosphorus: 80 kg/ha
+• Potassium: 100 kg/ha
+
+**Irrigation:**
+• 6-8 irrigations needed
+• Critical: Flowering and tuber formation
+• Avoid waterlogging
+
+**Diseases:**
+• Late blight: Mancozeb spray
+• Early blight: Crop rotation
+• Black scurf: Seed treatment
+
+**Harvesting:**
+• 90-120 days after planting
+• When leaves turn yellow
+• Cure tubers in shade 10-15 days
+
+💡 **Storage:**
+✅ Cool (2-4°C), dark place
+✅ Prevent sprouting
+✅ Good ventilation
+✅ Check regularly for rot"""
         
         else:
             return """🌾 **Crop Cultivation Tips**
 
-Ask me about:
+I can help you with detailed cultivation guides for:
+
+**Major Crops:**
 • 🌾 Wheat - Rabi crop
 • 🍚 Rice - Kharif crop
 • 🍅 Tomato - Vegetable crop
 • 🥔 Potato - Tuber crop
+• 🌽 Maize - Cereal crop
+• 🌶️ Chili - Spice crop
+
+**What I can tell you:**
+• Climate and soil requirements
+• Planting time and methods
+• Fertilizer recommendations
+• Irrigation schedules
+• Pest and disease management
+• Harvesting techniques
+• Storage tips
+
+**Ask me like:**
+• "Tell me about wheat cultivation"
+• "How to grow rice?"
+• "Tomato farming tips"
+• "Best time to plant potato"
 
 **Type your crop name to get started!** 🚜"""
     
@@ -511,6 +1140,7 @@ I can help you with:
 💰 Market prices (100+ cities)
 🌾 Crop cultivation tips
 🔬 Disease detection (upload photo)
+🛡 Pest management
 
 **What would you like to know?** 🚜"""
     
@@ -521,40 +1151,61 @@ Ask me about:
 • 🔬 Crop disease (upload photo)
 • 💰 Market prices
 • 🌤️ Weather updates
-• 🌱 Crop tips
+• 🌱 Crop tips (wheat, rice, tomato, potato)
 
 **Type your question!** 🚜"""
 
 
 # ---------------------- SIDEBAR ----------------------
 with st.sidebar:
+    # App Name Header
     st.markdown("""
     <div style="padding: 1.5rem 0 1.5rem 0; border-bottom: 1px solid rgba(76, 175, 80, 0.2);">
-        <h2 style="font-size: 1.3rem; font-weight: 800; color: #66bb6a; margin: 0;">🌾 KRISHISAATHI AI</h2>
-        <p style="font-size: 0.8rem; color: #81c784; margin: 0.4rem 0 0 0;">Smart Farming Assistant</p>
+        <h2 style="
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #66bb6a;
+            margin: 0;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        ">🌾 KRISHISAATHI AI</h2>
+        <p style="
+            font-size: 0.8rem;
+            color: #81c784;
+            margin: 0.4rem 0 0 0;
+            font-weight: 500;
+        ">Smart Farming Assistant</p>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("### 🎯 Quick Actions")
     
     if st.button("📷 Disease Detection"):
-        st.session_state.messages.append({"role": "user", "content": "Check crop disease"})
-        st.session_state.messages.append({"role": "assistant", "content": get_bot_response("Check crop disease")})
+        user_msg = "Check crop disease"
+        st.session_state.messages.append({"role": "user", "content": user_msg})
+        bot_response = get_bot_response(user_msg)
+        st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
     
     if st.button("🏙 Delhi Prices"):
-        st.session_state.messages.append({"role": "user", "content": "Show prices in Delhi"})
-        st.session_state.messages.append({"role": "assistant", "content": get_bot_response("Show prices in Delhi")})
+        user_msg = "Show prices in Delhi"
+        st.session_state.messages.append({"role": "user", "content": user_msg})
+        bot_response = get_bot_response(user_msg)
+        st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
         
     if st.button("🌤️ Mumbai Weather"):
-        st.session_state.messages.append({"role": "user", "content": "Weather in Mumbai"})
-        st.session_state.messages.append({"role": "assistant", "content": get_bot_response("Weather in Mumbai")})
+        user_msg = "Weather in Mumbai"
+        st.session_state.messages.append({"role": "user", "content": user_msg})
+        bot_response = get_bot_response(user_msg)
+        st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
         
     if st.button("🌾 Crop Tips"):
-        st.session_state.messages.append({"role": "user", "content": "Tell me about wheat"})
-        st.session_state.messages.append({"role": "assistant", "content": get_bot_response("Tell me about wheat")})
+        user_msg = "Tell me about wheat"
+        st.session_state.messages.append({"role": "user", "content": user_msg})
+        bot_response = get_bot_response(user_msg)
+        st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
     
     st.divider()
@@ -571,9 +1222,13 @@ for message in st.session_state.messages:
 
 # ---------------------- IMAGE UPLOAD SECTION ----------------------
 if st.session_state.expect_image:
+    st.markdown('<div class="disease-section">', unsafe_allow_html=True)
     st.subheader("📸 Upload Crop Image for Disease Detection")
     
-    uploaded_file = st.file_uploader("Choose an image (JPG, PNG, JPEG)", type=["jpg", "png", "jpeg"])
+    uploaded_file = st.file_uploader(
+        "Choose an image (JPG, PNG, JPEG)", 
+        type=["jpg", "png", "jpeg"]
+    )
     
     if uploaded_file:
         col1, col2 = st.columns([1, 1])
@@ -624,6 +1279,8 @@ if st.session_state.expect_image:
                 
                 st.session_state.messages.append({"role": "assistant", "content": result_msg})
                 st.rerun()
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------------------- CHAT INPUT ----------------------
 if prompt := st.chat_input("Ask about farming..."):
