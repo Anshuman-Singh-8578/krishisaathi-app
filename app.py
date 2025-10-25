@@ -1628,29 +1628,49 @@ def get_produce_prices(state="all"):
                 matched_cities[city] = prices
         
         return matched_cities if matched_cities else None
+# ---------------------- EXTRACT CITY AND VEGETABLE FROM MESSAGE ----------------------
 
-# ---------------------- EXTRACT CITY FROM MESSAGE ----------------------
-def extract_city_from_message(message):
-    """Extracts city name from user message"""
+def extract_city_and_vegetable_from_message(message):
+    """Extracts both city name and vegetable name from user message"""
     message_lower = message.lower()
     
-    patterns = [
-        r"(?:in|at|for)\s+([a-zA-Z\s]+)",
+    # Extract city
+    city = None
+    city_patterns = [
+        r"(?:in|at|for)\s+([a-zA-Z\s]+?)(?:\s+price|\s+market|$)",
         r"([a-zA-Z]+)\s+(?:price|weather|market)",
     ]
     
-    for pattern in patterns:
+    for pattern in city_patterns:
         match = re.search(pattern, message_lower)
         if match:
-            city = match.group(1).strip()
-            city = re.sub(r'\b(today|tomorrow|now|current|latest|price|prices|weather)\b', '', city).strip()
-            if city and len(city) > 2:
-                return city
-    return None
+            potential_city = match.group(1).strip()
+            potential_city = re.sub(r'\b(today|tomorrow|now|current|latest|price|prices|weather)\b', '', potential_city).strip()
+            if potential_city and len(potential_city) > 2:
+                city = potential_city
+                break
+    
+    # Extract vegetable/produce
+    vegetable = None
+    # List of common vegetables and produce
+    produce_list = [
+        "tomato", "potato", "onion", "cabbage", "cauliflower", "lady finger", "bhindi",
+        "brinjal", "eggplant", "carrot", "spinach", "green peas", "peas", "capsicum",
+        "cucumber", "bottle gourd", "lauki", "pumpkin", "apple", "banana", "pomegranate",
+        "mango", "alphonso", "pineapple", "papaya", "apricot", "cherry", "walnut",
+        "coconut", "breadfruit"
+    ]
+    
+    for produce in produce_list:
+        if produce in message_lower:
+            vegetable = produce
+            break
+    
+    return city, vegetable
 
-# ---------------------- FORMAT PRICE RESPONSE ----------------------
-def format_price_response(prices, city_name=None):
-    """Formats price data into readable response"""
+# ---------------------- FORMAT PRICE RESPONSE (UPDATED) ----------------------
+def format_price_response(prices, city_name=None, vegetable_name=None):
+    """Formats price data into readable response - shows only specific vegetable if mentioned"""
     if not prices:
         return "❌ Sorry, no price data found. Try: Delhi, Mumbai, or Bangalore."
     
@@ -1659,21 +1679,33 @@ def format_price_response(prices, city_name=None):
     for city, produce_data in prices.items():
         if city_name and city_name.lower() not in city.lower():
             continue
-            
+        
         response += f"📍 **{city}**\n\n"
         
-        for item, data in produce_data.items():
-            response += f"• **{item}**: {data['price']} {data['unit']} {data['trend']}\n"
+        # If specific vegetable is requested, show only that
+        if vegetable_name:
+            found = False
+            for item, data in produce_data.items():
+                if vegetable_name.lower() in item.lower():
+                    response += f"• **{item}**: {data['price']} {data['unit']} {data['trend']}\n"
+                    found = True
+            
+            if not found:
+                response += f"❌ {vegetable_name.title()} price not available for {city}\n"
+        else:
+            # Show all produce for the city
+            for item, data in produce_data.items():
+                response += f"• **{item}**: {data['price']} {data['unit']} {data['trend']}\n"
         
         response += "\n"
     
     response += "\n📊 **Legend:** ↑ Rising | → Stable | ↓ Falling\n"
-    response += "📅 **Updated:** October 19, 2025\n"
+    response += "📅 **Updated:** October 25, 2025\n"
     response += "💡 **Tip:** Prices are approximate retail rates."
     
     return response
 
-# ---------------------- CHATBOT RESPONSE LOGIC ----------------------
+# ---------------------- CHATBOT RESPONSE LOGIC (UPDATED PRICE SECTION) ----------------------
 def get_bot_response(user_message):
     """Generates intelligent responses"""
     message_lower = user_message.lower()
@@ -1692,19 +1724,25 @@ I'll analyze it and provide:
     
     # Price queries
     if any(word in message_lower for word in ["price", "cost", "market"]):
-        city = extract_city_from_message(user_message)
+        city, vegetable = extract_city_and_vegetable_from_message(user_message)
         
         if city:
             prices = get_produce_prices(city)
-            return format_price_response(prices, city)
+            if prices:
+                return format_price_response(prices, city, vegetable)
+            else:
+                return f"❌ Sorry, I don't have price data for '{city}'. Try: Delhi, Mumbai, Bangalore, Chennai, Kolkata, etc."
         else:
             return """💰 **Market Prices Available!**
 
-🌆 **Cities Covered:** Delhi, Mumbai, Bangalore, and more!
+🌆 **Cities Covered:** Delhi, Mumbai, Bangalore, and 100+ more cities!
 
-💬 **Ask me:** "Show prices in Mumbai" or "Tomato price in Delhi"
+💬 **Ask me:** 
+• "Tomato price in Mumbai"
+• "Show onion prices in Delhi"
+• "What's the price of potato in Bangalore?"
 
-📍 Type your city name!"""
+📍 Type your city and vegetable name!"""
     
     # Weather queries
     if any(word in message_lower for word in ["weather", "temperature"]):
