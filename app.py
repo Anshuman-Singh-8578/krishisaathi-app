@@ -659,41 +659,6 @@ def get_weather(city):
         pass
     return None
 
-# ---------------------- VOICE TO TEXT FEATURE ----------------------
-st.subheader("🎙️ Speak to KrishiSaathi")
-
-audio = mic_recorder(
-    start_prompt="🎤 Start Recording",
-    stop_prompt="🛑 Stop Recording",
-    key="voice_input"
-)
-
-if audio:
-    st.audio(audio["bytes"], format="audio/wav")
-    st.write("Recognizing speech...")
-
-    # Save temporary audio
-    with open("temp.wav", "wb") as f:
-        f.write(audio["bytes"])
-
-    recognizer = sr.Recognizer()
-    with sr.AudioFile("temp.wav") as source:
-        audio_data = recognizer.record(source)
-        try:
-            text = recognizer.recognize_google(audio_data)
-            st.success(f"🗣️ You said: {text}")
-
-            # Immediately set and trigger chatbot response
-            st.session_state.voice_query = text
-
-            # --- Simulate sending the query automatically ---
-            st.session_state.trigger_response = True
-
-        except sr.UnknownValueError:
-            st.error("Sorry, I couldn’t understand your voice.")
-        except sr.RequestError:
-            st.error("Network error. Please check your connection.")
-
 
 # ---------------------- DISEASE DETECTION (PLACEHOLDER) ----------------------
 def ai_predict_disease(image_file):
