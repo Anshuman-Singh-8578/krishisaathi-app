@@ -3,10 +3,6 @@ import random
 import requests
 from datetime import datetime
 import re
-import speech_recognition as sr
-from io import BytesIO
-import tempfile
-import os
 
 # ---------------------- STREAMLIT CONFIG ----------------------
 st.set_page_config(
@@ -257,15 +253,13 @@ st.markdown("""
         transform: translateY(0);
     }
     
-    /* Voice Button Special Style */
-    .voice-button {
-        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%) !important;
-        animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.8; }
+    /* Audio Input Styling */
+    .stAudioInput {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%) !important;
+        border: 2px solid #ffb74d !important;
+        border-radius: 12px !important;
+        padding: 1rem !important;
+        margin: 1rem 0 !important;
     }
     
     /* File Uploader */
@@ -280,14 +274,6 @@ st.markdown("""
     [data-testid="stFileUploader"]:hover {
         border-color: #4caf50;
         background: #f1f8f4;
-    }
-    
-    /* Audio Uploader Special Style */
-    .stAudioInput {
-        background: #fff3e0 !important;
-        border: 2px solid #ffb74d !important;
-        border-radius: 12px;
-        padding: 1rem;
     }
     
     /* Metrics */
@@ -485,44 +471,6 @@ if "user_location" not in st.session_state:
     st.session_state.user_location = None
 if "expect_image" not in st.session_state:
     st.session_state.expect_image = False
-if "voice_input" not in st.session_state:
-    st.session_state.voice_input = ""
-
-# ---------------------- SPEECH RECOGNITION FUNCTION ----------------------
-def transcribe_audio(audio_file):
-    """Convert audio to text using speech recognition"""
-    recognizer = sr.Recognizer()
-    
-    try:
-        # Save uploaded audio to temporary file
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp_file:
-            tmp_file.write(audio_file.getvalue())
-            tmp_path = tmp_file.name
-        
-        # Load audio file
-        with sr.AudioFile(tmp_path) as source:
-            audio_data = recognizer.record(source)
-            
-            # Try different recognition methods
-            try:
-                # Try Google Speech Recognition (free)
-                text = recognizer.recognize_google(audio_data)
-                os.unlink(tmp_path)  # Clean up temp file
-                return text
-            except sr.UnknownValueError:
-                os.unlink(tmp_path)
-                return "❌ Could not understand audio. Please speak clearly."
-            except sr.RequestError:
-                # Fallback to Sphinx (offline)
-                try:
-                    text = recognizer.recognize_sphinx(audio_data)
-                    os.unlink(tmp_path)
-                    return text
-                except:
-                    os.unlink(tmp_path)
-                    return "❌ Speech recognition service unavailable. Please type your message."
-    except Exception as e:
-        return f"❌ Error processing audio: {str(e)}"
 
 # ---------------------- WEATHER FUNCTION ----------------------
 def get_weather(city):
@@ -741,7 +689,7 @@ I can help you with:
 🔬 Disease detection
 🎤 Voice commands
 
-**Try saying: "Weather in Delhi" or "Show prices"** 🚜"""
+**Try asking: "Weather in Delhi" or "Show prices"** 🚜"""
     
     # Default
     return """🌾 **How can I help you today?**
@@ -810,39 +758,31 @@ with st.sidebar:
     
     # Voice Input Section
     st.markdown("### 🎤 Voice Input")
-    st.info("Record your voice or upload audio file")
+    st.info("📢 Record your voice message below")
     
-    # Audio file uploader
-    audio_file = st.file_uploader(
-        "Upload Audio (WAV, MP3)", 
-        type=["wav", "mp3", "ogg", "flac"],
-        key="audio_uploader"
-    )
+    # Streamlit's built-in audio input
+    audio_value = st.audio_input("Record your question")
     
-    if audio_file:
-        st.audio(audio_file, format='audio/wav')
+    if audio_value:
+        st.success("✅ Audio recorded! Processing...")
+        st.audio(audio_value)
         
-        if st.button("🎯 Transcribe Audio", key="transcribe_btn"):
-            with st.spinner("🎤 Converting speech to text..."):
-                transcribed_text = transcribe_audio(audio_file)
-                
-                if transcribed_text and not transcribed_text.startswith("❌"):
-                    st.success(f"✅ Transcribed: {transcribed_text}")
-                    
-                    # Add to chat
-                    st.session_state.messages.append({"role": "user", "content": f"🎤 {transcribed_text}"})
-                    bot_response = get_bot_response(transcribed_text)
-                    st.session_state.messages.append({"role": "assistant", "content": bot_response})
-                    st.rerun()
-                else:
-                    st.error(transcribed_text)
+        # Note: Actual transcription would require external API
+        st.warning("⚠️ To use voice transcription, you need to:\n\n1. Install: `pip install SpeechRecognition`\n2. Or use external API (Google Cloud Speech-to-Text, AssemblyAI, etc.)")
+        
+        # Manual text input as fallback
+        manual_text = st.text_input("Or type what you said:", key="manual_voice_input")
+        if manual_text and st.button("📤 Send Voice Message"):
+            st.session_state.messages.append({"role": "user", "content": f"🎤 {manual_text}"})
+            bot_response = get_bot_response(manual_text)
+            st.session_state.messages.append({"role": "assistant", "content": bot_response})
+            st.rerun()
     
     st.divider()
     
     if st.button("🗑️ Clear Chat"):
         st.session_state.messages = []
         st.session_state.expect_image = False
-        st.session_state.voice_input = ""
         st.rerun()
 
 # ---------------------- CHAT INTERFACE ----------------------
@@ -929,7 +869,7 @@ if prompt := st.chat_input("Ask about farming... or use voice input above 🎤")
 st.markdown("""
 <div class="pro-footer">
     <p><strong>🌾 Krishisaathi AI</strong> - Empowering Farmers with Technology</p>
-    <p>💡 AI Disease Detection | Voice Recognition | Weekly Updated Prices | Real-time Weather</p>
+    <p>💡 AI Disease Detection | Voice Input | Weekly Updated Prices | Real-time Weather</p>
     <p style="font-size: 0.85em;">© 2025 Krishisaathi AI. All rights reserved.</p>
 </div>
 """, unsafe_allow_html=True)
