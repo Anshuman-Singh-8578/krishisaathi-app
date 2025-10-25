@@ -3,10 +3,6 @@ import random
 import requests
 from datetime import datetime
 import re
-from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
-import av
-import queue
-import pydub
 
 # ---------------------- STREAMLIT CONFIG ----------------------
 st.set_page_config(
@@ -21,26 +17,21 @@ st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     
-    /* Global Styles */
     * {
         font-family: 'Plus Jakarta Sans', sans-serif;
     }
     
-    /* Hide Streamlit branding */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     
-    /* Hide Streamlit top-right menu */
     [data-testid="stToolbar"] {
         display: none;
     }
     
-    /* Hide "Manage app" button */
     [data-testid="manage-app-button"] {
         display: none;
     }
     
-    /* Hide Deploy button and other header buttons */
     .viewerBadge_container__r5tak {
         display: none;
     }
@@ -49,7 +40,6 @@ st.markdown("""
         display: none;
     }
     
-    /* Make sure sidebar toggle is visible */
     [data-testid="collapsedControl"] {
         display: block !important;
     }
@@ -58,7 +48,6 @@ st.markdown("""
         display: block !important;
     }
     
-    /* Main Background */
     .main {
         background: #f8faf9;
         padding: 0;
@@ -68,27 +57,6 @@ st.markdown("""
         padding: 2rem 3rem !important;
         max-width: 1400px !important;
         margin: 0 auto;
-    }
-    
-    /* Professional Header */
-    .pro-header {
-        background: white;
-        border-radius: 16px;
-        padding: 1.5rem 2rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        border: 1px solid #e8f5e9;
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-    }
-    
-    .header-logo {
-        flex-shrink: 0;
-    }
-    
-    .header-content {
-        flex-grow: 1;
     }
     
     .app-title {
@@ -106,7 +74,6 @@ st.markdown("""
         margin: 0.25rem 0 0 0;
     }
     
-    /* Sidebar Styling */
     [data-testid="stSidebar"] {
         background: white !important;
         border-right: 1px solid #e8f5e9 !important;
@@ -120,7 +87,6 @@ st.markdown("""
         background: white !important;
     }
     
-    /* Sidebar Collapse Button - Make it visible */
     [data-testid="collapsedControl"] {
         background: #4caf50 !important;
         color: white !important;
@@ -129,7 +95,6 @@ st.markdown("""
         display: block !important;
     }
     
-    /* Ensure sidebar is visible */
     [data-testid="stSidebar"][aria-expanded="true"] {
         display: block !important;
         width: 21rem !important;
@@ -140,21 +105,6 @@ st.markdown("""
         width: 0 !important;
     }
     
-    /* Sidebar Logo */
-    [data-testid="stSidebar"] img {
-        transition: all 0.3s ease;
-        width: 100% !important;
-        max-width: 160px !important;
-        height: auto !important;
-        margin: 0 auto;
-        display: block;
-    }
-    
-    [data-testid="stSidebar"] img:hover {
-        transform: scale(1.03);
-    }
-    
-    /* Sidebar Headers */
     [data-testid="stSidebar"] h3 {
         color: #1b5e20 !important;
         font-size: 0.85rem !important;
@@ -165,7 +115,6 @@ st.markdown("""
         margin-bottom: 1rem !important;
     }
     
-    /* Sidebar Buttons */
     [data-testid="stSidebar"] .stButton > button {
         width: 100%;
         background: #f1f8f4 !important;
@@ -195,11 +144,6 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25) !important;
     }
     
-    [data-testid="stSidebar"] .stButton > button:active {
-        transform: translateX(1px);
-    }
-    
-    /* Chat Messages */
     .stChatMessage {
         background: white !important;
         border-radius: 12px !important;
@@ -209,19 +153,6 @@ st.markdown("""
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02) !important;
     }
     
-    /* User Message */
-    [data-testid="user-message"] {
-        background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%) !important;
-        border-left: 3px solid #4caf50 !important;
-    }
-    
-    /* Assistant Message */
-    [data-testid="assistant-message"] {
-        background: white !important;
-        border-left: 3px solid #81c784 !important;
-    }
-    
-    /* Chat Input */
     .stChatInputContainer {
         background: white !important;
         border: 2px solid #e8f5e9 !important;
@@ -230,12 +161,6 @@ st.markdown("""
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
     }
     
-    .stChatInputContainer:focus-within {
-        border-color: #4caf50 !important;
-        box-shadow: 0 4px 16px rgba(76, 175, 80, 0.15) !important;
-    }
-    
-    /* Main Buttons */
     .stButton > button {
         background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
         color: white;
@@ -253,45 +178,6 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(76, 175, 80, 0.35);
     }
     
-    .stButton > button:active {
-        transform: translateY(0);
-    }
-    
-    /* Voice Button Special */
-    .voice-recording {
-        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%) !important;
-        animation: pulse 1.5s infinite;
-    }
-    
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-    }
-    
-    /* Audio Input Styling */
-    .stAudioInput {
-        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%) !important;
-        border: 2px solid #ffb74d !important;
-        border-radius: 12px !important;
-        padding: 1rem !important;
-        margin: 1rem 0 !important;
-    }
-    
-    /* File Uploader */
-    [data-testid="stFileUploader"] {
-        background: white;
-        border: 2px dashed #c8e6c9;
-        border-radius: 12px;
-        padding: 2rem;
-        transition: all 0.3s ease;
-    }
-    
-    [data-testid="stFileUploader"]:hover {
-        border-color: #4caf50;
-        background: #f1f8f4;
-    }
-    
-    /* Metrics */
     [data-testid="stMetric"] {
         background: white;
         border-radius: 10px;
@@ -300,61 +186,6 @@ st.markdown("""
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
     }
     
-    [data-testid="stMetricLabel"] {
-        color: #66bb6a;
-        font-weight: 600;
-        font-size: 0.85rem;
-    }
-    
-    [data-testid="stMetricValue"] {
-        color: #2e7d32;
-        font-size: 1.75rem;
-        font-weight: 700;
-    }
-    
-    /* Tabs */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 0.5rem;
-        background: #f1f8f4;
-        border-radius: 10px;
-        padding: 0.25rem;
-    }
-    
-    .stTabs [data-baseweb="tab"] {
-        background: transparent;
-        border-radius: 8px;
-        color: #66bb6a;
-        font-weight: 600;
-        padding: 0.6rem 1.25rem;
-        font-size: 0.9rem;
-    }
-    
-    .stTabs [aria-selected="true"] {
-        background: white;
-        color: #2e7d32;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-    
-    /* Disease Detection Section */
-    .disease-section {
-        background: white;
-        border-radius: 12px;
-        padding: 2rem;
-        border: 1px solid #e8f5e9;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        margin: 1.5rem 0;
-    }
-    
-    /* Success/Info Boxes */
-    .stSuccess, .stInfo {
-        background: white;
-        border-radius: 10px;
-        border-left: 4px solid #4caf50;
-        padding: 1rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-    }
-    
-    /* Divider */
     hr {
         border: none;
         height: 1px;
@@ -362,21 +193,6 @@ st.markdown("""
         margin: 2rem 0;
     }
     
-    /* Text Colors */
-    p, li, span {
-        color: #37474f;
-    }
-    
-    h1, h2, h3, h4, h5, h6 {
-        color: #1b5e20;
-    }
-    
-    /* Spinner */
-    .stSpinner > div {
-        border-top-color: #4caf50 !important;
-    }
-    
-    /* Footer */
     .pro-footer {
         text-align: center;
         padding: 2rem;
@@ -397,117 +213,7 @@ st.markdown("""
         color: #2e7d32;
         font-weight: 700;
     }
-    
-    /* Scrollbar */
-    ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
-    
-    ::-webkit-scrollbar-track {
-        background: #f1f8f4;
-    }
-    
-    ::-webkit-scrollbar-thumb {
-        background: #c8e6c9;
-        border-radius: 10px;
-    }
-    
-    ::-webkit-scrollbar-thumb:hover {
-        background: #4caf50;
-    }
-    
-    /* Image Styling */
-    img {
-        border-radius: 10px;
-    }
-    
-    /* Subheader Styling */
-    .stSubheader {
-        color: #2e7d32 !important;
-        font-weight: 700 !important;
-    }
-    
-    /* Clear Chat Button Special Style */
-    [data-testid="stSidebar"] .stButton:last-child > button {
-        background: #ffebee !important;
-        border-color: #ffcdd2 !important;
-        color: #c62828 !important;
-        margin-top: 1rem;
-    }
-    
-    [data-testid="stSidebar"] .stButton:last-child > button:hover {
-        background: #ef5350 !important;
-        border-color: #ef5350 !important;
-        color: white !important;
-    }
-    
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .block-container {
-            padding: 1rem !important;
-        }
-        
-        .app-title {
-            font-size: 1.5rem;
-        }
-        
-        .pro-header {
-            flex-direction: column;
-            text-align: center;
-        }
-    }
 </style>
-
-<script>
-// Web Speech API Integration
-let recognition;
-let isListening = false;
-
-function initSpeechRecognition() {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        recognition = new SpeechRecognition();
-        recognition.continuous = false;
-        recognition.interimResults = false;
-        recognition.lang = 'en-US';
-        
-        recognition.onresult = function(event) {
-            const transcript = event.results[0][0].transcript;
-            // Send to Streamlit
-            window.parent.postMessage({
-                type: 'streamlit:setComponentValue',
-                value: transcript
-            }, '*');
-        };
-        
-        recognition.onerror = function(event) {
-            console.error('Speech recognition error:', event.error);
-        };
-        
-        recognition.onend = function() {
-            isListening = false;
-        };
-    }
-}
-
-function startListening() {
-    if (recognition && !isListening) {
-        recognition.start();
-        isListening = true;
-    }
-}
-
-function stopListening() {
-    if (recognition && isListening) {
-        recognition.stop();
-        isListening = false;
-    }
-}
-
-// Initialize on load
-window.addEventListener('load', initSpeechRecognition);
-</script>
 """, unsafe_allow_html=True)
 
 # Display professional header
@@ -523,7 +229,7 @@ with header_col2:
     st.markdown("""
     <div style="display: flex; flex-direction: column; justify-content: center; height: 100%;">
         <h1 class="app-title">KRISHISAATHI AI</h1>
-        <p class="app-tagline">Connecting Farmers, Empowering Growth 🎤 Live Voice Recognition</p>
+        <p class="app-tagline">Connecting Farmers, Empowering Growth - Voice Enabled</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -536,10 +242,6 @@ if "user_location" not in st.session_state:
     st.session_state.user_location = None
 if "expect_image" not in st.session_state:
     st.session_state.expect_image = False
-if "voice_text" not in st.session_state:
-    st.session_state.voice_text = ""
-if "is_recording" not in st.session_state:
-    st.session_state.is_recording = False
 
 # ---------------------- WEATHER FUNCTION ----------------------
 def get_weather(city):
@@ -565,7 +267,7 @@ def get_weather(city):
         pass
     return None
 
-# ---------------------- DISEASE DETECTION (PLACEHOLDER) ----------------------
+# ---------------------- DISEASE DETECTION ----------------------
 def ai_predict_disease(image_file):
     """Placeholder for future ML model"""
     diseases = {
@@ -601,26 +303,26 @@ def get_produce_prices(state="all"):
     
     sample_prices = {
         "Delhi": {
-            "Tomato": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
-            "Potato": {"price": "₹14-24", "unit": "per kg", "trend": "→"},
-            "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
-            "Cabbage": {"price": "₹8-10", "unit": "per kg", "trend": "→"},
-            "Apple": {"price": "₹85-120", "unit": "per kg", "trend": "→"},
-            "Banana": {"price": "₹45-60", "unit": "per dozen", "trend": "→"}
+            "Tomato": {"price": "Rs 22-36", "unit": "per kg", "trend": "Down"},
+            "Potato": {"price": "Rs 14-24", "unit": "per kg", "trend": "Stable"},
+            "Onion": {"price": "Rs 15-23", "unit": "per kg", "trend": "Down"},
+            "Cabbage": {"price": "Rs 8-10", "unit": "per kg", "trend": "Stable"},
+            "Apple": {"price": "Rs 85-120", "unit": "per kg", "trend": "Stable"},
+            "Banana": {"price": "Rs 45-60", "unit": "per dozen", "trend": "Stable"}
         },
         "Mumbai": {
-            "Tomato": {"price": "₹26-40", "unit": "per kg", "trend": "↓"},
-            "Potato": {"price": "₹18-28", "unit": "per kg", "trend": "→"},
-            "Onion": {"price": "₹17-26", "unit": "per kg", "trend": "↓"},
-            "Apple": {"price": "₹90-130", "unit": "per kg", "trend": "→"},
-            "Banana": {"price": "₹48-65", "unit": "per dozen", "trend": "→"}
+            "Tomato": {"price": "Rs 26-40", "unit": "per kg", "trend": "Down"},
+            "Potato": {"price": "Rs 18-28", "unit": "per kg", "trend": "Stable"},
+            "Onion": {"price": "Rs 17-26", "unit": "per kg", "trend": "Down"},
+            "Apple": {"price": "Rs 90-130", "unit": "per kg", "trend": "Stable"},
+            "Banana": {"price": "Rs 48-65", "unit": "per dozen", "trend": "Stable"}
         },
         "Bangalore": {
-            "Tomato": {"price": "₹24-36", "unit": "per kg", "trend": "↓"},
-            "Potato": {"price": "₹16-25", "unit": "per kg", "trend": "→"},
-            "Onion": {"price": "₹15-22", "unit": "per kg", "trend": "↓"},
-            "Apple": {"price": "₹85-120", "unit": "per kg", "trend": "→"},
-            "Banana": {"price": "₹40-54", "unit": "per dozen", "trend": "→"}
+            "Tomato": {"price": "Rs 24-36", "unit": "per kg", "trend": "Down"},
+            "Potato": {"price": "Rs 16-25", "unit": "per kg", "trend": "Stable"},
+            "Onion": {"price": "Rs 15-22", "unit": "per kg", "trend": "Down"},
+            "Apple": {"price": "Rs 85-120", "unit": "per kg", "trend": "Stable"},
+            "Banana": {"price": "Rs 40-54", "unit": "per dozen", "trend": "Stable"}
         }
     }
     
@@ -659,24 +361,23 @@ def extract_city_from_message(message):
 def format_price_response(prices, city_name=None):
     """Formats price data into readable response"""
     if not prices:
-        return "❌ Sorry, no price data found. Try: Delhi, Mumbai, or Bangalore."
+        return "Sorry, no price data found. Try: Delhi, Mumbai, or Bangalore."
     
-    response = "💰 **Current Market Prices:**\n\n"
+    response = "**Current Market Prices:**\n\n"
     
     for city, produce_data in prices.items():
         if city_name and city_name.lower() not in city.lower():
             continue
             
-        response += f"📍 **{city}**\n\n"
+        response += f"**{city}**\n\n"
         
         for item, data in produce_data.items():
-            response += f"• **{item}**: {data['price']} {data['unit']} {data['trend']}\n"
+            response += f"- **{item}**: {data['price']} {data['unit']} ({data['trend']})\n"
         
         response += "\n"
     
-    response += "\n📊 **Legend:** ↑ Rising | → Stable | ↓ Falling\n"
-    response += "📅 **Updated:** October 25, 2025\n"
-    response += "💡 **Tip:** Prices are approximate retail rates."
+    response += "\nUpdated: October 25, 2025\n"
+    response += "Tip: Prices are approximate retail rates."
     
     return response
 
@@ -688,14 +389,14 @@ def get_bot_response(user_message):
     # Disease detection trigger
     if any(word in message_lower for word in ["disease", "sick", "infected", "diagnose"]):
         st.session_state.expect_image = True
-        return """🔬 **Crop Disease Detection**
+        return """**Crop Disease Detection**
 
-📷 Please upload a clear photo of affected leaves or crops.
+Please upload a clear photo of affected leaves or crops.
 
-I'll analyze it and provide:
-✅ Disease identification
-✅ Treatment recommendations
-✅ Prevention tips"""
+I will analyze it and provide:
+- Disease identification
+- Treatment recommendations
+- Prevention tips"""
     
     # Price queries
     if any(word in message_lower for word in ["price", "cost", "market"]):
@@ -705,72 +406,72 @@ I'll analyze it and provide:
             prices = get_produce_prices(city)
             return format_price_response(prices, city)
         else:
-            return """💰 **Market Prices Available!**
+            return """**Market Prices Available!**
 
-🌆 **Cities Covered:** Delhi, Mumbai, Bangalore, and more!
+Cities Covered: Delhi, Mumbai, Bangalore, and more!
 
-💬 **Ask me:** "Show prices in Mumbai" or "Tomato price in Delhi"
+Ask me: "Show prices in Mumbai" or "Tomato price in Delhi"
 
-🔍 Type your city name!"""
+Type your city name!"""
     
     # Weather queries
     if any(word in message_lower for word in ["weather", "temperature"]):
         city = extract_city_from_message(user_message)
         
         if not city:
-            return "🌍 Please specify a location!\nExample: 'Weather in Delhi'"
+            return "Please specify a location!\nExample: 'Weather in Delhi'"
         
         weather = get_weather(city)
         if weather:
-            return f"""🌤️ **Weather in {weather['city']}:**
+            return f"""**Weather in {weather['city']}:**
             
-- Temperature: {weather['temperature']}°C (feels like {weather['feels_like']}°C)
+- Temperature: {weather['temperature']}C (feels like {weather['feels_like']}C)
 - Conditions: {weather['description'].title()}
 - Humidity: {weather['humidity']}%
 - Wind: {weather['wind_speed']} m/s
 
-**Advice:** {"Good for outdoor work! 🌞" if weather['temperature'] > 15 else "Indoor tasks recommended. 🧥"}"""
+**Advice:** {"Good for outdoor work!" if weather['temperature'] > 15 else "Indoor tasks recommended."}"""
         else:
-            return f"❌ Couldn't fetch weather for '{city}'."
+            return f"Could not fetch weather for '{city}'."
     
     # Crop tips
     if any(word in message_lower for word in ["wheat", "rice", "tomato", "potato", "crop", "farming"]):
-        return """🌾 **Crop Cultivation Guide**
+        return """**Crop Cultivation Guide**
 
 I can help with detailed tips for:
-• 🌾 Wheat
-• 🍚 Rice
-• 🍅 Tomato
-• 🥔 Potato
+- Wheat
+- Rice
+- Tomato
+- Potato
 
 Ask me: "Tell me about wheat cultivation" or "How to grow rice"
 
-🚜 What crop would you like to know about?"""
+What crop would you like to know about?"""
     
     # Greeting
     if any(word in message_lower for word in ["hello", "hi", "hey", "namaste"]):
-        return """🙏 **Namaste! Welcome to Krishisaathi AI!**
+        return """**Namaste! Welcome to Krishisaathi AI!**
 
 I can help you with:
-🌤️ Weather forecasts
-💰 Market prices
-🌾 Crop cultivation tips
-🔬 Disease detection
-🎤 Voice commands (Click mic button!)
+- Weather forecasts
+- Market prices
+- Crop cultivation tips
+- Disease detection
+- Voice commands
 
-**Try saying: "Weather in Delhi" or "Show prices"** 🚜"""
+Try asking: "Weather in Delhi" or "Show prices" """
     
     # Default
-    return """🌾 **How can I help you today?**
+    return """**How can I help you today?**
 
 Ask me about:
-• 🔬 Crop disease (upload photo)
-• 💰 Market prices
-• 🌤️ Weather updates
-• 🌱 Crop tips
-• 🎤 Click mic to speak!
+- Crop disease (upload photo)
+- Market prices
+- Weather updates
+- Crop tips
+- Use voice input!
 
-**Type or speak your question!** 🚜"""
+Type or speak your question!"""
 
 # ---------------------- SIDEBAR ----------------------
 with st.sidebar:
@@ -783,75 +484,59 @@ with st.sidebar:
             margin: 0;
             letter-spacing: 0.5px;
             line-height: 1.2;
-        ">🌾 KRISHISAATHI AI</h2>
+        ">KRISHISAATHI AI</h2>
         <p style="
             font-size: 0.8rem;
             color: #81c784;
             margin: 0.4rem 0 0 0;
             font-weight: 500;
-        ">Smart Farming Assistant 🎤</p>
+        ">Smart Farming Assistant</p>
     </div>
     """, unsafe_allow_html=True)
     
-    st.markdown("### 🎯 Quick Actions")
+    st.markdown("### Quick Actions")
     
-    if st.button("🗑️ Clear Chat"):
+    if st.button("Disease Detection"):
+        user_msg = "Check crop disease"
+        st.session_state.messages.append({"role": "user", "content": user_msg})
+        bot_response = get_bot_response(user_msg)
+        st.session_state.messages.append({"role": "assistant", "content": bot_response})
+        st.rerun()
+    
+    if st.button("Delhi Prices"):
+        user_msg = "Show prices in Delhi"
+        st.session_state.messages.append({"role": "user", "content": user_msg})
+        bot_response = get_bot_response(user_msg)
+        st.session_state.messages.append({"role": "assistant", "content": bot_response})
+        st.rerun()
+        
+    if st.button("Mumbai Weather"):
+        user_msg = "Weather in Mumbai"
+        st.session_state.messages.append({"role": "user", "content": user_msg})
+        bot_response = get_bot_response(user_msg)
+        st.session_state.messages.append({"role": "assistant", "content": bot_response})
+        st.rerun()
+        
+    if st.button("Crop Tips"):
+        user_msg = "Tell me about farming"
+        st.session_state.messages.append({"role": "user", "content": user_msg})
+        bot_response = get_bot_response(user_msg)
+        st.session_state.messages.append({"role": "assistant", "content": bot_response})
+        st.rerun()
+    
+    st.divider()
+    
+    if st.button("Clear Chat"):
         st.session_state.messages = []
         st.session_state.expect_image = False
-        st.session_state.voice_text = ""
         st.rerun()
 
-# ---------------------- MAIN CONTENT ----------------------
+# ---------------------- VOICE INPUT SECTION ----------------------
+st.markdown("### Voice Input")
+st.info("Click the microphone button below to start speaking. Your speech will be converted to text instantly!")
 
-# Voice Input Button with Live Recognition
-st.markdown("### 🎤 Voice Input")
-col_voice1, col_voice2 = st.columns([1, 3])
-
-with col_voice1:
-    if st.button("🎤 START SPEAKING", key="voice_btn", help="Click to start voice recognition"):
-        st.session_state.is_recording = True
-
-with col_voice2:
-    if st.session_state.is_recording:
-        st.markdown("🔴 **Listening... Speak now!**")
-    else:
-        st.markdown("💬 **Click microphone to speak**")
-
-# Voice input text area (will be filled by speech)
-voice_input = st.text_area(
-    "Voice Input (auto-filled when you speak):",
-    value=st.session_state.voice_text,
-    height=100,
-    key="voice_input_area",
-    placeholder="Click 🎤 button above and start speaking..."
-)
-
-# Update voice text from input
-if voice_input != st.session_state.voice_text:
-    st.session_state.voice_text = voice_input
-
-# Send voice message button
-if st.session_state.voice_text and st.button("📤 Send Voice Message", key="send_voice"):
-    user_message = st.session_state.voice_text
-    st.session_state.messages.append({"role": "user", "content": f"🎤 {user_message}"})
-    
-    with st.spinner("🌱 Processing..."):
-        bot_response = get_bot_response(user_message)
-        st.session_state.messages.append({"role": "assistant", "content": bot_response})
-    
-    # Clear voice text
-    st.session_state.voice_text = ""
-    st.session_state.is_recording = False
-    st.rerun()
-
-st.markdown("---")
-
-# Alternative: Simple browser-based speech recognition
-st.markdown("### 🎙️ Simple Voice Method")
-st.info("💡 **Tip**: Use your browser's built-in speech recognition. Most modern browsers support this!")
-
-# HTML component for browser speech recognition
-st.components.v1.html("""
+# Voice recognition HTML component
+voice_html = """
 <!DOCTYPE html>
 <html>
 <head>
@@ -861,6 +546,7 @@ st.components.v1.html("""
             padding: 20px;
             background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%);
             border-radius: 12px;
+            margin: 0;
         }
         
         .voice-container {
@@ -902,19 +588,20 @@ st.components.v1.html("""
             background: white;
             border-radius: 10px;
             border: 2px solid #4caf50;
-            min-height: 50px;
-            font-size: 1rem;
+            min-height: 60px;
+            font-size: 1.1rem;
             color: #2e7d32;
+            font-weight: 500;
         }
         
         .status {
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: #66bb6a;
             margin: 10px 0;
             font-weight: 600;
         }
         
-        .send-button {
+        .copy-button {
             background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
             color: white;
             border: none;
@@ -928,12 +615,12 @@ st.components.v1.html("""
             margin-top: 10px;
         }
         
-        .send-button:hover {
+        .copy-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(76, 175, 80, 0.35);
         }
         
-        .send-button:disabled {
+        .copy-button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
@@ -941,14 +628,10 @@ st.components.v1.html("""
 </head>
 <body>
     <div class="voice-container">
-        <button id="micButton" class="mic-button" onclick="toggleRecognition()">
-            🎤
-        </button>
+        <button id="micButton" class="mic-button" onclick="toggleRecognition()">🎤</button>
         <div class="status" id="status">Click microphone to start</div>
         <div class="transcript" id="transcript">Your speech will appear here...</div>
-        <button class="send-button" id="sendButton" onclick="sendToStreamlit()" disabled>
-            📤 Send to Chat
-        </button>
+        <button class="copy-button" id="copyButton" onclick="copyText()" disabled>📋 Copy Text</button>
     </div>
 
     <script>
@@ -956,7 +639,6 @@ st.components.v1.html("""
         let isRecording = false;
         let finalTranscript = '';
 
-        // Check for browser support
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
@@ -984,11 +666,11 @@ st.components.v1.html("""
                     }
                 }
                 
-                document.getElementById('transcript').textContent = 
-                    finalTranscript + interimTranscript || 'Your speech will appear here...';
+                const displayText = finalTranscript + interimTranscript;
+                document.getElementById('transcript').textContent = displayText || 'Your speech will appear here...';
                 
                 if (finalTranscript.trim()) {
-                    document.getElementById('sendButton').disabled = false;
+                    document.getElementById('copyButton').disabled = false;
                 }
             };
             
@@ -1018,7 +700,7 @@ st.components.v1.html("""
             if (recognition) {
                 finalTranscript = '';
                 document.getElementById('transcript').textContent = 'Your speech will appear here...';
-                document.getElementById('sendButton').disabled = true;
+                document.getElementById('copyButton').disabled = true;
                 recognition.start();
             }
         }
@@ -1028,49 +710,44 @@ st.components.v1.html("""
                 recognition.stop();
                 isRecording = false;
                 document.getElementById('micButton').classList.remove('recording');
-                document.getElementById('status').textContent = '✅ Recording stopped. Click again to record.';
+                document.getElementById('status').textContent = '✅ Recording stopped. Click mic to record again.';
             }
         }
 
-        function sendToStreamlit() {
+        function copyText() {
             const text = finalTranscript.trim();
             if (text) {
-                // Send to parent Streamlit app
-                window.parent.postMessage({
-                    type: 'streamlit:setComponentValue',
-                    key: 'voice_message',
-                    value: text
-                }, '*');
-                
-                document.getElementById('status').textContent = '✅ Message sent!';
-                
-                // Reset after 2 seconds
-                setTimeout(() => {
-                    finalTranscript = '';
-                    document.getElementById('transcript').textContent = 'Your speech will appear here...';
-                    document.getElementById('sendButton').disabled = true;
-                    document.getElementById('status').textContent = 'Click microphone to start';
-                }, 2000);
+                navigator.clipboard.writeText(text).then(function() {
+                    document.getElementById('status').textContent = '✅ Text copied! Paste it in the chat below.';
+                    setTimeout(() => {
+                        document.getElementById('status').textContent = 'Click microphone to start';
+                    }, 3000);
+                });
             }
         }
     </script>
 </body>
 </html>
-""", height=350)
+"""
+
+st.components.v1.html(voice_html, height=300)
+
+st.markdown("**Instructions:**")
+st.markdown("1. Click the 🎤 microphone button")
+st.markdown("2. Speak your question clearly")
+st.markdown("3. Click 📋 Copy Text button")
+st.markdown("4. Paste in the chat box below and press Enter")
 
 st.markdown("---")
 
 # ---------------------- CHAT INTERFACE ----------------------
-st.markdown("### 💬 Chat")
-
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
 # ---------------------- IMAGE UPLOAD SECTION ----------------------
 if st.session_state.expect_image:
-    st.markdown('<div class="disease-section">', unsafe_allow_html=True)
-    st.subheader("📸 Upload Crop Image for Disease Detection")
+    st.subheader("Upload Crop Image for Disease Detection")
     
     uploaded_file = st.file_uploader(
         "Choose an image (JPG, PNG, JPEG)", 
@@ -1084,17 +761,17 @@ if st.session_state.expect_image:
             st.image(uploaded_file, caption="Uploaded Crop Image", use_container_width=True)
         
         with col2:
-            with st.spinner("🔬 Analyzing image..."):
+            with st.spinner("Analyzing image..."):
                 prediction = ai_predict_disease(uploaded_file)
                 
-                st.success(f"✅ **Detection Complete!**")
+                st.success("Detection Complete!")
                 st.metric("Disease Identified", prediction['name'])
                 st.metric("Confidence", f"{prediction['confidence']}%")
         
         st.markdown("---")
-        st.markdown("### 📋 Detailed Analysis")
+        st.markdown("### Detailed Analysis")
         
-        tab1, tab2, tab3 = st.tabs(["🔍 Symptoms", "💊 Treatment", "🛡️ Prevention"])
+        tab1, tab2, tab3 = st.tabs(["Symptoms", "Treatment", "Prevention"])
         
         with tab1:
             st.write(f"**Symptoms:** {prediction['symptoms']}")
@@ -1107,14 +784,14 @@ if st.session_state.expect_image:
         
         col_a, col_b = st.columns(2)
         with col_a:
-            if st.button("🔄 Analyze Another Image"):
+            if st.button("Analyze Another Image"):
                 st.session_state.expect_image = True
                 st.rerun()
         
         with col_b:
-            if st.button("✅ Done"):
+            if st.button("Done"):
                 st.session_state.expect_image = False
-                result_msg = f"""✅ **Disease Detection Complete**
+                result_msg = f"""**Disease Detection Complete**
 
 **Identified:** {prediction['name']} ({prediction['confidence']}% confidence)
 
@@ -1126,17 +803,15 @@ if st.session_state.expect_image:
                 
                 st.session_state.messages.append({"role": "assistant", "content": result_msg})
                 st.rerun()
-    
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------------------- CHAT INPUT ----------------------
-if prompt := st.chat_input("Type your question... or use voice input above 🎤"):
+if prompt := st.chat_input("Type your question or paste voice text here..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
     
     with st.chat_message("assistant"):
-        with st.spinner("🌱 Thinking..."):
+        with st.spinner("Thinking..."):
             response = get_bot_response(prompt)
             st.markdown(response)
     
@@ -1145,38 +820,8 @@ if prompt := st.chat_input("Type your question... or use voice input above 🎤"
 # ---------------------- FOOTER ----------------------
 st.markdown("""
 <div class="pro-footer">
-    <p><strong>🌾 Krishisaathi AI</strong> - Empowering Farmers with Technology</p>
-    <p>💡 AI Disease Detection | Live Voice Recognition | Weekly Updated Prices | Real-time Weather</p>
+    <p><strong>Krishisaathi AI</strong> - Empowering Farmers with Technology</p>
+    <p>AI Disease Detection | Live Voice Recognition | Weekly Updated Prices | Real-time Weather</p>
     <p style="font-size: 0.85em;">© 2025 Krishisaathi AI. All rights reserved.</p>
 </div>
-""", unsafe_allow_html=True)📷 Disease Detection"):
-        user_msg = "Check crop disease"
-        st.session_state.messages.append({"role": "user", "content": user_msg})
-        bot_response = get_bot_response(user_msg)
-        st.session_state.messages.append({"role": "assistant", "content": bot_response})
-        st.rerun()
-    
-    if st.button("📊 Delhi Prices"):
-        user_msg = "Show prices in Delhi"
-        st.session_state.messages.append({"role": "user", "content": user_msg})
-        bot_response = get_bot_response(user_msg)
-        st.session_state.messages.append({"role": "assistant", "content": bot_response})
-        st.rerun()
-        
-    if st.button("🌤️ Mumbai Weather"):
-        user_msg = "Weather in Mumbai"
-        st.session_state.messages.append({"role": "user", "content": user_msg})
-        bot_response = get_bot_response(user_msg)
-        st.session_state.messages.append({"role": "assistant", "content": bot_response})
-        st.rerun()
-        
-    if st.button("🌾 Crop Tips"):
-        user_msg = "Tell me about farming"
-        st.session_state.messages.append({"role": "user", "content": user_msg})
-        bot_response = get_bot_response(user_msg)
-        st.session_state.messages.append({"role": "assistant", "content": bot_response})
-        st.rerun()
-    
-    st.divider()
-    
-    if st.button("
+""", unsafe_allow_html=True)
