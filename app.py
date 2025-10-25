@@ -23,6 +23,7 @@ st.markdown("""
     
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
+    header {visibility: hidden;}
     
     [data-testid="stToolbar"] {
         display: none;
@@ -40,12 +41,26 @@ st.markdown("""
         display: none;
     }
     
+    /* Force sidebar to be visible */
     [data-testid="collapsedControl"] {
         display: block !important;
+        background: #4caf50 !important;
+        color: white !important;
     }
     
     section[data-testid="stSidebar"] {
         display: block !important;
+        background: white !important;
+        border-right: 2px solid #e8f5e9 !important;
+    }
+    
+    [data-testid="stSidebar"][aria-expanded="true"] {
+        min-width: 21rem !important;
+        max-width: 21rem !important;
+    }
+    
+    [data-testid="stSidebar"] > div {
+        background: white !important;
     }
     
     .main {
@@ -74,37 +89,6 @@ st.markdown("""
         margin: 0.25rem 0 0 0;
     }
     
-    [data-testid="stSidebar"] {
-        background: white !important;
-        border-right: 1px solid #e8f5e9 !important;
-    }
-    
-    [data-testid="stSidebar"] > div:first-child {
-        background: white !important;
-    }
-    
-    section[data-testid="stSidebar"] > div {
-        background: white !important;
-    }
-    
-    [data-testid="collapsedControl"] {
-        background: #4caf50 !important;
-        color: white !important;
-        border-radius: 0 8px 8px 0 !important;
-        padding: 0.5rem !important;
-        display: block !important;
-    }
-    
-    [data-testid="stSidebar"][aria-expanded="true"] {
-        display: block !important;
-        width: 21rem !important;
-    }
-    
-    [data-testid="stSidebar"][aria-expanded="false"] {
-        display: block !important;
-        width: 0 !important;
-    }
-    
     [data-testid="stSidebar"] h3 {
         color: #1b5e20 !important;
         font-size: 0.85rem !important;
@@ -127,11 +111,6 @@ st.markdown("""
         border-radius: 10px !important;
         transition: all 0.2s ease !important;
         height: 48px !important;
-        min-height: 48px !important;
-        max-height: 48px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
         margin-bottom: 0.5rem !important;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
     }
@@ -159,6 +138,7 @@ st.markdown("""
         border-radius: 12px !important;
         padding: 0.5rem !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+        position: relative !important;
     }
     
     .stButton > button {
@@ -213,6 +193,69 @@ st.markdown("""
         color: #2e7d32;
         font-weight: 700;
     }
+    
+    /* Voice button styles */
+    .voice-button-container {
+        position: fixed;
+        bottom: 100px;
+        right: 40px;
+        z-index: 999;
+    }
+    
+    .voice-button {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        font-size: 1.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+    
+    .voice-button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+    }
+    
+    .voice-button.recording {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+        animation: pulse 1s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.15); }
+    }
+    
+    .voice-status {
+        position: fixed;
+        bottom: 170px;
+        right: 40px;
+        background: white;
+        padding: 10px 20px;
+        border-radius: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        font-size: 0.9rem;
+        color: #2e7d32;
+        font-weight: 600;
+        display: none;
+        z-index: 999;
+    }
+    
+    .voice-status.show {
+        display: block;
+        animation: fadeIn 0.3s;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -242,6 +285,8 @@ if "user_location" not in st.session_state:
     st.session_state.user_location = None
 if "expect_image" not in st.session_state:
     st.session_state.expect_image = False
+if "voice_text" not in st.session_state:
+    st.session_state.voice_text = ""
 
 # ---------------------- WEATHER FUNCTION ----------------------
 def get_weather(city):
@@ -457,7 +502,7 @@ I can help you with:
 - Market prices
 - Crop cultivation tips
 - Disease detection
-- Voice commands
+- Voice commands (Click mic button!)
 
 Try asking: "Weather in Delhi" or "Show prices" """
     
@@ -469,7 +514,7 @@ Ask me about:
 - Market prices
 - Weather updates
 - Crop tips
-- Use voice input!
+- Click mic button to speak!
 
 Type or speak your question!"""
 
@@ -496,28 +541,28 @@ with st.sidebar:
     
     st.markdown("### Quick Actions")
     
-    if st.button("Disease Detection"):
+    if st.button("📷 Disease Detection"):
         user_msg = "Check crop disease"
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg)
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
     
-    if st.button("Delhi Prices"):
+    if st.button("📊 Delhi Prices"):
         user_msg = "Show prices in Delhi"
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg)
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
         
-    if st.button("Mumbai Weather"):
+    if st.button("🌤️ Mumbai Weather"):
         user_msg = "Weather in Mumbai"
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg)
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
         
-    if st.button("Crop Tips"):
+    if st.button("🌾 Crop Tips"):
         user_msg = "Tell me about farming"
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg)
@@ -526,219 +571,99 @@ with st.sidebar:
     
     st.divider()
     
-    if st.button("Clear Chat"):
+    if st.button("🗑️ Clear Chat"):
         st.session_state.messages = []
         st.session_state.expect_image = False
+        st.session_state.voice_text = ""
         st.rerun()
 
-# ---------------------- VOICE INPUT SECTION ----------------------
-st.markdown("### Voice Input")
-st.info("Click the microphone button below to start speaking. Your speech will be converted to text instantly!")
+# ---------------------- FLOATING VOICE BUTTON ----------------------
+st.markdown("""
+<div id="voiceStatus" class="voice-status">Listening...</div>
+<div class="voice-button-container">
+    <button id="voiceButton" class="voice-button" onclick="toggleVoice()">🎤</button>
+</div>
 
-# Voice recognition HTML component
-voice_html = """
-<!DOCTYPE html>
-<html>
-<head>
-    <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            padding: 20px;
-            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%);
-            border-radius: 12px;
-            margin: 0;
-        }
-        
-        .voice-container {
-            text-align: center;
-        }
-        
-        .mic-button {
-            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 80px;
-            height: 80px;
-            font-size: 2rem;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25);
-            transition: all 0.3s ease;
-            margin: 10px;
-        }
-        
-        .mic-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.35);
-        }
-        
-        .mic-button.recording {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-            animation: pulse 1s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
-        .transcript {
-            margin: 20px 0;
-            padding: 15px;
-            background: white;
-            border-radius: 10px;
-            border: 2px solid #4caf50;
-            min-height: 60px;
-            font-size: 1.1rem;
-            color: #2e7d32;
-            font-weight: 500;
-        }
-        
-        .status {
-            font-size: 1rem;
-            color: #66bb6a;
-            margin: 10px 0;
-            font-weight: 600;
-        }
-        
-        .copy-button {
-            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 12px 30px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25);
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-        
-        .copy-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.35);
-        }
-        
-        .copy-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-    </style>
-</head>
-<body>
-    <div class="voice-container">
-        <button id="micButton" class="mic-button" onclick="toggleRecognition()">🎤</button>
-        <div class="status" id="status">Click microphone to start</div>
-        <div class="transcript" id="transcript">Your speech will appear here...</div>
-        <button class="copy-button" id="copyButton" onclick="copyText()" disabled>📋 Copy Text</button>
-    </div>
+<script>
+let recognition;
+let isRecording = false;
 
-    <script>
-        let recognition;
-        let isRecording = false;
-        let finalTranscript = '';
-
-        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            recognition = new SpeechRecognition();
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US';
+    
+    recognition.onstart = function() {
+        isRecording = true;
+        document.getElementById('voiceButton').classList.add('recording');
+        document.getElementById('voiceStatus').classList.add('show');
+        document.getElementById('voiceStatus').textContent = '🔴 Listening...';
+    };
+    
+    recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        
+        // Find the chat input and set its value
+        const chatInput = parent.document.querySelector('[data-testid="stChatInputTextArea"]');
+        if (chatInput) {
+            chatInput.value = transcript;
+            chatInput.dispatchEvent(new Event('input', { bubbles: true }));
             
-            recognition.continuous = true;
-            recognition.interimResults = true;
-            recognition.lang = 'en-US';
-            
-            recognition.onstart = function() {
-                isRecording = true;
-                document.getElementById('micButton').classList.add('recording');
-                document.getElementById('status').textContent = '🔴 Listening... Speak now!';
-            };
-            
-            recognition.onresult = function(event) {
-                let interimTranscript = '';
-                
-                for (let i = event.resultIndex; i < event.results.length; i++) {
-                    const transcript = event.results[i][0].transcript;
-                    
-                    if (event.results[i].isFinal) {
-                        finalTranscript += transcript + ' ';
-                    } else {
-                        interimTranscript += transcript;
-                    }
-                }
-                
-                const displayText = finalTranscript + interimTranscript;
-                document.getElementById('transcript').textContent = displayText || 'Your speech will appear here...';
-                
-                if (finalTranscript.trim()) {
-                    document.getElementById('copyButton').disabled = false;
-                }
-            };
-            
-            recognition.onerror = function(event) {
-                console.error('Speech recognition error:', event.error);
-                document.getElementById('status').textContent = '❌ Error: ' + event.error;
-                stopRecognition();
-            };
-            
-            recognition.onend = function() {
-                stopRecognition();
-            };
-        } else {
-            document.getElementById('status').textContent = '❌ Speech recognition not supported in this browser';
-            document.getElementById('micButton').disabled = true;
+            // Trigger enter key
+            const enterEvent = new KeyboardEvent('keydown', {
+                key: 'Enter',
+                code: 'Enter',
+                keyCode: 13,
+                bubbles: true
+            });
+            chatInput.dispatchEvent(enterEvent);
         }
+        
+        document.getElementById('voiceStatus').textContent = '✅ Message sent!';
+        setTimeout(() => {
+            document.getElementById('voiceStatus').classList.remove('show');
+        }, 2000);
+    };
+    
+    recognition.onerror = function(event) {
+        console.error('Speech error:', event.error);
+        document.getElementById('voiceStatus').textContent = '❌ Error: ' + event.error;
+        setTimeout(() => {
+            document.getElementById('voiceStatus').classList.remove('show');
+        }, 3000);
+        stopVoice();
+    };
+    
+    recognition.onend = function() {
+        stopVoice();
+    };
+}
 
-        function toggleRecognition() {
-            if (isRecording) {
-                stopRecognition();
-            } else {
-                startRecognition();
-            }
-        }
+function toggleVoice() {
+    if (isRecording) {
+        stopVoice();
+    } else {
+        startVoice();
+    }
+}
 
-        function startRecognition() {
-            if (recognition) {
-                finalTranscript = '';
-                document.getElementById('transcript').textContent = 'Your speech will appear here...';
-                document.getElementById('copyButton').disabled = true;
-                recognition.start();
-            }
-        }
+function startVoice() {
+    if (recognition) {
+        recognition.start();
+    }
+}
 
-        function stopRecognition() {
-            if (recognition && isRecording) {
-                recognition.stop();
-                isRecording = false;
-                document.getElementById('micButton').classList.remove('recording');
-                document.getElementById('status').textContent = '✅ Recording stopped. Click mic to record again.';
-            }
-        }
-
-        function copyText() {
-            const text = finalTranscript.trim();
-            if (text) {
-                navigator.clipboard.writeText(text).then(function() {
-                    document.getElementById('status').textContent = '✅ Text copied! Paste it in the chat below.';
-                    setTimeout(() => {
-                        document.getElementById('status').textContent = 'Click microphone to start';
-                    }, 3000);
-                });
-            }
-        }
-    </script>
-</body>
-</html>
-"""
-
-st.components.v1.html(voice_html, height=300)
-
-st.markdown("**Instructions:**")
-st.markdown("1. Click the 🎤 microphone button")
-st.markdown("2. Speak your question clearly")
-st.markdown("3. Click 📋 Copy Text button")
-st.markdown("4. Paste in the chat box below and press Enter")
-
-st.markdown("---")
+function stopVoice() {
+    if (recognition && isRecording) {
+        recognition.stop();
+        isRecording = false;
+        document.getElementById('voiceButton').classList.remove('recording');
+    }
+}
+</script>
+""", unsafe_allow_html=True)
 
 # ---------------------- CHAT INTERFACE ----------------------
 for message in st.session_state.messages:
@@ -784,12 +709,12 @@ if st.session_state.expect_image:
         
         col_a, col_b = st.columns(2)
         with col_a:
-            if st.button("Analyze Another Image"):
+            if st.button("🔄 Analyze Another Image"):
                 st.session_state.expect_image = True
                 st.rerun()
         
         with col_b:
-            if st.button("Done"):
+            if st.button("✅ Done"):
                 st.session_state.expect_image = False
                 result_msg = f"""**Disease Detection Complete**
 
@@ -805,7 +730,7 @@ if st.session_state.expect_image:
                 st.rerun()
 
 # ---------------------- CHAT INPUT ----------------------
-if prompt := st.chat_input("Type your question or paste voice text here..."):
+if prompt := st.chat_input("Type your question or click 🎤 to speak..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
