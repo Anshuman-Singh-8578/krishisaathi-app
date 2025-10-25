@@ -3,6 +3,7 @@ import random
 import requests
 from datetime import datetime
 import re
+import base64
 
 # ---------------------- STREAMLIT CONFIG ----------------------
 st.set_page_config(
@@ -472,6 +473,45 @@ if "user_location" not in st.session_state:
 if "expect_image" not in st.session_state:
     st.session_state.expect_image = False
 
+# ---------------------- SPEECH TO TEXT FUNCTION ----------------------
+def transcribe_audio_groq(audio_bytes):
+    """Transcribe audio using Groq's Whisper API (Free & Fast)"""
+    try:
+        # Groq API endpoint for Whisper
+        GROQ_API_KEY = "gsk_your_api_key_here"  # Get free API key from console.groq.com
+        
+        if GROQ_API_KEY == "gsk_your_api_key_here":
+            return None  # API key not configured
+        
+        # Encode audio to base64
+        audio_base64 = base64.b64encode(audio_bytes).decode('utf-8')
+        
+        headers = {
+            "Authorization": f"Bearer {GROQ_API_KEY}",
+            "Content-Type": "application/json"
+        }
+        
+        data = {
+            "model": "whisper-large-v3",
+            "audio": audio_base64,
+            "language": "en"
+        }
+        
+        response = requests.post(
+            "https://api.groq.com/openai/v1/audio/transcriptions",
+            headers=headers,
+            json=data,
+            timeout=10
+        )
+        
+        if response.status_code == 200:
+            return response.json().get("text", "")
+        else:
+            return None
+            
+    except Exception as e:
+        return None
+
 # ---------------------- WEATHER FUNCTION ----------------------
 def get_weather(city):
     """Fetches real-time weather data"""
@@ -689,7 +729,7 @@ I can help you with:
 🔬 Disease detection
 🎤 Voice commands
 
-**Try asking: "Weather in Delhi" or "Show prices"** 🚜"""
+**Try saying: "Weather in Delhi" or "Show prices"** 🚜"""
     
     # Default
     return """🌾 **How can I help you today?**
@@ -758,25 +798,42 @@ with st.sidebar:
     
     # Voice Input Section
     st.markdown("### 🎤 Voice Input")
-    st.info("📢 Record your voice message below")
+    st.info("📢 Click to record your voice")
     
     # Streamlit's built-in audio input
     audio_value = st.audio_input("Record your question")
     
     if audio_value:
-        st.success("✅ Audio recorded! Processing...")
         st.audio(audio_value)
         
-        # Note: Actual transcription would require external API
-        st.warning("⚠️ To use voice transcription, you need to:\n\n1. Install: `pip install SpeechRecognition`\n2. Or use external API (Google Cloud Speech-to-Text, AssemblyAI, etc.)")
+        # Try automatic transcription
+        if st.button("🎯 Auto Transcribe", key="auto_transcribe"):
+            with st.spinner("🎤 Converting speech to text..."):
+                audio_bytes = audio_value.getvalue()
+                transcribed_text = transcribe_audio_groq(audio_bytes)
+                
+                if transcribed_text:
+                    st.success(f"✅ Transcribed: {transcribed_text}")
+                    
+                    # Automatically add to chat
+                    st.session_state.messages.append({"role": "user", "content": f"🎤 {transcribed_text}"})
+                    bot_response = get_bot_response(transcribed_text)
+                    st.session_state.messages.append({"role": "assistant", "content": bot_response})
+                    st.rerun()
+                else:
+                    st.warning("⚠️ Auto-transcription unavailable. Please type your message below.")
         
-        # Manual text input as fallback
-        manual_text = st.text_input("Or type what you said:", key="manual_voice_input")
-        if manual_text and st.button("📤 Send Voice Message"):
-            st.session_state.messages.append({"role": "user", "content": f"🎤 {manual_text}"})
-            bot_response = get_bot_response(manual_text)
-            st.session_state.messages.append({"role": "assistant", "content": bot_response})
-            st.rerun()
+        # Manual fallback option
+        st.markdown("---")
+        st.markdown("**Or type what you said:**")
+        manual_text = st.text_input("Your message:", key="manual_voice_input", label_visibility="collapsed")
+        
+        if manual_text:
+            if st.button("📤 Send Voice Message"):
+                st.session_state.messages.append({"role": "user", "content": f"🎤 {manual_text}"})
+                bot_response = get_bot_response(manual_text)
+                st.session_state.messages.append({"role": "assistant", "content": bot_response})
+                st.rerun()
     
     st.divider()
     
@@ -869,7 +926,7 @@ if prompt := st.chat_input("Ask about farming... or use voice input above 🎤")
 st.markdown("""
 <div class="pro-footer">
     <p><strong>🌾 Krishisaathi AI</strong> - Empowering Farmers with Technology</p>
-    <p>💡 AI Disease Detection | Voice Input | Weekly Updated Prices | Real-time Weather</p>
+    <p>💡 AI Disease Detection | Voice Recognition | Weekly Updated Prices | Real-time Weather</p>
     <p style="font-size: 0.85em;">© 2025 Krishisaathi AI. All rights reserved.</p>
 </div>
 """, unsafe_allow_html=True)
