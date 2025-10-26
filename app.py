@@ -190,23 +190,23 @@ st.markdown("""
         font-size: 1.2rem;
     }
     
-    /* Voice button */
+    /* Voice button - More visible */
     .voice-button-container {
         position: fixed;
-        bottom: 120px;
-        right: 40px;
+        bottom: 30px;
+        right: 30px;
         z-index: 999999;
     }
     
     .voice-btn {
-        width: 65px;
-        height: 65px;
+        width: 70px;
+        height: 70px;
         border-radius: 50%;
         background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-        border: 3px solid white;
+        border: 4px solid white;
         cursor: pointer;
-        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
-        font-size: 2rem;
+        box-shadow: 0 8px 24px rgba(76, 175, 80, 0.5);
+        font-size: 2.2rem;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -215,18 +215,19 @@ st.markdown("""
     }
     
     .voice-btn:hover {
-        transform: scale(1.15);
-        box-shadow: 0 8px 28px rgba(76, 175, 80, 0.5);
+        transform: scale(1.2);
+        box-shadow: 0 10px 32px rgba(76, 175, 80, 0.6);
     }
     
     .voice-btn.recording {
         background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-        animation: pulse 1s infinite;
+        animation: pulse 1.2s infinite;
+        border-color: #ffebee;
     }
     
     @keyframes pulse {
-        0%, 100% { transform: scale(1); box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4); }
-        50% { transform: scale(1.2); box-shadow: 0 8px 32px rgba(255, 107, 107, 0.6); }
+        0%, 100% { transform: scale(1); box-shadow: 0 8px 24px rgba(255, 107, 107, 0.5); }
+        50% { transform: scale(1.25); box-shadow: 0 12px 40px rgba(255, 107, 107, 0.7); }
     }
     
     .voice-status-box {
