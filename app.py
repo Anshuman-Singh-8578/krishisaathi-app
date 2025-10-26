@@ -3,7 +3,7 @@ import random
 import requests
 from datetime import datetime
 import re
-from googletrans import Translator
+from googletrans_py import Translator
 
 # ---------------------- STREAMLIT CONFIG ----------------------
 st.set_page_config(
