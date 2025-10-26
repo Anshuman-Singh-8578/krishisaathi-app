@@ -543,8 +543,9 @@ if prompt := st.chat_input("Ask about farming..."):
 
 # ---------------------- FOOTER ----------------------
 st.markdown("""
-<div style="text-align: center; padding: 2rem; background: white; border-radius: 12px; margin-top: 3rem;">
-    <p><strong>🌾 Krishisaathi AI</strong> - Empowering Farmers with Technology</p>
-    <p>© 2025 Krishisaathi AI. All rights reserved.</p>
+<div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border-radius: 12px; margin-top: 3rem; border: 1px solid #4caf50;">
+    <p style="color: #66bb6a; font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem;">🌾 Krishisaathi AI</p>
+    <p style="color: #81c784; font-size: 0.9rem; margin-bottom: 0;">Empowering Farmers with Technology</p>
+    <p style="color: #a5d6a7; font-size: 0.8rem; margin-top: 1rem;">© 2025 Krishisaathi AI. All rights reserved.</p>
 </div>
 """, unsafe_allow_html=True)
