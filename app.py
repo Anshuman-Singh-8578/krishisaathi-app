@@ -77,7 +77,7 @@ st.markdown("""
     [data-testid="stToolbar"] {display: none;}
     
     .main {
-        background: #f8faf9;
+        background: #1a1a1a;
         padding: 0;
     }
     
@@ -88,21 +88,29 @@ st.markdown("""
     }
     
     .language-selector {
-        background: white;
+        background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%);
         border-radius: 12px;
         padding: 1rem;
         margin-bottom: 1rem;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        border: 1px solid #e8f5e9;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        border: 1px solid #4caf50;
     }
     
     .stChatMessage {
-        background: white !important;
+        background: linear-gradient(135deg, #2d2d2d 0%, #242424 100%) !important;
         border-radius: 12px !important;
-        border: 1px solid #e8f5e9 !important;
+        border: 1px solid #4caf50 !important;
         margin-bottom: 1rem !important;
         padding: 1.25rem !important;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02) !important;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    .stChatMessage p, .stChatMessage div {
+        color: #e0e0e0 !important;
+    }
+    
+    .stChatMessage strong {
+        color: #66bb6a !important;
     }
     
     .stButton > button {
@@ -123,8 +131,16 @@ st.markdown("""
     }
     
     [data-testid="stSidebar"] {
-        background: white !important;
-        border-right: 1px solid #e8f5e9 !important;
+        background: linear-gradient(180deg, #1f1f1f 0%, #2d2d2d 100%) !important;
+        border-right: 2px solid #4caf50 !important;
+    }
+    
+    [data-testid="stSidebar"] * {
+        color: #e0e0e0 !important;
+    }
+    
+    [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
+        color: #66bb6a !important;
     }
     
     .app-title {
@@ -136,10 +152,69 @@ st.markdown("""
     }
     
     .app-tagline {
-        color: #66bb6a;
+        color: #81c784;
         font-size: 0.95rem;
         font-weight: 500;
         margin: 0.25rem 0 0 0;
+    }
+    
+    /* Input fields dark theme */
+    .stTextInput input, .stChatInput textarea {
+        background: #2d2d2d !important;
+        color: #e0e0e0 !important;
+        border: 1px solid #4caf50 !important;
+        border-radius: 10px !important;
+    }
+    
+    .stTextInput input:focus, .stChatInput textarea:focus {
+        border-color: #66bb6a !important;
+        box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2) !important;
+    }
+    
+    /* File uploader dark theme */
+    [data-testid="stFileUploader"] {
+        background: #2d2d2d !important;
+        border: 2px dashed #4caf50 !important;
+        border-radius: 12px !important;
+        padding: 2rem !important;
+    }
+    
+    [data-testid="stFileUploader"] * {
+        color: #e0e0e0 !important;
+    }
+    
+    /* Metric cards dark theme */
+    [data-testid="stMetric"] {
+        background: linear-gradient(135deg, #2d2d2d 0%, #242424 100%) !important;
+        border: 1px solid #4caf50 !important;
+        border-radius: 10px !important;
+        padding: 1rem !important;
+    }
+    
+    [data-testid="stMetric"] * {
+        color: #e0e0e0 !important;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        color: #81c784 !important;
+    }
+    
+    /* Select box dark theme */
+    .stSelectbox select {
+        background: #2d2d2d !important;
+        color: #e0e0e0 !important;
+        border: 1px solid #4caf50 !important;
+    }
+    
+    /* Spinner dark theme */
+    .stSpinner > div {
+        border-top-color: #66bb6a !important;
+    }
+    
+    /* Divider */
+    hr {
+        border-color: #4caf50 !important;
+        opacity: 0.3;
     }
 </style>
 """, unsafe_allow_html=True)
