@@ -2056,7 +2056,7 @@ with st.sidebar:
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
     
-    if st.button("🏙 Delhi Prices"):
+    if st.button("🏙 Delhi Vegetable Prices"):
         user_msg = "Show prices in Delhi"
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg)
