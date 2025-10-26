@@ -1674,7 +1674,7 @@ for message in st.session_state.messages:
 
 # ---------------------- IMAGE UPLOAD ----------------------
 
-if st.session_state.expect_image:
+"""if st.session_state.expect_image:
     st.markdown("### 📸 Upload Crop Image for Disease Detection")
     st.markdown("*Take a clear photo of the affected leaves or plant parts*")
     
@@ -1748,7 +1748,7 @@ if st.session_state.expect_image:
         
         with col_btn2:
             if st.button("🔄 Analyze Another Image"):
-                st.rerun()
+                st.rerun()"""
 
 # ---------------------- FOOTER ----------------------
 st.markdown("""
