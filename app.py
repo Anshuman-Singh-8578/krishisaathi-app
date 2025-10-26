@@ -3,7 +3,6 @@ import random
 import requests
 from datetime import datetime
 import re
-from googletrans_py import Translator
 
 # ---------------------- STREAMLIT CONFIG ----------------------
 st.set_page_config(
@@ -13,12 +12,14 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ---------------------- INITIALIZE TRANSLATOR ----------------------
-@st.cache_resource
-def get_translator():
-    return Translator()
-
-translator = get_translator()
+# ---------------------- TRANSLATION SETUP ----------------------
+# Using deep-translator (more stable than googletrans)
+try:
+    from deep_translator import GoogleTranslator
+    TRANSLATION_AVAILABLE = True
+except ImportError:
+    TRANSLATION_AVAILABLE = False
+    st.warning("⚠️ Translation library not available. Install: pip install deep-translator")
 
 # ---------------------- LANGUAGE CONFIGURATION ----------------------
 SUPPORTED_LANGUAGES = {
@@ -35,25 +36,16 @@ SUPPORTED_LANGUAGES = {
 }
 
 # ---------------------- TRANSLATION FUNCTIONS ----------------------
-def detect_language(text):
-    """Detect the language of input text"""
-    try:
-        detection = translator.detect(text)
-        return detection.lang if detection.lang in SUPPORTED_LANGUAGES else 'en'
-    except:
-        return 'en'
-
 def translate_text(text, target_lang='en', source_lang='auto'):
     """Translate text to target language"""
-    if target_lang == 'en' and source_lang == 'en':
+    if not TRANSLATION_AVAILABLE or target_lang == 'en':
         return text
     
     try:
-        translation = translator.translate(text, dest=target_lang, src=source_lang)
-        return translation.text
+        translator = GoogleTranslator(source='auto', target=target_lang)
+        return translator.translate(text)
     except Exception as e:
-        st.error(f"Translation error: {e}")
-        return text
+        return text  # Return original text if translation fails
 
 def get_greeting_by_language(lang_code):
     """Return appropriate greeting based on language"""
@@ -61,7 +53,7 @@ def get_greeting_by_language(lang_code):
         'en': 'Namaste! Welcome to Krishisaathi AI!',
         'hi': 'नमस्ते! कृषिसाथी एआई में आपका स्वागत है!',
         'mr': 'नमस्कार! कृषिसाथी एआय मध्ये आपले स्वागत आहे!',
-        'ta': 'வணக்கம்! க்ரிஷிசாத்தி AI-க்கு வரவேற்கிறோம்!',
+        'ta': 'வணக்கம்! கிருஷிசாத்தி AI-க்கு வரவேற்கிறோம்!',
         'te': 'నమస్కారం! కృషిసాతి AI కి స్వాగతం!',
         'bn': 'নমস্কার! কৃষিসাথী AI তে স্বাগতম!',
         'gu': 'નમસ્તે! કૃષિસાથી AI માં તમારું સ્વાગત છે!',
@@ -71,7 +63,7 @@ def get_greeting_by_language(lang_code):
     }
     return greetings.get(lang_code, greetings['en'])
 
-# ---------------------- CSS (keeping original) ----------------------
+# ---------------------- CSS ----------------------
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
@@ -161,8 +153,6 @@ if "expect_image" not in st.session_state:
     st.session_state.expect_image = False
 if "selected_language" not in st.session_state:
     st.session_state.selected_language = 'en'
-if "user_language" not in st.session_state:
-    st.session_state.user_language = 'en'
 
 # ---------------------- HEADER ----------------------
 header_col1, header_col2 = st.columns([1, 5])
@@ -185,7 +175,7 @@ st.markdown('<div class="language-selector">', unsafe_allow_html=True)
 col_lang1, col_lang2 = st.columns([3, 1])
 
 with col_lang1:
-    st.markdown("**🌍 Select Your Language / अपनी भाषा चुनें**")
+    st.markdown("**🌐 Select Your Language / अपनी भाषा चुनें**")
 
 with col_lang2:
     selected_lang = st.selectbox(
@@ -256,17 +246,17 @@ def ai_predict_disease(image_file):
         **disease_info
     }
 
-# ---------------------- PRICE FUNCTION (Simplified) ----------------------
+# ---------------------- PRICE FUNCTION ----------------------
 def get_produce_prices(state="all"):
-    """Sample prices - using subset for brevity"""
+    """Sample prices"""
     sample_prices = {
         "Delhi": {
-            "Tomato": {"price": "₹22-36", "unit": "per kg", "trend": "↓"},
+            "Tomato": {"price": "₹22-36", "unit": "per kg", "trend": "↑"},
             "Potato": {"price": "₹14-24", "unit": "per kg", "trend": "→"},
             "Onion": {"price": "₹15-23", "unit": "per kg", "trend": "↓"},
         },
         "Mumbai": {
-            "Tomato": {"price": "₹26-40", "unit": "per kg", "trend": "↓"},
+            "Tomato": {"price": "₹26-40", "unit": "per kg", "trend": "↑"},
             "Potato": {"price": "₹18-28", "unit": "per kg", "trend": "→"},
             "Onion": {"price": "₹17-26", "unit": "per kg", "trend": "↓"},
         }
@@ -349,16 +339,8 @@ def format_price_response(prices, city_name=None, vegetable_name=None):
 
 # ---------------------- CHATBOT RESPONSE LOGIC ----------------------
 def get_bot_response(user_message, user_lang='en'):
-    """Generates intelligent responses with multilingual support"""
-    
-    # Detect input language
-    detected_lang = detect_language(user_message)
-    st.session_state.user_language = detected_lang
-    
-    # Translate to English for processing
-    message_english = translate_text(user_message, target_lang='en', source_lang=detected_lang)
-    message_lower = message_english.lower()
-    
+    """Generates intelligent responses"""
+    message_lower = user_message.lower()
     response_en = ""
     
     # Disease detection trigger
@@ -375,7 +357,7 @@ I'll analyze it and provide:
     
     # Price queries
     elif any(word in message_lower for word in ["price", "cost", "market"]):
-        city, vegetable = extract_city_and_vegetable_from_message(message_english)
+        city, vegetable = extract_city_and_vegetable_from_message(user_message)
         
         if city:
             prices = get_produce_prices(city)
@@ -396,7 +378,7 @@ I'll analyze it and provide:
     
     # Weather queries
     elif any(word in message_lower for word in ["weather", "temperature"]):
-        city, _ = extract_city_and_vegetable_from_message(message_english)
+        city, _ = extract_city_and_vegetable_from_message(user_message)
         
         if not city:
             response_en = "📍 Please specify a location!\nExample: 'Weather in Delhi'"
@@ -428,7 +410,7 @@ I'll analyze it and provide:
     
     # Greeting
     elif any(word in message_lower for word in ["hello", "hi", "hey", "namaste"]):
-        response_en = f"""{get_greeting_by_language(detected_lang)}
+        response_en = f"""{get_greeting_by_language(user_lang)}
 
 I can help you with:
 🌤️ Weather forecasts
@@ -450,10 +432,9 @@ Ask me about:
 
 **Type your question!** 🚜"""
     
-    # Translate response back to user's language
-    if detected_lang != 'en' and st.session_state.selected_language != 'en':
-        response_translated = translate_text(response_en, target_lang=st.session_state.selected_language, source_lang='en')
-        return response_translated
+    # Translate response if needed
+    if user_lang != 'en':
+        return translate_text(response_en, target_lang=user_lang)
     
     return response_en
 
@@ -468,35 +449,28 @@ with st.sidebar:
     
     st.markdown("### 🎯 Quick Actions")
     
-    quick_actions = {
-        'en': ["🔷 Disease Detection", "🙏 Delhi Prices", "🌤️ Mumbai Weather", "🌾 Crop Tips"],
-        'hi': ["🔷 रोग जांच", "🙏 दिल्ली मूल्य", "🌤️ मुंबई मौसम", "🌾 फसल सुझाव"],
-    }
-    
-    actions = quick_actions.get(st.session_state.selected_language, quick_actions['en'])
-    
-    if st.button(actions[0]):
+    if st.button("🔷 Disease Detection"):
         user_msg = "Check crop disease"
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg, st.session_state.selected_language)
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
     
-    if st.button(actions[1]):
+    if st.button("🏙️ Delhi Prices"):
         user_msg = "Show prices in Delhi"
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg, st.session_state.selected_language)
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
         
-    if st.button(actions[2]):
+    if st.button("🌤️ Mumbai Weather"):
         user_msg = "Weather in Mumbai"
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg, st.session_state.selected_language)
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
         
-    if st.button(actions[3]):
+    if st.button("🌾 Crop Tips"):
         user_msg = "Tell me about wheat"
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg, st.session_state.selected_language)
@@ -505,8 +479,7 @@ with st.sidebar:
     
     st.divider()
     
-    clear_text = "🗑️ Clear Chat" if st.session_state.selected_language == 'en' else "🗑️ चैट साफ़ करें"
-    if st.button(clear_text):
+    if st.button("🗑️ Clear Chat"):
         st.session_state.messages = []
         st.session_state.expect_image = False
         st.rerun()
@@ -518,8 +491,7 @@ for message in st.session_state.messages:
 
 # ---------------------- IMAGE UPLOAD ----------------------
 if st.session_state.expect_image:
-    upload_text = "Upload Crop Image" if st.session_state.selected_language == 'en' else "फसल की तस्वीर अपलोड करें"
-    st.subheader(f"📸 {upload_text}")
+    st.subheader("📸 Upload Crop Image")
     
     uploaded_file = st.file_uploader(
         "Choose an image", 
@@ -540,8 +512,7 @@ if st.session_state.expect_image:
                 st.metric("Disease", prediction['name'])
                 st.metric("Confidence", f"{prediction['confidence']}%")
         
-        done_text = "✅ Done" if st.session_state.selected_language == 'en' else "✅ हो गया"
-        if st.button(done_text):
+        if st.button("✅ Done"):
             st.session_state.expect_image = False
             result_msg = f"""✅ **Disease Detection Complete**
 
@@ -551,7 +522,6 @@ if st.session_state.expect_image:
 
 **Treatment:** {prediction['treatment']}"""
             
-            # Translate result if needed
             if st.session_state.selected_language != 'en':
                 result_msg = translate_text(result_msg, target_lang=st.session_state.selected_language)
             
@@ -559,9 +529,7 @@ if st.session_state.expect_image:
             st.rerun()
 
 # ---------------------- CHAT INPUT ----------------------
-input_placeholder = "Ask about farming..." if st.session_state.selected_language == 'en' else "खेती के बारे में पूछें..."
-
-if prompt := st.chat_input(input_placeholder):
+if prompt := st.chat_input("Ask about farming..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
@@ -575,7 +543,7 @@ if prompt := st.chat_input(input_placeholder):
 
 # ---------------------- FOOTER ----------------------
 st.markdown("""
-<div class="pro-footer" style="text-align: center; padding: 2rem; background: white; border-radius: 12px; margin-top: 3rem;">
+<div style="text-align: center; padding: 2rem; background: white; border-radius: 12px; margin-top: 3rem;">
     <p><strong>🌾 Krishisaathi AI</strong> - Empowering Farmers with Technology</p>
     <p>© 2025 Krishisaathi AI. All rights reserved.</p>
 </div>
