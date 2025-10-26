@@ -32,22 +32,34 @@ st.markdown("""
         display: none;
     }
     
-    /* FORCE SIDEBAR TO SHOW */
+    /* FORCE SIDEBAR TO SHOW - Dark Theme */
     section[data-testid="stSidebar"] {
         display: flex !important;
         visibility: visible !important;
         width: 21rem !important;
         min-width: 21rem !important;
         max-width: 21rem !important;
-        background: white !important;
+        background: #1a1a1a !important;
         border-right: 2px solid #4caf50 !important;
         z-index: 999999 !important;
     }
     
     section[data-testid="stSidebar"] > div {
         width: 21rem !important;
-        background: white !important;
+        background: #1a1a1a !important;
         visibility: visible !important;
+    }
+    
+    section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
+        color: #e0e0e0 !important;
+    }
+    
+    section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] h2 {
+        color: #4caf50 !important;
+    }
+    
+    section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
+        color: #81c784 !important;
     }
     
     /* Sidebar toggle button */
@@ -84,21 +96,21 @@ st.markdown("""
     }
     
     [data-testid="stSidebar"] h3 {
-        color: #1b5e20 !important;
+        color: #4caf50 !important;
         font-size: 0.85rem !important;
         font-weight: 700 !important;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         margin-top: 2rem !important;
         margin-bottom: 1rem !important;
-        background: white !important;
+        background: transparent !important;
     }
     
     [data-testid="stSidebar"] .stButton > button {
         width: 100%;
-        background: linear-gradient(135deg, #f1f8f4 0%, #e8f5e9 100%) !important;
+        background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%) !important;
         border: 2px solid #4caf50 !important;
-        color: #2e7d32 !important;
+        color: #4caf50 !important;
         padding: 0.85rem 1rem !important;
         font-size: 0.9rem !important;
         font-weight: 600 !important;
@@ -107,15 +119,15 @@ st.markdown("""
         transition: all 0.2s ease !important;
         height: 48px !important;
         margin-bottom: 0.5rem !important;
-        box-shadow: 0 2px 4px rgba(76, 175, 80, 0.1) !important;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2) !important;
     }
     
     [data-testid="stSidebar"] .stButton > button:hover {
         background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%) !important;
-        border-color: #2e7d32 !important;
+        border-color: #66bb6a !important;
         color: white !important;
         transform: translateX(5px);
-        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3) !important;
+        box-shadow: 0 4px 16px rgba(76, 175, 80, 0.4) !important;
     }
     
     .stChatMessage {
@@ -190,12 +202,12 @@ st.markdown("""
         font-size: 1.2rem;
     }
     
-    /* Voice button - More visible */
+    /* Voice button - HIGHLY VISIBLE */
     .voice-button-container {
         position: fixed;
-        bottom: 30px;
+        bottom: 90px;
         right: 30px;
-        z-index: 999999;
+        z-index: 999999999;
     }
     
     .voice-btn {
@@ -203,47 +215,62 @@ st.markdown("""
         height: 70px;
         border-radius: 50%;
         background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-        border: 4px solid white;
+        border: 4px solid #2e7d32;
         cursor: pointer;
-        box-shadow: 0 8px 24px rgba(76, 175, 80, 0.5);
-        font-size: 2.2rem;
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7),
+                    0 8px 24px rgba(76, 175, 80, 0.5);
+        font-size: 2.5rem;
         display: flex;
         align-items: center;
         justify-content: center;
         transition: all 0.3s ease;
-        color: white;
+        animation: breathe 2s ease-in-out infinite;
+    }
+    
+    @keyframes breathe {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7), 0 8px 24px rgba(76, 175, 80, 0.5); }
+        50% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0), 0 8px 24px rgba(76, 175, 80, 0.5); }
     }
     
     .voice-btn:hover {
         transform: scale(1.2);
-        box-shadow: 0 10px 32px rgba(76, 175, 80, 0.6);
+        box-shadow: 0 10px 40px rgba(76, 175, 80, 0.7);
+        animation: none;
     }
     
     .voice-btn.recording {
         background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-        animation: pulse 1.2s infinite;
-        border-color: #ffebee;
+        border-color: #c62828;
+        animation: pulse 1s infinite;
+        box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7),
+                    0 8px 24px rgba(255, 107, 107, 0.6);
     }
     
     @keyframes pulse {
-        0%, 100% { transform: scale(1); box-shadow: 0 8px 24px rgba(255, 107, 107, 0.5); }
-        50% { transform: scale(1.25); box-shadow: 0 12px 40px rgba(255, 107, 107, 0.7); }
+        0%, 100% { 
+            transform: scale(1); 
+            box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7), 0 8px 24px rgba(255, 107, 107, 0.6);
+        }
+        50% { 
+            transform: scale(1.15); 
+            box-shadow: 0 0 0 15px rgba(255, 107, 107, 0), 0 12px 40px rgba(255, 107, 107, 0.8);
+        }
     }
     
     .voice-status-box {
         position: fixed;
-        bottom: 195px;
-        right: 40px;
+        bottom: 170px;
+        right: 30px;
         background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
         color: white;
         padding: 12px 24px;
         border-radius: 25px;
         box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3);
-        font-size: 0.95rem;
+        font-size: 1rem;
         font-weight: 700;
         display: none;
-        z-index: 999999;
-        border: 2px solid white;
+        z-index: 999999999;
+        border: 2px solid #2e7d32;
     }
     
     .voice-status-box.show {
@@ -256,18 +283,34 @@ st.markdown("""
         to { opacity: 1; transform: translateY(0); }
     }
     
-    /* Clear button special style */
+    /* Clear button special style - Dark theme */
     [data-testid="stSidebar"] .stButton:last-child > button {
-        background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%) !important;
+        background: linear-gradient(135deg, #3d1a1a 0%, #2d1414 100%) !important;
         border-color: #ef5350 !important;
-        color: #c62828 !important;
+        color: #ef5350 !important;
         margin-top: 1.5rem;
     }
     
     [data-testid="stSidebar"] .stButton:last-child > button:hover {
         background: linear-gradient(135deg, #ef5350 0%, #e53935 100%) !important;
-        border-color: #c62828 !important;
+        border-color: #ff6b6b !important;
         color: white !important;
+    }
+    
+    /* Divider in sidebar */
+    [data-testid="stSidebar"] hr {
+        border: none;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #4caf50, transparent);
+        margin: 1.5rem 0;
+    }
+    
+    /* Info box in sidebar */
+    [data-testid="stSidebar"] [data-testid="stAlert"] {
+        background: rgba(76, 175, 80, 0.1) !important;
+        border: 1px solid #4caf50 !important;
+        border-radius: 8px !important;
+        color: #81c784 !important;
     }
 </style>
 """, unsafe_allow_html=True)
