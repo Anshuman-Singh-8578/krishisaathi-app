@@ -2083,19 +2083,7 @@ with st.sidebar:
         st.session_state.messages = []
         st.session_state.expect_image = False
         st.rerun()
-    st.sidebar.markdown("### 🌐 Language Translator")
-    input_text = st.sidebar.text_area("Enter text to translate:")
-    target_lang = st.sidebar.selectbox("Select target language", ["hi", "ta", "bn", "mr", "gu", "kn", "te", "pa", "ur", "en"])
-
-    if st.sidebar.button("Translate"):
-    if input_text:
-        translated = translator.translate(input_text, dest=target_lang)
-        st.sidebar.success(f"Translated Text ({target_lang}):")
-        st.sidebar.write(translated.text)
-    else:
-        st.sidebar.warning("Please enter some text to translate.")
-
-    st.divider()
+        
 
 # ---------------------- CHAT INTERFACE ----------------------
 for message in st.session_state.messages:
