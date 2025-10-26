@@ -158,7 +158,7 @@ st.markdown("""
         margin: 0.25rem 0 0 0;
     }
     
-    /* Input fields dark theme */
+   /* Input fields dark theme */
     .stTextInput input, .stChatInput textarea {
         background: #2d2d2d !important;
         color: #e0e0e0 !important;
@@ -169,6 +169,37 @@ st.markdown("""
     .stTextInput input:focus, .stChatInput textarea:focus {
         border-color: #66bb6a !important;
         box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2) !important;
+    }
+    
+    /* Chat input container fix */
+    .stChatInput {
+        background: transparent !important;
+    }
+    
+    .stChatInput > div {
+        background: #2d2d2d !important;
+        border: 2px solid #4caf50 !important;
+        border-radius: 12px !important;
+        padding: 0 !important;
+    }
+    
+    .stChatInput textarea {
+        padding: 1rem 1.5rem !important;
+        min-height: 50px !important;
+        font-size: 0.95rem !important;
+    }
+    
+    .stChatInput button {
+        background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%) !important;
+        border: none !important;
+        border-radius: 8px !important;
+        margin: 4px !important;
+        padding: 0.5rem 1rem !important;
+    }
+    
+    .stChatInput button:hover {
+        background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%) !important;
+        transform: scale(1.05);
     }
     
     /* File uploader dark theme */
