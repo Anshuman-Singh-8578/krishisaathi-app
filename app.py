@@ -736,13 +736,143 @@ def format_price_response(prices, city_name=None, vegetable_name=None):
     
     return response
 
+# ---------------------- MULTILINGUAL KEYWORD DETECTION ----------------------
+def detect_intent_multilingual(user_message):
+    """Detect user intent from multilingual input"""
+    # Translate user message to English for intent detection
+    if TRANSLATION_AVAILABLE:
+        try:
+            translator = GoogleTranslator(source='auto', target='en')
+            message_en = translator.translate(user_message).lower()
+        except:
+            message_en = user_message.lower()
+    else:
+        message_en = user_message.lower()
+    
+    # Also check original message
+    message_lower = user_message.lower()
+    
+    # Multilingual keywords for each intent
+    disease_keywords = {
+        'en': ['disease', 'sick', 'infected', 'diagnose', 'problem', 'leaf'],
+        'hi': ['रोग', 'बीमार', 'संक्रमित', 'पत्ती', 'समस्या'],
+        'mr': ['रोग', 'आजारी', 'संक्रमित', 'पान', 'समस्या'],
+        'ta': ['நோய்', 'நோயுற்ற', 'தொற்று', 'இலை', 'பிரச்சனை'],
+        'te': ['వ్యాధి', 'అనారోగ్యం', 'సోకిన', 'ఆకు', 'సమస్య'],
+        'bn': ['রোগ', 'অসুস্থ', 'সংক্রমিত', 'পাতা', 'সমস্যা'],
+        'gu': ['રોગ', 'બીમાર', 'ચેપગ્રસ્ત', 'પાન', 'સમસ્યા'],
+        'kn': ['ರೋಗ', 'ಅನಾರೋಗ್ಯ', 'ಸೋಂಕು', 'ಎಲೆ', 'ಸಮಸ್ಯೆ'],
+        'ml': ['രോഗം', 'അസുഖം', 'രോഗബാധ', 'ഇല', 'പ്രശ്നം'],
+        'pa': ['ਬਿਮਾਰੀ', 'ਬੀਮਾਰ', 'ਸੰਕਰਮਿਤ', 'ਪੱਤਾ', 'ਸਮੱਸਿਆ']
+    }
+    
+    price_keywords = {
+        'en': ['price', 'cost', 'market', 'rate', 'mandi'],
+        'hi': ['कीमत', 'दाम', 'बाजार', 'मंडी', 'भाव'],
+        'mr': ['किंमत', 'दर', 'बाजार', 'मंडी'],
+        'ta': ['விலை', 'சந்தை', 'வீதம்'],
+        'te': ['ధర', 'మార్కెట్', 'మండి'],
+        'bn': ['দাম', 'বাজার', 'মণ্ডি'],
+        'gu': ['કિંમત', 'બજાર', 'મંડી'],
+        'kn': ['ಬೆಲೆ', 'ಮಾರುಕಟ್ಟೆ', 'ಮಂಡಿ'],
+        'ml': ['വില', 'മാർക്കറ്റ്', 'മണ്ഡി'],
+        'pa': ['ਕੀਮਤ', 'ਬਾਜ਼ਾਰ', 'ਮੰਡੀ']
+    }
+    
+    weather_keywords = {
+        'en': ['weather', 'temperature', 'rain', 'climate'],
+        'hi': ['मौसम', 'तापमान', 'बारिश', 'जलवायु'],
+        'mr': ['हवामान', 'तापमान', 'पाऊस'],
+        'ta': ['வானிலை', 'வெப்பநிலை', 'மழை'],
+        'te': ['వాతావరణం', 'ఉష్ణోగ్రత', 'వర్షం'],
+        'bn': ['আবহাওয়া', 'তাপমাত্রা', 'বৃষ্টি'],
+        'gu': ['હવામાન', 'તાપમાન', 'વરસાદ'],
+        'kn': ['ಹವಾಮಾನ', 'ತಾಪಮಾನ', 'ಮಳೆ'],
+        'ml': ['കാലാവസ്ഥ', 'താപനില', 'മഴ'],
+        'pa': ['ਮੌਸਮ', 'ਤਾਪਮਾਨ', 'ਮੀਂਹ']
+    }
+    
+    crop_keywords = {
+        'en': ['wheat', 'rice', 'crop', 'farming', 'cultivation', 'grow'],
+        'hi': ['गेहूं', 'चावल', 'फसल', 'खेती', 'उगाना'],
+        'mr': ['गहू', 'भात', 'पीक', 'शेती'],
+        'ta': ['கோதுமை', 'அரிசி', 'பயிர்', 'விவசாயம்'],
+        'te': ['గోధుమ', 'వరి', 'పంట', 'వ్యవసాయం'],
+        'bn': ['গম', 'চাল', 'ফসল', 'চাষ'],
+        'gu': ['ઘઉં', 'ચોખા', 'પાક', 'ખેતી'],
+        'kn': ['ಗೋಧಿ', 'ಅಕ್ಕಿ', 'ಬೆಳೆ', 'ಕೃಷಿ'],
+        'ml': ['ഗോതമ്പ്', 'അരി', 'വിള', 'കൃഷി'],
+        'pa': ['ਕਣਕ', 'ਚੌਲ', 'ਫਸਲ', 'ਖੇਤੀ']
+    }
+    
+    greeting_keywords = {
+        'en': ['hello', 'hi', 'hey', 'namaste', 'start'],
+        'hi': ['नमस्ते', 'हैलो', 'हाय', 'शुरू'],
+        'mr': ['नमस्कार', 'हॅलो', 'सुरू'],
+        'ta': ['வணக்கம்', 'ஹலோ', 'தொடங்கு'],
+        'te': ['నమస్కారం', 'హలో', 'ప్రారంభం'],
+        'bn': ['নমস্কার', 'হ্যালো', 'শুরু'],
+        'gu': ['નમસ્તે', 'હેલો', 'શરૂ'],
+        'kn': ['ನಮಸ್ಕಾರ', 'ಹಲೋ', 'ಪ್ರಾರಂಭ'],
+        'ml': ['നമസ്കാരം', 'ഹലോ', 'ആരംഭിക്കുക'],
+        'pa': ['ਸਤ ਸ੍ਰੀ ਅਕਾਲ', 'ਹੈਲੋ', 'ਸ਼ੁਰੂ']
+    }
+    
+    # Check for disease intent
+    for lang_keywords in disease_keywords.values():
+        if any(keyword in message_lower for keyword in lang_keywords):
+            return 'disease'
+    if any(word in message_en for word in disease_keywords['en']):
+        return 'disease'
+    
+    # Check for price intent
+    for lang_keywords in price_keywords.values():
+        if any(keyword in message_lower for keyword in lang_keywords):
+            return 'price'
+    if any(word in message_en for word in price_keywords['en']):
+        return 'price'
+    
+    # Check for weather intent
+    for lang_keywords in weather_keywords.values():
+        if any(keyword in message_lower for keyword in lang_keywords):
+            return 'weather'
+    if any(word in message_en for word in weather_keywords['en']):
+        return 'weather'
+    
+    # Check for crop tips intent
+    for lang_keywords in crop_keywords.values():
+        if any(keyword in message_lower for keyword in lang_keywords):
+            return 'crop'
+    if any(word in message_en for word in crop_keywords['en']):
+        return 'crop'
+    
+    # Check for greeting intent
+    for lang_keywords in greeting_keywords.values():
+        if any(keyword in message_lower for keyword in lang_keywords):
+            return 'greeting'
+    if any(word in message_en for word in greeting_keywords['en']):
+        return 'greeting'
+    
+    return 'default'
+
 # ---------------------- CHATBOT RESPONSE LOGIC ----------------------
 def get_bot_response(user_message, user_lang='en'):
-    """Generates intelligent responses"""
-    message_lower = user_message.lower()
+    """Generates intelligent responses with multilingual understanding"""
+    
+    # Translate user message to English for processing
+    message_en = user_message
+    if TRANSLATION_AVAILABLE and user_lang != 'en':
+        try:
+            translator = GoogleTranslator(source='auto', target='en')
+            message_en = translator.translate(user_message)
+        except:
+            pass
+    
+    # Detect intent from multilingual input
+    intent = detect_intent_multilingual(user_message)
     response_en = ""
     
-    if any(word in message_lower for word in ["disease", "sick", "infected", "diagnose"]):
+    if intent == 'disease':
         st.session_state.expect_image = True
         response_en = """🔬 **Crop Disease Detection**
 
@@ -753,8 +883,8 @@ I'll analyze it and provide:
 ✅ Treatment recommendations
 ✅ Prevention tips"""
     
-    elif any(word in message_lower for word in ["price", "cost", "market"]):
-        city, vegetable = extract_city_and_vegetable_from_message(user_message)
+    elif intent == 'price':
+        city, vegetable = extract_city_and_vegetable_from_message(message_en)
         
         if city:
             prices = get_produce_prices(city)
@@ -773,8 +903,8 @@ I'll analyze it and provide:
 
 🔍 Type your city and vegetable name!"""
     
-    elif any(word in message_lower for word in ["weather", "temperature"]):
-        city, _ = extract_city_and_vegetable_from_message(user_message)
+    elif intent == 'weather':
+        city, _ = extract_city_and_vegetable_from_message(message_en)
         
         if not city:
             response_en = "🔍 Please specify a location!\nExample: 'Weather in Delhi'"
@@ -792,7 +922,7 @@ I'll analyze it and provide:
             else:
                 response_en = f"❌ Couldn't fetch weather for '{city}'."
     
-    elif any(word in message_lower for word in ["wheat", "rice", "crop", "farming"]):
+    elif intent == 'crop':
         response_en = """🌾 **Wheat Cultivation Guide**
 
 **Climate:** 10-25°C, 50-75 cm rainfall
@@ -803,7 +933,7 @@ I'll analyze it and provide:
 
 💡 **Tips:** Use certified seeds, crop rotation, proper drainage"""
     
-    elif any(word in message_lower for word in ["hello", "hi", "hey", "namaste"]):
+    elif intent == 'greeting':
         response_en = f"""{get_greeting_by_language(user_lang)}
 
 I can help you with:
@@ -825,6 +955,7 @@ Ask me about:
 
 **Type your question!** 🚜"""
     
+    # Translate response back to user's language
     if user_lang != 'en':
         return translate_text(response_en, target_lang=user_lang)
     
