@@ -3,7 +3,13 @@ import random
 import requests
 from datetime import datetime
 import re
-
+try:
+    import speech_recognition as sr
+    VOICE_AVAILABLE = True
+except ImportError:
+    VOICE_AVAILABLE = False
+    st.warning("⚠️ Voice recognition not available. Install: pip install SpeechRecognition pyaudio")2. ADD VOICE FUNCTION
+Location: After your 
 # ---------------------- STREAMLIT CONFIG ----------------------
 st.set_page_config(
     page_title="🌾 Krishisaathi AI", 
@@ -360,6 +366,42 @@ def get_greeting_by_language(lang_code):
     }
     return greetings.get(lang_code, greetings['en'])
 
+
+def recognize_speech():
+    """Capture and recognize speech from microphone"""
+    if not VOICE_AVAILABLE:
+        return None, "Voice recognition library not installed"
+    
+    recognizer = sr.Recognizer()
+    
+    try:
+        with sr.Microphone() as source:
+            st.info("🎤 Listening... Please speak now (5 seconds)")
+            # Adjust for ambient noise
+            recognizer.adjust_for_ambient_noise(source, duration=1)
+            # Listen for speech with 5 second timeout and 5 second phrase limit
+            audio = recognizer.listen(source, timeout=5, phrase_time_limit=5)
+            
+            st.info("🔄 Processing voice...")
+            
+            # Recognize speech using Google Speech Recognition (English)
+            text = recognizer.recognize_google(audio, language='en-IN')
+            return text, None
+            
+    except sr.WaitTimeoutError:
+        return None, "⏱️ Timeout: No speech detected within 5 seconds. Please try again."
+    except sr.UnknownValueError:
+        return None, "❓ Could not understand audio. Please speak clearly and try again."
+    except sr.RequestError as e:
+        return None, f"🌐 Network error: Could not request results from Google Speech Recognition service."
+    except Exception as e:
+        return None, f"⚠️ Error: {str(e)}"
+
+# ---------------------- WEATHER FUNCTION ----------------------
+def get_weather(city):
+    """Fetches real-time weather data"""
+
+
 # ---------------------- CSS ----------------------
 st.markdown("""
 <style>
@@ -537,6 +579,18 @@ st.markdown("""
         border-color: #4caf50 !important;
         opacity: 0.3;
     }
+
+    .voice-button {
+        background: linear-gradient(135deg, #ff5722 0%, #ff7043 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 10px !important;
+        padding: 0.75rem 1.5rem !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 4px 12px rgba(255, 87, 34, 0.25) !important;
+    }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -549,7 +603,8 @@ if "expect_image" not in st.session_state:
     st.session_state.expect_image = False
 if "selected_language" not in st.session_state:
     st.session_state.selected_language = 'en'
-
+if "voice_input_active" not in st.session_state:
+    st.session_state.voice_input_active = False
 # Get current language
 current_lang = st.session_state.selected_language
 
@@ -2144,6 +2199,28 @@ with st.sidebar:
         st.rerun()
     
     st.divider()
+
+    if VOICE_AVAILABLE:
+        if st.button("🎤 Voice Input", key="voice_btn", use_container_width=True):
+            text, error = recognize_speech()
+            
+            if error:
+                st.error(f"❌ {error}")
+            elif text:
+                st.success(f"✅ Voice captured: {text}")
+                # Add to chat
+                st.session_state.messages.append({"role": "user", "content": text})
+                bot_response = get_bot_response(text, st.session_state.selected_language)
+                st.session_state.messages.append({"role": "assistant", "content": bot_response})
+                st.rerun()
+    else:
+        st.info("🎤 Voice input requires:\npip install SpeechRecognition pyaudio")
+    
+    st.divider()
+    
+    if st.button(get_ui_text('clear_chat', current_lang)):
+        # ... existing code
+
     
     if st.button(get_ui_text('clear_chat', current_lang)):
         st.session_state.messages = []
