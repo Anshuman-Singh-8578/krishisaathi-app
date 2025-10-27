@@ -3,7 +3,6 @@ import random
 import requests
 from datetime import datetime
 import re
-
 # ---------------------- STREAMLIT CONFIG ----------------------
 st.set_page_config(
     page_title="🌾 Krishisaathi AI", 
@@ -360,6 +359,9 @@ def get_greeting_by_language(lang_code):
     }
     return greetings.get(lang_code, greetings['en'])
 
+
+
+
 # ---------------------- CSS ----------------------
 st.markdown("""
 <style>
@@ -537,6 +539,7 @@ st.markdown("""
         border-color: #4caf50 !important;
         opacity: 0.3;
     }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -549,7 +552,6 @@ if "expect_image" not in st.session_state:
     st.session_state.expect_image = False
 if "selected_language" not in st.session_state:
     st.session_state.selected_language = 'en'
-
 # Get current language
 current_lang = st.session_state.selected_language
 
@@ -2144,6 +2146,10 @@ with st.sidebar:
         st.rerun()
     
     st.divider()
+
+    if st.button(get_ui_text('clear_chat', current_lang)):
+        # ... existing code
+
     
     if st.button(get_ui_text('clear_chat', current_lang)):
         st.session_state.messages = []
