@@ -506,7 +506,7 @@ def get_weather(city):
                 "feels_like": data["main"]["feels_like"],
                 "humidity": data["main"]["humidity"],
                 "description": data["weather"][0]["description"],
-                "wind_speed": data["wind"]["speed"])
+                "wind_speed": data["wind"]["speed"]}
         else:
             return none
 
