@@ -12,6 +12,14 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# ---------------------- VOICE RECOGNITION SETUP ----------------------
+try:
+    import speech_recognition as sr
+    VOICE_AVAILABLE = True
+except ImportError:
+    VOICE_AVAILABLE = False
+    st.warning("⚠️ Voice recognition not available. Install: pip install SpeechRecognition pyaudio")
+
 # ---------------------- TRANSLATION SETUP ----------------------
 try:
     from deep_translator import GoogleTranslator
@@ -65,7 +73,13 @@ UI_TRANSLATIONS = {
         'weather_in': 'Weather in',
         'tell_about': 'Tell me about wheat',
         'check_disease': 'Check crop disease',
-        'govt_schemes_msg': 'Tell me about government schemes'
+        'govt_schemes_msg': 'Tell me about government schemes',
+        'voice_input': '🎤 Voice Input',
+        'start_speaking': 'Click and start speaking...',
+        'listening': '🎤 Listening...',
+        'processing_audio': 'Processing audio...',
+        'voice_error': 'Could not understand audio. Please try again.',
+        'voice_success': 'Voice recognized!'
     },
     'hi': {
         'app_title': 'कृषिसाथी एआई',
@@ -96,7 +110,13 @@ UI_TRANSLATIONS = {
         'weather_in': 'मौसम',
         'tell_about': 'गेहूं के बारे में बताएं',
         'check_disease': 'फसल रोग जांचें',
-        'govt_schemes_msg': 'सरकारी योजनाओं के बारे में बताएं'
+        'govt_schemes_msg': 'सरकारी योजनाओं के बारे में बताएं',
+        'voice_input': '🎤 आवाज़ इनपुट',
+        'start_speaking': 'क्लिक करें और बोलना शुरू करें...',
+        'listening': '🎤 सुन रहे हैं...',
+        'processing_audio': 'ऑडियो प्रोसेस कर रहे हैं...',
+        'voice_error': 'ऑडियो समझ नहीं आया। कृपया पुनः प्रयास करें।',
+        'voice_success': 'आवाज़ पहचानी गई!'
     }
 }
 
@@ -131,6 +151,53 @@ def get_greeting_by_language(lang_code):
         'pa': 'ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਕ੍ਰਿਸ਼ੀਸਾਥੀ AI ਵਿੱਚ ਤੁਹਾਡਾ ਸੁਆਗਤ ਹੈ!'
     }
     return greetings.get(lang_code, greetings['en'])
+
+# ---------------------- VOICE RECOGNITION FUNCTION ----------------------
+def recognize_speech_from_mic(language_code='en-IN'):
+    """
+    Capture audio from microphone and convert to text
+    Supports multiple Indian languages
+    """
+    if not VOICE_AVAILABLE:
+        return None, "Voice recognition not available"
+    
+    # Language code mapping
+    language_codes = {
+        'en': 'en-IN',
+        'hi': 'hi-IN',
+        'mr': 'mr-IN',
+        'ta': 'ta-IN',
+        'te': 'te-IN',
+        'bn': 'bn-IN',
+        'gu': 'gu-IN',
+        'kn': 'kn-IN',
+        'ml': 'ml-IN',
+        'pa': 'pa-IN'
+    }
+    
+    recognizer = sr.Recognizer()
+    
+    try:
+        with sr.Microphone() as source:
+            # Adjust for ambient noise
+            recognizer.adjust_for_ambient_noise(source, duration=0.5)
+            
+            # Listen for audio
+            audio = recognizer.listen(source, timeout=5, phrase_time_limit=10)
+            
+            # Convert speech to text using Google Speech Recognition
+            text = recognizer.recognize_google(audio, language=language_codes.get(language_code, 'en-IN'))
+            
+            return text, None
+            
+    except sr.WaitTimeoutError:
+        return None, "No speech detected. Please try again."
+    except sr.UnknownValueError:
+        return None, "Could not understand audio. Please speak clearly."
+    except sr.RequestError as e:
+        return None, f"Could not request results; {e}"
+    except Exception as e:
+        return None, f"Error: {str(e)}"
 
 # ---------------------- GOVERNMENT SCHEMES DATA ----------------------
 GOVERNMENT_SCHEMES = {
@@ -447,6 +514,10 @@ if "expect_image" not in st.session_state:
     st.session_state.expect_image = False
 if "selected_language" not in st.session_state:
     st.session_state.selected_language = 'en'
+if "voice_text" not in st.session_state:
+    st.session_state.voice_text = None
+if "listening" not in st.session_state:
+    st.session_state.listening = False
 
 current_lang = st.session_state.selected_language
 
@@ -745,6 +816,95 @@ with st.sidebar:
         bot_response = get_bot_response(user_msg, st.session_state.selected_language)
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.rerun()
+    
+    st.divider()
+    
+    # Voice Input Section with Web Speech API
+    st.markdown(f"### {get_ui_text('voice_input', current_lang)}")
+    
+    # Web-based voice input using HTML5 Speech Recognition
+    voice_html = f"""
+    <div style="padding: 1rem; background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%); border-radius: 10px; border: 1px solid #4caf50;">
+        <button id="voiceBtn" style="
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        ">
+            🎤 {get_ui_text('start_speaking', current_lang)}
+        </button>
+        <div id="status" style="margin-top: 0.5rem; color: #81c784; text-align: center; font-size: 0.9rem;"></div>
+        <input type="hidden" id="voiceResult" />
+    </div>
+    
+    <script>
+        const voiceBtn = document.getElementById('voiceBtn');
+        const status = document.getElementById('status');
+        const voiceResult = document.getElementById('voiceResult');
+        
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {{
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            
+            recognition.lang = '{get_language_code(current_lang)}';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            
+            voiceBtn.onclick = function() {{
+                status.textContent = '🎤 {get_ui_text("listening", current_lang)}';
+                voiceBtn.disabled = true;
+                recognition.start();
+            }};
+            
+            recognition.onresult = function(event) {{
+                const transcript = event.results[0][0].transcript;
+                voiceResult.value = transcript;
+                status.textContent = '✅ ' + transcript;
+                voiceBtn.disabled = false;
+                
+                // Trigger Streamlit update
+                const event_input = new Event('input', {{ bubbles: true }});
+                voiceResult.dispatchEvent(event_input);
+            }};
+            
+            recognition.onerror = function(event) {{
+                status.textContent = '❌ {get_ui_text("voice_error", current_lang)}';
+                voiceBtn.disabled = false;
+            }};
+            
+            recognition.onend = function() {{
+                voiceBtn.disabled = false;
+            }};
+        }} else {{
+            status.textContent = '⚠️ Voice input not supported in this browser';
+            voiceBtn.disabled = true;
+        }}
+    </script>
+    """
+    
+    st.components.v1.html(voice_html, height=120)
+    
+    # Alternative: Python-based voice input
+    if VOICE_AVAILABLE:
+        st.markdown("**Or use microphone:**")
+        if st.button("🎙️ Record Audio", key="voice_button_alt"):
+            with st.spinner(get_ui_text('listening', current_lang)):
+                text, error = recognize_speech_from_mic(current_lang)
+                
+                if text:
+                    st.success(f"✅ '{text}'")
+                    st.session_state.messages.append({{"role": "user", "content": text}})
+                    bot_response = get_bot_response(text, st.session_state.selected_language)
+                    st.session_state.messages.append({{"role": "assistant", "content": bot_response}})
+                    st.rerun()
+                else:
+                    st.error(f"❌ {error}")
     
     st.divider()
     
