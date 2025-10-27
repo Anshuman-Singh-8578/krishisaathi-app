@@ -756,12 +756,10 @@ def get_weather(city):
                 "description": data["weather"][0]["description"],
                 "wind_speed": data["wind"]["speed"]}
         else:
-            return none
-
-        
+            return None
     except Exception as e:
-        st.error(f"error fetching weather: {str(e)}")
-    return None
+        st.error(f"Error fetching weather: {str(e)}")
+        return None
 
 def get_produce_prices(state="all"):
     """Sample prices - abbreviated"""
