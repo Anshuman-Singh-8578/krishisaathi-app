@@ -759,7 +759,7 @@ def get_weather(city):
             return None
     except Exception as e:
         st.error(f"Error fetching weather: {str(e)}")
-        return None
+          return None
 
 def get_produce_prices(state="all"):
     """Sample prices - abbreviated"""
