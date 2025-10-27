@@ -152,6 +152,22 @@ def get_greeting_by_language(lang_code):
     }
     return greetings.get(lang_code, greetings['en'])
 
+def get_language_code(lang):
+    """Get language code for speech recognition"""
+    codes = {
+        'en': 'en-IN',
+        'hi': 'hi-IN',
+        'mr': 'mr-IN',
+        'ta': 'ta-IN',
+        'te': 'te-IN',
+        'bn': 'bn-IN',
+        'gu': 'gu-IN',
+        'kn': 'kn-IN',
+        'ml': 'ml-IN',
+        'pa': 'pa-IN'
+    }
+    return codes.get(lang, 'en-IN')
+
 # ---------------------- VOICE RECOGNITION FUNCTION ----------------------
 def recognize_speech_from_mic(language_code='en-IN'):
     """
@@ -822,6 +838,12 @@ with st.sidebar:
     # Voice Input Section with Web Speech API
     st.markdown(f"### {get_ui_text('voice_input', current_lang)}")
     
+    # Get language code for current language
+    lang_code = get_language_code(current_lang)
+    listening_text = get_ui_text('listening', current_lang)
+    voice_error_text = get_ui_text('voice_error', current_lang)
+    start_speaking_text = get_ui_text('start_speaking', current_lang)
+    
     # Web-based voice input using HTML5 Speech Recognition
     voice_html = f"""
     <div style="padding: 1rem; background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%); border-radius: 10px; border: 1px solid #4caf50;">
@@ -837,7 +859,7 @@ with st.sidebar:
             cursor: pointer;
             transition: all 0.3s ease;
         ">
-            🎤 {get_ui_text('start_speaking', current_lang)}
+            🎤 {start_speaking_text}
         </button>
         <div id="status" style="margin-top: 0.5rem; color: #81c784; text-align: center; font-size: 0.9rem;"></div>
         <input type="hidden" id="voiceResult" />
@@ -852,12 +874,12 @@ with st.sidebar:
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             const recognition = new SpeechRecognition();
             
-            recognition.lang = '{get_language_code(current_lang)}';
+            recognition.lang = '{lang_code}';
             recognition.continuous = false;
             recognition.interimResults = false;
             
             voiceBtn.onclick = function() {{
-                status.textContent = '🎤 {get_ui_text("listening", current_lang)}';
+                status.textContent = '🎤 {listening_text}';
                 voiceBtn.disabled = true;
                 recognition.start();
             }};
@@ -874,7 +896,7 @@ with st.sidebar:
             }};
             
             recognition.onerror = function(event) {{
-                status.textContent = '❌ {get_ui_text("voice_error", current_lang)}';
+                status.textContent = '❌ {voice_error_text}';
                 voiceBtn.disabled = false;
             }};
             
@@ -899,9 +921,9 @@ with st.sidebar:
                 
                 if text:
                     st.success(f"✅ '{text}'")
-                    st.session_state.messages.append({{"role": "user", "content": text}})
+                    st.session_state.messages.append({"role": "user", "content": text})
                     bot_response = get_bot_response(text, st.session_state.selected_language)
-                    st.session_state.messages.append({{"role": "assistant", "content": bot_response}})
+                    st.session_state.messages.append({"role": "assistant", "content": bot_response})
                     st.rerun()
                 else:
                     st.error(f"❌ {error}")
