@@ -506,10 +506,13 @@ def get_weather(city):
                 "feels_like": data["main"]["feels_like"],
                 "humidity": data["main"]["humidity"],
                 "description": data["weather"][0]["description"],
-                "wind_speed": data["wind"]["speed"]
-            }
-    except:
-        pass
+                "wind_speed": data["wind"]["speed"])
+        else:
+            return none
+
+        
+    except Exception as e:
+        st.error(f"error fetching weather: {str(e)}")
     return None
 
 def get_produce_prices(state="all"):
