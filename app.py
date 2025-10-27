@@ -45,7 +45,6 @@ UI_TRANSLATIONS = {
         'delhi_prices': '🏙️ Delhi Prices',
         'mumbai_weather': '🌤️ Mumbai Weather',
         'crop_tips': '🌾 Crop Tips',
-        'govt_schemes': '🏛️ Govt Schemes',
         'clear_chat': '🗑️ Clear Chat',
         'upload_image': '📸 Upload Crop Image',
         'choose_image': 'Choose an image',
@@ -64,8 +63,7 @@ UI_TRANSLATIONS = {
         'show_prices': 'Show prices in',
         'weather_in': 'Weather in',
         'tell_about': 'Tell me about wheat',
-        'check_disease': 'Check crop disease',
-        'govt_schemes_msg': 'Tell me about government schemes'
+        'check_disease': 'Check crop disease'
     },
     'hi': {
         'app_title': 'कृषिसाथी एआई',
@@ -76,7 +74,6 @@ UI_TRANSLATIONS = {
         'delhi_prices': '🏙️ दिल्ली की कीमतें',
         'mumbai_weather': '🌤️ मुंबई का मौसम',
         'crop_tips': '🌾 फसल सुझाव',
-        'govt_schemes': '🏛️ सरकारी योजनाएं',
         'clear_chat': '🗑️ चैट साफ करें',
         'upload_image': '📸 फसल की तस्वीर अपलोड करें',
         'choose_image': 'एक तस्वीर चुनें',
@@ -95,39 +92,36 @@ UI_TRANSLATIONS = {
         'show_prices': 'कीमतें दिखाएं',
         'weather_in': 'मौसम',
         'tell_about': 'गेहूं के बारे में बताएं',
-        'check_disease': 'फसल रोग जांचें',
-        'govt_schemes_msg': 'सरकारी योजनाओं के बारे में बताएं'
+        'check_disease': 'फसल रोग जांचें'
     },
-'mr': {
-        'app_title': 'कृषिसाथी AI',
-        'app_tagline': 'शेतकऱ्यांना जोडणे, विकासाला सशक्त करणे',
+    'mr': {
+        'app_title': 'कृषिसाथी एआय',
+        'app_tagline': 'शेतकऱ्यांना जोडणे, वाढीस सक्षम करणे',
         'select_language': 'तुमची भाषा निवडा',
-        'quick_actions': '🎯 द्रुत क्रिया',
-        'disease_detection': '📷 रोग शोध',
-        'delhi_prices': '🏙️ दिल्ली किंमती',
+        'quick_actions': '🎯 जलद क्रिया',
+        'disease_detection': '📷 रोग ओळख',
+        'delhi_prices': '🏙️ दिल्ली किमती',
         'mumbai_weather': '🌤️ मुंबई हवामान',
-        'crop_tips': '🌾 पीक टिपा',
+        'crop_tips': '🌾 पीक सूचना',
         'clear_chat': '🗑️ चॅट साफ करा',
-        'upload_image': '📸 पीक प्रतिमा अपलोड करा',
-        'choose_image': 'प्रतिमा निवडा',
+        'upload_image': '📸 पिकाचा फोटो अपलोड करा',
+        'choose_image': 'एक प्रतिमा निवडा',
         'uploaded_image': 'अपलोड केलेली प्रतिमा',
         'analyzing': '🔬 विश्लेषण करत आहे...',
-        'detection_complete': '✅ शोध पूर्ण!',
+        'detection_complete': '✅ ओळख पूर्ण!',
         'disease': 'रोग',
         'confidence': 'विश्वास',
         'done': '✅ पूर्ण',
         'chat_placeholder': 'शेतीबद्दल विचारा...',
         'thinking': '🌱 विचार करत आहे...',
-        'footer_title': '🌾 कृषिसाथी AI',
-        'footer_tagline': 'तंत्रज्ञानाने शेतकऱ्यांना सशक्त करणे',
-        'footer_copyright': '© 2025 कृषिसाथी AI. सर्व हक्क राखीव.',
+        'footer_title': '🌾 कृषिसाथी एआय',
+        'footer_tagline': 'तंत्रज्ञानाद्वारे शेतकऱ्यांना सक्षम करणे',
+        'footer_copyright': '© 2025 कृषिसाथी एआय. सर्व हक्क राखीव.',
         'smart_assistant': 'स्मार्ट शेती सहाय्यक',
-        'show_prices': 'किंमती दाखवा',
+        'show_prices': 'किमती दाखवा',
         'weather_in': 'हवामान',
-        'tell_about': 'गहूंबद्दल सांगा',
-        'check_disease': 'पीक रोग तपासा',
-        'voice_input': 'आवाज इनपुट',
-        'speak_button': '🎙️ बोला'
+        'tell_about': 'गव्हाबद्दल सांगा',
+        'check_disease': 'पीक रोग तपासा'
     },
     'ta': {
         'app_title': 'கிருஷிசாத்தி AI',
@@ -139,9 +133,9 @@ UI_TRANSLATIONS = {
         'mumbai_weather': '🌤️ மும்பை வானிலை',
         'crop_tips': '🌾 பயிர் குறிப்புகள்',
         'clear_chat': '🗑️ அரட்டையை அழி',
-        'upload_image': '📸 பயிர் படத்தை பதிவேற்று',
-        'choose_image': 'படத்தைத் தேர்ந்தெடு',
-        'uploaded_image': 'பதிவேற்றிய படம்',
+        'upload_image': '📸 பயிர் படத்தை பதிவேற்றவும்',
+        'choose_image': 'படத்தைத் தேர்ந்தெடுக்கவும்',
+        'uploaded_image': 'பதிவேற்றப்பட்ட படம்',
         'analyzing': '🔬 பகுப்பாய்வு செய்கிறது...',
         'detection_complete': '✅ கண்டறிதல் முடிந்தது!',
         'disease': 'நோய்',
@@ -150,19 +144,17 @@ UI_TRANSLATIONS = {
         'chat_placeholder': 'விவசாயம் பற்றி கேளுங்கள்...',
         'thinking': '🌱 சிந்திக்கிறது...',
         'footer_title': '🌾 கிருஷிசாத்தி AI',
-        'footer_tagline': 'தொழில்நுட்பத்தால் விவசாயிகளை மேம்படுத்துதல்',
+        'footer_tagline': 'தொழில்நுட்பத்துடன் விவசாயிகளை மேம்படுத்துதல்',
         'footer_copyright': '© 2025 கிருஷிசாத்தி AI. அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.',
         'smart_assistant': 'ஸ்மார்ட் விவசாய உதவியாளர்',
         'show_prices': 'விலைகளைக் காட்டு',
         'weather_in': 'வானிலை',
         'tell_about': 'கோதுமை பற்றி சொல்லுங்கள்',
-        'check_disease': 'பயிர் நோயை சரிபார்',
-        'voice_input': 'குரல் உள்ளீடு',
-        'speak_button': '🎙️ பேசுங்கள்'
+        'check_disease': 'பயிர் நோயைச் சரிபார்க்கவும்'
     },
     'te': {
         'app_title': 'కృషిసాథి AI',
-        'app_tagline': 'రైతులను కలుపుతోంది, వృద్ధిని శక్తివంతం చేస్తోంది',
+        'app_tagline': 'రైతులను కలుపుతూ, వృద్ధిని శక్తివంతం చేయడం',
         'select_language': 'మీ భాషను ఎంచుకోండి',
         'quick_actions': '🎯 త్వరిత చర్యలు',
         'disease_detection': '📷 వ్యాధి గుర్తింపు',
@@ -184,23 +176,21 @@ UI_TRANSLATIONS = {
         'footer_tagline': 'సాంకేతికతతో రైతులను శక్తివంతం చేయడం',
         'footer_copyright': '© 2025 కృషిసాథి AI. అన్ని హక్కులూ రక్షించబడ్డాయి.',
         'smart_assistant': 'స్మార్ట్ వ్యవసాయ సహాయకుడు',
-        'show_prices': 'ధరలు చూపించు',
+        'show_prices': 'ధరలను చూపించు',
         'weather_in': 'వాతావరణం',
         'tell_about': 'గోధుమల గురించి చెప్పండి',
-        'check_disease': 'పంట వ్యాధిని తనిఖీ చేయండి',
-        'voice_input': 'వాయిస్ ఇన్‌పుట్',
-        'speak_button': '🎙️ మాట్లాడండి'
+        'check_disease': 'పంట వ్యాధిని తనిఖీ చేయండి'
     },
     'bn': {
         'app_title': 'কৃষিসাথী AI',
-        'app_tagline': 'কৃষকদের সংযুক্ত করা, উন্নয়নকে ক্ষমতায়ন করা',
+        'app_tagline': 'কৃষকদের সংযোগ, বৃদ্ধিকে ক্ষমতায়ন',
         'select_language': 'আপনার ভাষা নির্বাচন করুন',
-        'quick_actions': '🎯 দ্রুত কাজ',
+        'quick_actions': '🎯 দ্রুত ক্রিয়া',
         'disease_detection': '📷 রোগ সনাক্তকরণ',
-        'delhi_prices': '🏙️ দিল্লি মূল্য',
+        'delhi_prices': '🏙️ দিল্লির দাম',
         'mumbai_weather': '🌤️ মুম্বাই আবহাওয়া',
         'crop_tips': '🌾 ফসলের টিপস',
-        'clear_chat': '🗑️ চ্যাট পরিষ্কার করুন',
+        'clear_chat': '🗑️ চ্যাট মুছুন',
         'upload_image': '📸 ফসলের ছবি আপলোড করুন',
         'choose_image': 'একটি ছবি নির্বাচন করুন',
         'uploaded_image': 'আপলোড করা ছবি',
@@ -212,46 +202,42 @@ UI_TRANSLATIONS = {
         'chat_placeholder': 'কৃষি সম্পর্কে জিজ্ঞাসা করুন...',
         'thinking': '🌱 চিন্তা করছে...',
         'footer_title': '🌾 কৃষিসাথী AI',
-        'footer_tagline': 'প্রযুক্তির মাধ্যমে কৃষকদের ক্ষমতায়ন',
+        'footer_tagline': 'প্রযুক্তির সাথে কৃষকদের ক্ষমতায়ন',
         'footer_copyright': '© 2025 কৃষিসাথী AI. সমস্ত অধিকার সংরক্ষিত।',
         'smart_assistant': 'স্মার্ট কৃষি সহায়ক',
-        'show_prices': 'মূল্য দেখান',
+        'show_prices': 'দাম দেখান',
         'weather_in': 'আবহাওয়া',
         'tell_about': 'গম সম্পর্কে বলুন',
-        'check_disease': 'ফসলের রোগ পরীক্ষা করুন',
-        'voice_input': 'ভয়েস ইনপুট',
-        'speak_button': '🎙️ বলুন'
+        'check_disease': 'ফসল রোগ পরীক্ষা করুন'
     },
     'gu': {
         'app_title': 'કૃષિસાથી AI',
-        'app_tagline': 'ખેડૂતોને જોડવું, વૃદ્ધિને સશક્ત બનાવવી',
+        'app_tagline': 'ખેડૂતોને જોડવા, વૃદ્ધિને સશક્ત બનાવવી',
         'select_language': 'તમારી ભાષા પસંદ કરો',
         'quick_actions': '🎯 ઝડપી ક્રિયાઓ',
         'disease_detection': '📷 રોગ શોધ',
-        'delhi_prices': '🏙️ દિલ્હી ભાવો',
+        'delhi_prices': '🏙️ દિલ્હી ભાવ',
         'mumbai_weather': '🌤️ મુંબઈ હવામાન',
         'crop_tips': '🌾 પાક ટીપ્સ',
         'clear_chat': '🗑️ ચેટ સાફ કરો',
-        'upload_image': '📸 પાક છબી અપલોડ કરો',
-        'choose_image': 'છબી પસંદ કરો',
-        'uploaded_image': 'અપલોડ કરેલી છબી',
-        'analyzing': '🔬 વિશ્લેષણ કરી રહ્યું છે...',
+        'upload_image': '📸 પાકનું ચિત્ર અપલોડ કરો',
+        'choose_image': 'એક છબી પસંદ કરો',
+        'uploaded_image': 'અપલોડ કરેલ છબી',
+        'analyzing': '🔬 વિશ્લેષણ કરી રહ્યા છીએ...',
         'detection_complete': '✅ શોધ પૂર્ણ!',
         'disease': 'રોગ',
         'confidence': 'વિશ્વાસ',
         'done': '✅ પૂર્ણ',
         'chat_placeholder': 'ખેતી વિશે પૂછો...',
-        'thinking': '🌱 વિચારી રહ્યું છે...',
+        'thinking': '🌱 વિચારી રહ્યા છીએ...',
         'footer_title': '🌾 કૃષિસાથી AI',
-        'footer_tagline': 'ટેકનોલોજીથી ખેડૂતોને સશક્ત બનાવવું',
+        'footer_tagline': 'ટેકનોલોજી સાથે ખેડૂતોને સશક્ત બનાવવા',
         'footer_copyright': '© 2025 કૃષિસાથી AI. બધા અધિકારો અનામત.',
         'smart_assistant': 'સ્માર્ટ ખેતી સહાયક',
-        'show_prices': 'ભાવો બતાવો',
+        'show_prices': 'ભાવ બતાવો',
         'weather_in': 'હવામાન',
-        'tell_about': 'ઘઉં વિશે જણાવો',
-        'check_disease': 'પાક રોગ તપાસો',
-        'voice_input': 'વૉઇસ ઇનપુટ',
-        'speak_button': '🎙️ બોલો'
+        'tell_about': 'ઘઉં વિશે કહો',
+        'check_disease': 'પાક રોગ તપાસો'
     },
     'kn': {
         'app_title': 'ಕೃಷಿಸಾಥಿ AI',
@@ -271,24 +257,22 @@ UI_TRANSLATIONS = {
         'disease': 'ರೋಗ',
         'confidence': 'ವಿಶ್ವಾಸ',
         'done': '✅ ಪೂರ್ಣಗೊಂಡಿದೆ',
-        'chat_placeholder': 'ಕೃಷಿಯ ಬಗ್ಗೆ ಕೇಳಿ...',
+        'chat_placeholder': 'ಕೃಷಿ ಬಗ್ಗೆ ಕೇಳಿ...',
         'thinking': '🌱 ಯೋಚಿಸುತ್ತಿದೆ...',
         'footer_title': '🌾 ಕೃಷಿಸಾಥಿ AI',
-        'footer_tagline': 'ತಂತ್ರಜ್ಞಾನದಿಂದ ರೈತರನ್ನು ಸಶಕ್ತಗೊಳಿಸುವುದು',
+        'footer_tagline': 'ತಂತ್ರಜ್ಞಾನದೊಂದಿಗೆ ರೈತರನ್ನು ಸಶಕ್ತಗೊಳಿಸುವುದು',
         'footer_copyright': '© 2025 ಕೃಷಿಸಾಥಿ AI. ಎಲ್ಲಾ ಹಕ್ಕುಗಳನ್ನು ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ.',
         'smart_assistant': 'ಸ್ಮಾರ್ಟ್ ಕೃಷಿ ಸಹಾಯಕ',
         'show_prices': 'ಬೆಲೆಗಳನ್ನು ತೋರಿಸಿ',
         'weather_in': 'ಹವಾಮಾನ',
-        'tell_about': 'ಗೋಧಿಯ ಬಗ್ಗೆ ಹೇಳಿ',
-        'check_disease': 'ಬೆಳೆ ರೋಗವನ್ನು ಪರಿಶೀಲಿಸಿ',
-        'voice_input': 'ಧ್ವನಿ ಇನ್‌ಪುಟ್',
-        'speak_button': '🎙️ ಮಾತನಾಡಿ'
+        'tell_about': 'ಗೋಧಿ ಬಗ್ಗೆ ಹೇಳಿ',
+        'check_disease': 'ಬೆಳೆ ರೋಗವನ್ನು ಪರಿಶೀಲಿಸಿ'
     },
     'ml': {
         'app_title': 'കൃഷിസാഥി AI',
-        'app_tagline': 'കർഷകരെ ബന്ധിപ്പിക്കുന്നു, വളർച്ചയെ ശാക്തീകരിക്കുന്നു',
+        'app_tagline': 'കർഷകരെ ബന്ധിപ്പിക്കൽ, വളർച്ചയെ ശാക്തീകരിക്കൽ',
         'select_language': 'നിങ്ങളുടെ ഭാഷ തിരഞ്ഞെടുക്കുക',
-        'quick_actions': '🎯 വേഗത്തിലുള്ള പ്രവർത്തനങ്ങൾ',
+        'quick_actions': '🎯 പെട്ടെന്നുള്ള പ്രവർത്തനങ്ങൾ',
         'disease_detection': '📷 രോഗം കണ്ടെത്തൽ',
         'delhi_prices': '🏙️ ഡൽഹി വിലകൾ',
         'mumbai_weather': '🌤️ മുംബൈ കാലാവസ്ഥ',
@@ -297,7 +281,7 @@ UI_TRANSLATIONS = {
         'upload_image': '📸 വിള ചിത്രം അപ്‌ലോഡ് ചെയ്യുക',
         'choose_image': 'ഒരു ചിത്രം തിരഞ്ഞെടുക്കുക',
         'uploaded_image': 'അപ്‌ലോഡ് ചെയ്ത ചിത്രം',
-        'analyzing': '🔬 വിശകലനം ചെയ്യുന്നു...',
+        'analyzing': '🔬 വിശകലനം നടത്തുന്നു...',
         'detection_complete': '✅ കണ്ടെത്തൽ പൂർത്തിയായി!',
         'disease': 'രോഗം',
         'confidence': 'വിശ്വാസം',
@@ -305,52 +289,48 @@ UI_TRANSLATIONS = {
         'chat_placeholder': 'കൃഷിയെക്കുറിച്ച് ചോദിക്കുക...',
         'thinking': '🌱 ചിന്തിക്കുന്നു...',
         'footer_title': '🌾 കൃഷിസാഥി AI',
-        'footer_tagline': 'സാങ്കേതികവിദ്യയിലൂടെ കർഷകരെ ശാക്തീകരിക്കുന്നു',
+        'footer_tagline': 'സാങ്കേതികവിദ്യയിലൂടെ കർഷകരെ ശാക്തീകരിക്കൽ',
         'footer_copyright': '© 2025 കൃഷിസാഥി AI. എല്ലാ അവകാശങ്ങളും സംരക്ഷിതം.',
         'smart_assistant': 'സ്മാർട്ട് കൃഷി സഹായി',
         'show_prices': 'വിലകൾ കാണിക്കുക',
         'weather_in': 'കാലാവസ്ഥ',
         'tell_about': 'ഗോതമ്പിനെക്കുറിച്ച് പറയുക',
-        'check_disease': 'വിള രോഗം പരിശോധിക്കുക',
-        'voice_input': 'വോയ്സ് ഇൻപുട്ട്',
-        'speak_button': '🎙️ സംസാരിക്കുക'
+        'check_disease': 'വിള രോഗം പരിശോധിക്കുക'
     },
     'pa': {
         'app_title': 'ਕ੍ਰਿਸ਼ੀਸਾਥੀ AI',
-        'app_tagline': 'ਕਿਸਾਨਾਂ ਨੂੰ ਜੋੜਨਾ, ਵਿਕਾਸ ਨੂੰ ਸ਼ਕਤੀ ਦੇਣਾ',
+        'app_tagline': 'ਕਿਸਾਨਾਂ ਨੂੰ ਜੋੜਨਾ, ਵਿਕਾਸ ਨੂੰ ਸਸ਼ਕਤ ਬਣਾਉਣਾ',
         'select_language': 'ਆਪਣੀ ਭਾਸ਼ਾ ਚੁਣੋ',
         'quick_actions': '🎯 ਤੇਜ਼ ਕਾਰਵਾਈਆਂ',
-        'disease_detection': '📷 ਰੋਗ ਪਛਾਣ',
+        'disease_detection': '📷 ਬਿਮਾਰੀ ਪਛਾਣ',
         'delhi_prices': '🏙️ ਦਿੱਲੀ ਕੀਮਤਾਂ',
         'mumbai_weather': '🌤️ ਮੁੰਬਈ ਮੌਸਮ',
         'crop_tips': '🌾 ਫਸਲ ਸੁਝਾਅ',
         'clear_chat': '🗑️ ਚੈਟ ਸਾਫ਼ ਕਰੋ',
-        'upload_image': '📸 ਫਸਲ ਤਸਵੀਰ ਅੱਪਲੋਡ ਕਰੋ',
+        'upload_image': '📸 ਫਸਲ ਦੀ ਤਸਵੀਰ ਅੱਪਲੋਡ ਕਰੋ',
         'choose_image': 'ਇੱਕ ਤਸਵੀਰ ਚੁਣੋ',
         'uploaded_image': 'ਅੱਪਲੋਡ ਕੀਤੀ ਤਸਵੀਰ',
-        'analyzing': '🔬 ਵਿਸ਼ਲੇਸ਼ਣ ਕਰ ਰਿਹਾ ਹੈ...',
+        'analyzing': '🔬 ਵਿਸ਼ਲੇਸ਼ਣ ਕਰ ਰਹੇ ਹਾਂ...',
         'detection_complete': '✅ ਪਛਾਣ ਪੂਰੀ!',
-        'disease': 'ਰੋਗ',
+        'disease': 'ਬਿਮਾਰੀ',
         'confidence': 'ਵਿਸ਼ਵਾਸ',
         'done': '✅ ਪੂਰਾ',
         'chat_placeholder': 'ਖੇਤੀ ਬਾਰੇ ਪੁੱਛੋ...',
-        'thinking': '🌱 ਸੋਚ ਰਿਹਾ ਹੈ...',
+        'thinking': '🌱 ਸੋਚ ਰਹੇ ਹਾਂ...',
         'footer_title': '🌾 ਕ੍ਰਿਸ਼ੀਸਾਥੀ AI',
-        'footer_tagline': 'ਤਕਨਾਲੋਜੀ ਨਾਲ ਕਿਸਾਨਾਂ ਨੂੰ ਸ਼ਕਤੀ ਦੇਣਾ',
-        'footer_copyright': '© 2025 ਕ੍ਰਿਸ਼ੀਸਾਥੀ AI. ਸਾਰੇ ਅਧਿਕਾਰ ਰਾਖਵੇਂ।',
+        'footer_tagline': 'ਤਕਨਾਲੋਜੀ ਨਾਲ ਕਿਸਾਨਾਂ ਨੂੰ ਸਸ਼ਕਤ ਬਣਾਉਣਾ',
+        'footer_copyright': '© 2025 ਕ੍ਰਿਸ਼ੀਸਾਥੀ AI. ਸਾਰੇ ਅਧਿਕਾਰ ਰਾਖਵੇਂ.',
         'smart_assistant': 'ਸਮਾਰਟ ਖੇਤੀ ਸਹਾਇਕ',
         'show_prices': 'ਕੀਮਤਾਂ ਦਿਖਾਓ',
         'weather_in': 'ਮੌਸਮ',
         'tell_about': 'ਕਣਕ ਬਾਰੇ ਦੱਸੋ',
-        'check_disease': 'ਫਸਲ ਰੋਗ ਜਾਂਚੋ',
-        'voice_input': 'ਆਵਾਜ਼ ਇਨਪੁੱਟ',
-        'speak_button': '🎙️ ਬੋਲੋ'
+        'check_disease': 'ਫਸਲ ਬਿਮਾਰੀ ਜਾਂਚੋ'
     }
 }
 
 def get_ui_text(key, lang='en'):
     """Get translated UI text"""
-    return UI_TRANSLATIONS.get(lang, UI_TRANSLATIONS['en']).get(key, UI_TRANSLATIONS['en'].get(key, key))
+    return UI_TRANSLATIONS.get(lang, UI_TRANSLATIONS['en']).get(key, UI_TRANSLATIONS['en'][key])
 
 # ---------------------- TRANSLATION FUNCTIONS ----------------------
 def translate_text(text, target_lang='en', source_lang='auto'):
@@ -379,210 +359,6 @@ def get_greeting_by_language(lang_code):
         'pa': 'ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਕ੍ਰਿਸ਼ੀਸਾਥੀ AI ਵਿੱਚ ਤੁਹਾਡਾ ਸੁਆਗਤ ਹੈ!'
     }
     return greetings.get(lang_code, greetings['en'])
-
-# ---------------------- GOVERNMENT SCHEMES DATA ----------------------
-GOVERNMENT_SCHEMES = {
-    "PM-KISAN": {
-        "full_name": "Pradhan Mantri Kisan Samman Nidhi",
-        "objective": "Direct income support to small and marginal farmers",
-        "benefits": "₹6,000 per year in 3 installments directly into farmer's bank account",
-        "eligibility": "Small and marginal farmers with landholding up to 2 hectares",
-        "how_to_apply": "Apply online at pmkisan.gov.in or through Common Service Centers",
-        "contact": "Call 155261 or 011-24300606"
-    },
-    "PMFBY": {
-        "full_name": "Pradhan Mantri Fasal Bima Yojana",
-        "objective": "Crop insurance covering losses from natural calamities, pests, and diseases",
-        "benefits": "Low premiums (2% Kharif, 1.5% Rabi); coverage for yield loss, post-harvest loss, and localized calamities",
-        "eligibility": "All farmers including sharecroppers and tenant farmers",
-        "how_to_apply": "Through banks, insurance companies, or pmfby.gov.in",
-        "contact": "Toll-free: 18001801551"
-    },
-    "KCC": {
-        "full_name": "Kisan Credit Card Scheme",
-        "objective": "Easy access to short-term credit for farming needs",
-        "benefits": "Loans up to ₹3 lakh at 7% interest, flexible repayment options, 3% interest subvention",
-        "eligibility": "All farmers owning cultivable land",
-        "how_to_apply": "Visit nearest bank branch with land documents and Aadhaar card",
-        "contact": "Contact your nearest bank branch"
-    },
-    "PMKSY": {
-        "full_name": "Pradhan Mantri Krishi Sinchai Yojana",
-        "objective": "Water-use efficiency and irrigation improvement - 'Har Khet Ko Pani'",
-        "benefits": "Subsidies for drip & sprinkler systems (up to 55%); promotes 'More Crop Per Drop'",
-        "eligibility": "All categories of farmers",
-        "how_to_apply": "Through State Agriculture Department offices or online portal",
-        "contact": "Visit nearest Krishi Vigyan Kendra (KVK)"
-    },
-    "AIF": {
-        "full_name": "Agriculture Infrastructure Fund",
-        "objective": "Financing post-harvest infrastructure and agri supply chains",
-        "benefits": "Loans with 3% interest subvention and credit guarantee; ₹1 lakh crore scheme",
-        "eligibility": "Farmers, FPOs, agri-entrepreneurs, startups, cooperatives",
-        "how_to_apply": "Apply through banks or online at agriinfra.dac.gov.in",
-        "contact": "Contact NABARD or participating banks"
-    },
-    "PKVY": {
-        "full_name": "Paramparagat Krishi Vikas Yojana",
-        "objective": "Promotion of organic and sustainable farming practices",
-        "benefits": "₹50,000 per hectare for 3 years; support for organic clusters, certification, and marketing",
-        "eligibility": "Groups of farmers (minimum 50) practicing organic farming",
-        "how_to_apply": "Through State Agriculture Department under RKVY",
-        "contact": "Contact State Organic Certification Agency"
-    },
-    "PM-KUSUM": {
-        "full_name": "PM Kisan Urja Suraksha evam Utthaan Mahabhiyan",
-        "objective": "Solar energy for farmers - reduce diesel dependency",
-        "benefits": "30% subsidy by central govt, 30% by state; income through sale of surplus electricity to grid",
-        "eligibility": "All farmers",
-        "how_to_apply": "Through State Nodal Agency or online at kusum.mnre.gov.in",
-        "contact": "Ministry of New and Renewable Energy helpline"
-    },
-    "SMAM": {
-        "full_name": "Sub-Mission on Agricultural Mechanization",
-        "objective": "Promoting farm mechanization to increase productivity",
-        "benefits": "40-50% subsidy on tractors, harvesters, and machinery (priority to SC/ST/Women farmers)",
-        "eligibility": "All farmers, with special focus on SC/ST/Women/Small farmers",
-        "how_to_apply": "Through State Agriculture Department or online DBT portal",
-        "contact": "Visit District Agriculture Office"
-    },
-    "PENSION": {
-        "full_name": "PM Kisan Maan Dhan Yojana (PM-KMY)",
-        "objective": "Old age pension scheme for small and marginal farmers",
-        "benefits": "₹3,000 monthly pension after 60 years of age; contribution-based scheme",
-        "eligibility": "Farmers aged 18-40 years with up to 2 hectares land",
-        "how_to_apply": "Through Common Service Centers with Aadhaar and bank account",
-        "contact": "CSC helpline: 1800-3000-3468"
-    },
-    "RKVY": {
-        "full_name": "Rashtriya Krishi Vikas Yojana - RAFTAAR",
-        "objective": "Boosting agri-development and innovation at state level",
-        "benefits": "Grants for startups, infrastructure, innovation; flexible state-specific programs",
-        "eligibility": "States, farmers, agri-entrepreneurs, startups",
-        "how_to_apply": "Through State Agriculture Department",
-        "contact": "Contact State Agriculture Mission"
-    },
-    "PMMSY": {
-        "full_name": "Pradhan Mantri Matsya Sampada Yojana",
-        "objective": "Development of fisheries and aqua-based livelihoods",
-        "benefits": "40-60% subsidy for hatcheries, ponds, cold storage, and processing units",
-        "eligibility": "Fish farmers, SHGs, FPOs, entrepreneurs",
-        "how_to_apply": "Through Department of Fisheries or online portal",
-        "contact": "Department of Fisheries helpline"
-    }
-}
-
-def get_scheme_info(message):
-    """Returns information about government schemes"""
-    message_lower = message.lower()
-    
-    # Check if asking about specific scheme
-    scheme_keywords = {
-        'PM-KISAN': ['pm kisan', 'pmkisan', 'income support', '6000', 'direct benefit', 'samman nidhi'],
-        'PMFBY': ['fasal bima', 'crop insurance', 'pmfby', 'insurance', 'bima yojana'],
-        'KCC': ['kisan credit', 'kcc', 'credit card', 'loan', 'ऋण'],
-        'PMKSY': ['sinchai', 'irrigation', 'pmksy', 'drip', 'sprinkler', 'सिंचाई'],
-        'AIF': ['infrastructure', 'aif', 'storage', 'cold storage', 'warehouse'],
-        'PKVY': ['organic', 'pkvy', 'natural farming', 'paramparagat'],
-        'PM-KUSUM': ['solar', 'kusum', 'solar pump', 'renewable', 'सौर'],
-        'SMAM': ['mechanization', 'tractor', 'machinery', 'equipment', 'यंत्रीकरण'],
-        'PENSION': ['pension', 'maan dhan', 'retirement', 'पेंशन'],
-        'RKVY': ['rkvy', 'raftaar', 'rashtriya krishi'],
-        'PMMSY': ['fisheries', 'matsya', 'fish farming', 'मत्स्य']
-    }
-    
-    # Find matching scheme
-    for scheme_key, keywords in scheme_keywords.items():
-        if any(keyword in message_lower for keyword in keywords):
-            scheme = GOVERNMENT_SCHEMES[scheme_key]
-            return f"""📋 **{scheme['full_name']}**
-
-🎯 **Objective:**
-{scheme['objective']}
-
-💰 **Key Benefits:**
-{scheme['benefits']}
-
-✅ **Eligibility:**
-{scheme['eligibility']}
-
-📝 **How to Apply:**
-{scheme['how_to_apply']}
-
-📞 **Contact:**
-{scheme['contact']}
-
-💡 **Pro Tip:** Keep your Aadhaar, bank account, and land documents ready for smooth application process!"""
-    
-    # General schemes overview
-    return """🏛️ **Major Government Schemes for Farmers (2025)**
-
-**💵 Income Support & Financial Aid:**
-• **PM-KISAN**: ₹6,000/year direct benefit (3 installments)
-• **PM Kisan Pension**: ₹3,000/month after 60 years
-• **Kisan Credit Card**: Easy loans up to ₹3 lakh at 7% interest
-
-**🛡️ Risk Management:**
-• **PM Fasal Bima Yojana**: Crop insurance with low premiums
-  - 2% premium for Kharif crops
-  - 1.5% premium for Rabi crops
-  - Coverage for natural calamities, pests, diseases
-
-**💧 Irrigation & Water Management:**
-• **PM Krishi Sinchai Yojana**: Up to 55% subsidy on drip/sprinkler
-• 'Har Khet Ko Pani' - Every farm gets water
-• 'More Crop Per Drop' - Water efficiency
-
-**☀️ Energy & Technology:**
-• **PM-KUSUM**: 60% subsidy on solar pumps
-  - Earn by selling surplus electricity
-  - Reduce diesel costs
-• **SMAM**: 40-50% subsidy on farm machinery
-  - Tractors, harvesters, equipment
-  - Priority for women farmers
-
-**🏭 Infrastructure & Marketing:**
-• **Agriculture Infrastructure Fund**: ₹1 lakh crore scheme
-  - 3% interest subvention
-  - Cold storage, warehouses, processing units
-• **RKVY-RAFTAAR**: Support for innovation and startups
-
-**🌱 Sustainable Farming:**
-• **PKVY**: Organic farming support - ₹50,000/hectare for 3 years
-• **Natural Farming Mission**: Chemical-free agriculture
-
-**🐟 Fisheries:**
-• **PM Matsya Sampada Yojana**: 40-60% subsidy for fish farming
-
-**🆕 New Initiatives (October 2025):**
-• ₹35,440 crore outlay for FPOs and PACS modernization
-• Expansion of Farmer Producer Organizations
-• Multi-service Primary Agricultural Credit Societies
-
-**📞 Important Helplines:**
-• Agriculture: **1800-180-1551** (Toll-free)
-• PM-KISAN: **155261** / **011-24300606**
-• Crop Insurance: **18001801551**
-• CSC: **1800-3000-3468**
-
-**🌐 Online Portals:**
-• farmer.gov.in - Central portal
-• pmkisan.gov.in - PM-KISAN
-• pmfby.gov.in - Crop Insurance
-• agriinfra.dac.gov.in - Infrastructure Fund
-
-💬 **Ask me about specific schemes!**
-Examples:
-• "Tell me about PM-KISAN"
-• "How to get crop insurance?"
-• "What is Kisan Credit Card?"
-• "Solar pump subsidy details"
-
-📍 **Visit your nearest:**
-• Krishi Vigyan Kendra (KVK)
-• Common Service Center (CSC)
-• District Agriculture Office
-"""
 
 # ---------------------- CSS ----------------------
 st.markdown("""
@@ -685,17 +461,96 @@ st.markdown("""
         border: 1px solid #4caf50 !important;
         border-radius: 10px !important;
     }
+    
+    .stTextInput input:focus, .stChatInput textarea:focus {
+        border-color: #66bb6a !important;
+        box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2) !important;
+    }
+    
+    .stChatInput {
+        background: transparent !important;
+    }
+    
+    .stChatInput > div {
+        background: #2d2d2d !important;
+        border: 2px solid #4caf50 !important;
+        border-radius: 12px !important;
+        padding: 0 !important;
+    }
+    
+    .stChatInput textarea {
+        padding: 1rem 1.5rem !important;
+        min-height: 50px !important;
+        font-size: 0.95rem !important;
+    }
+    
+    .stChatInput button {
+        background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%) !important;
+        border: none !important;
+        border-radius: 8px !important;
+        margin: 4px !important;
+        padding: 0.5rem 1rem !important;
+    }
+    
+    .stChatInput button:hover {
+        background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%) !important;
+        transform: scale(1.05);
+    }
+    
+    [data-testid="stFileUploader"] {
+        background: #2d2d2d !important;
+        border: 2px dashed #4caf50 !important;
+        border-radius: 12px !important;
+        padding: 2rem !important;
+    }
+    
+    [data-testid="stFileUploader"] * {
+        color: #e0e0e0 !important;
+    }
+    
+    [data-testid="stMetric"] {
+        background: linear-gradient(135deg, #2d2d2d 0%, #242424 100%) !important;
+        border: 1px solid #4caf50 !important;
+        border-radius: 10px !important;
+        padding: 1rem !important;
+    }
+    
+    [data-testid="stMetric"] * {
+        color: #e0e0e0 !important;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        color: #81c784 !important;
+    }
+    
+    .stSelectbox select {
+        background: #2d2d2d !important;
+        color: #e0e0e0 !important;
+        border: 1px solid #4caf50 !important;
+    }
+    
+    .stSpinner > div {
+        border-top-color: #66bb6a !important;
+    }
+    
+    hr {
+        border-color: #4caf50 !important;
+        opacity: 0.3;
+    }
 </style>
 """, unsafe_allow_html=True)
 
 # ---------------------- INITIALIZE SESSION ----------------------
 if "messages" not in st.session_state:
     st.session_state.messages = []
+if "user_location" not in st.session_state:
+    st.session_state.user_location = None
 if "expect_image" not in st.session_state:
     st.session_state.expect_image = False
 if "selected_language" not in st.session_state:
     st.session_state.selected_language = 'en'
 
+# Get current language
 current_lang = st.session_state.selected_language
 
 # ---------------------- HEADER ----------------------
@@ -736,7 +591,7 @@ with col_lang2:
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ---------------------- WEATHER & PRICE FUNCTIONS ----------------------
+# ---------------------- WEATHER FUNCTION ----------------------
 def get_weather(city):
     """Fetches real-time weather data"""
     API_KEY = "bc072ed23f5983aac7f32d666efe49af"
@@ -754,15 +609,45 @@ def get_weather(city):
                 "feels_like": data["main"]["feels_like"],
                 "humidity": data["main"]["humidity"],
                 "description": data["weather"][0]["description"],
-                "wind_speed": data["wind"]["speed"]}
-        else:
-            return None
-    except Exception as e:
-        st.error(f"Error fetching weather: {str(e)}")
-    return None
+                "wind_speed": data["wind"]["speed"]
+            }
+    except:
+        pass
+    return None
 
+# ---------------------- DISEASE DETECTION ----------------------
+def ai_predict_disease(image_file):
+    """Placeholder for future ML model"""
+    diseases = {
+        "Tomato - Late Blight": {
+            "symptoms": "Dark brown spots on leaves, white mold on undersides",
+            "treatment": "Remove infected leaves, apply copper-based fungicide, improve air circulation",
+            "prevention": "Avoid overhead watering, use resistant varieties"
+        },
+        "Potato - Early Blight": {
+            "symptoms": "Circular brown spots with concentric rings on older leaves",
+            "treatment": "Apply fungicide (Mancozeb), remove infected leaves",
+            "prevention": "Crop rotation, proper spacing, mulching"
+        },
+        "Healthy Crop": {
+            "symptoms": "No disease detected",
+            "treatment": "Continue regular care and monitoring",
+            "prevention": "Maintain good agricultural practices"
+        }
+    }
+    
+    disease_name = random.choice(list(diseases.keys()))
+    disease_info = diseases[disease_name]
+    
+    return {
+        "name": disease_name,
+        "confidence": random.randint(75, 98),
+        **disease_info
+    }
+
+# ---------------------- PRICE FUNCTION (shortened for space) ----------------------
 def get_produce_prices(state="all"):
-    """Sample prices - abbreviated"""
+    """Sample prices - using abbreviated version"""
     sample_prices = {
         # ========== NORTH INDIA ==========
         # Delhi NCR Updated Dataset (October 2025)
@@ -1699,6 +1584,37 @@ def get_produce_prices(state="all"):
         
         return matched_cities if matched_cities else None
 
+# ---------------------- EXTRACT CITY ----------------------
+def extract_city_and_vegetable_from_message(message):
+    """Extracts both city name and vegetable name from user message"""
+    message_lower = message.lower()
+    
+    city = None
+    city_patterns = [
+        r"(?:in|at|for)\s+([a-zA-Z\s]+?)(?:\s+price|\s+market|$)",
+        r"([a-zA-Z]+)\s+(?:price|weather|market)",
+    ]
+    
+    for pattern in city_patterns:
+        match = re.search(pattern, message_lower)
+        if match:
+            potential_city = match.group(1).strip()
+            potential_city = re.sub(r'\b(today|tomorrow|now|current|latest|price|prices|weather)\b', '', potential_city).strip()
+            if potential_city and len(potential_city) > 2:
+                city = potential_city
+                break
+    
+    vegetable = None
+    produce_list = ["tomato", "potato", "onion", "cabbage"]
+    
+    for produce in produce_list:
+        if produce in message_lower:
+            vegetable = produce
+            break
+    
+    return city, vegetable
+
+# ---------------------- FORMAT PRICE RESPONSE ----------------------
 def format_price_response(prices, city_name=None, vegetable_name=None):
     """Formats price data into readable response"""
     if not prices:
@@ -1712,70 +1628,387 @@ def format_price_response(prices, city_name=None, vegetable_name=None):
         
         response += f"📍 **{city}**\n\n"
         
-        for item, data in produce_data.items():
-            response += f"• **{item}**: {data['price']} {data['unit']} {data['trend']}\n"
+        if vegetable_name:
+            found = False
+            for item, data in produce_data.items():
+                if vegetable_name.lower() in item.lower():
+                    response += f"• **{item}**: {data['price']} {data['unit']} {data['trend']}\n"
+                    found = True
+            
+            if not found:
+                response += f"❌ {vegetable_name.title()} price not available for {city}\n"
+        else:
+            for item, data in produce_data.items():
+                response += f"• **{item}**: {data['price']} {data['unit']} {data['trend']}\n"
         
         response += "\n"
     
-    response += "\n📊 **Legend:** ↑ Rising | → Stable | ↓ Falling\n"
+    response += "\n📊 **Legend:** → Rising | → Stable | ↓ Falling\n"
+    
     return response
 
-# ---------------------- DISEASE DETECTION ----------------------
-def ai_predict_disease(image_file):
-    """Placeholder for ML model"""
-    diseases = {
-        "Tomato - Late Blight": {
-            "symptoms": "Dark brown spots on leaves, white mold on undersides",
-            "treatment": "Remove infected leaves, apply copper-based fungicide",
-            "prevention": "Avoid overhead watering, use resistant varieties"
-        }
-    }
+# ---------------------- CROP CULTIVATION GUIDES ----------------------
+def get_crop_guide(message):
+    """Returns detailed crop cultivation guides"""
+    message_lower = message.lower()
     
-    disease_name = random.choice(list(diseases.keys()))
-    disease_info = diseases[disease_name]
-    
-    return {
-        "name": disease_name,
-        "confidence": random.randint(75, 98),
-        **disease_info
-    }
+    if "wheat" in message_lower:
+        return """🌾 **Wheat Cultivation Guide**
 
-# ---------------------- INTENT DETECTION ----------------------
+**Climate Requirements:**
+• Temperature: 10-25°C (ideal)
+• Rainfall: 50-75 cm annually
+• Cool, moist climate preferred
+
+**Soil:**
+• Well-drained loamy or clay-loam soil
+• pH: 6.0-7.0
+• Deep soil with good water retention
+
+**Planting:**
+• Sowing time: October-November (Rabi season)
+• Seed rate: 100-125 kg/hectare
+• Row spacing: 20-22 cm
+
+**Fertilizers:**
+• Nitrogen: 120-150 kg/ha
+• Phosphorus: 60 kg/ha
+• Potassium: 40 kg/ha
+• Apply farmyard manure before sowing
+
+**Irrigation:**
+• 4-6 irrigations needed
+• Critical stages: Crown root, tillering, flowering, grain filling
+• Avoid waterlogging
+
+**Harvesting:**
+• 120-150 days after sowing
+• When grains are hard and golden
+• Moisture content: 20-25%
+
+**Common Issues:**
+• Rust diseases: Use resistant varieties
+• Aphids: Apply neem oil or insecticides
+• Weeds: Manual weeding or herbicides
+
+💡 **Pro Tips:**
+✅ Use certified seeds
+✅ Crop rotation with legumes
+✅ Proper drainage to prevent diseases
+✅ Store in dry, cool place"""
+    
+    elif "rice" in message_lower:
+        return """🍚 **Rice Cultivation Guide**
+
+**Climate:**
+• Temperature: 20-35°C
+• High humidity (80-90%)
+• Warm, tropical/subtropical regions
+
+**Soil:**
+• Clayey or loamy soil that retains water
+• pH: 5.5-6.5
+• Flooded fields (puddled soil)
+
+**Planting:**
+• Kharif season: June-July
+• Transplanting: 21-25 days old seedlings
+• Spacing: 15×15 cm or 20×15 cm
+
+**Water Management:**
+• Continuous flooding during growth
+• 5-10 cm water depth
+• Drain before harvesting
+
+**Fertilizers:**
+• Nitrogen: 80-120 kg/ha (in splits)
+• Phosphorus: 40-60 kg/ha
+• Potassium: 40 kg/ha
+• Zinc: 25 kg/ha (if deficient)
+
+**Harvesting:**
+• 110-140 days (variety dependent)
+• When 80% grains turn golden
+• Sun-dry to 14% moisture
+
+**Pest Control:**
+• Stem borer: Pheromone traps
+• Brown plant hopper: Neem extracts
+• Blast disease: Use resistant varieties
+
+💡 **Best Practices:**
+✅ System of Rice Intensification (SRI)
+✅ Alternate wetting and drying
+✅ Proper leveling of fields
+✅ Use disease-free seeds"""
+    
+    elif "tomato" in message_lower:
+        return """🍅 **Tomato Cultivation Guide**
+
+**Climate:**
+• Temperature: 20-30°C (day), 15-20°C (night)
+• Warm, sunny weather
+• Avoid frost and excessive rain
+
+**Soil:**
+• Well-drained loamy soil
+• pH: 6.0-6.8
+• Rich in organic matter
+
+**Planting:**
+• Nursery: Raise seedlings first (3-4 weeks)
+• Transplanting: 15-20 cm tall seedlings
+• Spacing: 60×45 cm or 75×60 cm
+• Season: Feb-Mar (summer), Jun-Jul (rainy)
+
+**Support:**
+• Use stakes or cages for support
+• Height: 4-5 feet
+• Tie plants gently
+
+**Fertilizers:**
+• Compost: 20-25 tons/ha
+• NPK: 100:50:50 kg/ha
+• Calcium for preventing blossom end rot
+
+**Irrigation:**
+• Regular, moderate watering
+• Drip irrigation recommended
+• Avoid overhead watering (disease risk)
+• Mulching helps retain moisture
+
+**Common Diseases:**
+• Late blight: Remove infected leaves, copper fungicide
+• Early blight: Mancozeb spray
+• Leaf curl virus: Control whiteflies
+
+**Pests:**
+• Fruit borer: Bt spray
+• Aphids: Neem oil
+• Whiteflies: Yellow sticky traps
+
+**Harvesting:**
+• 60-90 days after transplanting
+• Pick when firm and colored
+• Harvest regularly (2-3 days interval)
+
+💡 **Tips:**
+✅ 6-8 hours daily sunlight
+✅ Prune suckers for better yield
+✅ Rotate crops annually
+✅ Use resistant varieties"""
+    
+    elif "potato" in message_lower:
+        return """🥔 **Potato Cultivation Guide**
+
+**Climate:**
+• Temperature: 15-20°C (ideal)
+• Cool weather crop
+• Avoid high temperatures during tuber formation
+
+**Soil:**
+• Loose, well-drained sandy loam
+• pH: 5.0-6.0 (slightly acidic)
+• Good organic matter content
+
+**Planting:**
+• Season: October-November (plains), April-May (hills)
+• Seed rate: 2-2.5 tons/ha
+• Spacing: 50×20 cm
+• Depth: 5-7 cm
+
+**Seed Treatment:**
+• Use disease-free seed tubers
+• Cut large tubers (50-60g pieces)
+• Treat with fungicide before planting
+
+**Earthing Up:**
+• Important operation 2-3 times
+• Prevents greening of tubers
+• Controls weeds
+
+**Fertilizers:**
+• FYM: 20-25 tons/ha
+• Nitrogen: 120-150 kg/ha
+• Phosphorus: 80 kg/ha
+• Potassium: 100 kg/ha
+
+**Irrigation:**
+• 6-8 irrigations needed
+• Critical: Flowering and tuber formation
+• Avoid waterlogging
+
+**Diseases:**
+• Late blight: Mancozeb spray
+• Early blight: Crop rotation
+• Black scurf: Seed treatment
+
+**Harvesting:**
+• 90-120 days after planting
+• When leaves turn yellow
+• Cure tubers in shade 10-15 days
+
+💡 **Storage:**
+✅ Cool (2-4°C), dark place
+✅ Prevent sprouting
+✅ Good ventilation
+✅ Check regularly for rot"""
+    
+    else:
+        # General crop tips
+        return """🌾 **Crop Cultivation Tips**
+
+I can help you with detailed cultivation guides for:
+
+**Major Crops:**
+• 🌾 Wheat - Rabi crop
+• 🍚 Rice - Kharif crop
+• 🍅 Tomato - Vegetable crop
+• 🥔 Potato - Tuber crop
+• 🌽 Maize - Cereal crop
+• 🌶️ Chili - Spice crop
+
+**What I can tell you:**
+• Climate and soil requirements
+• Planting time and methods
+• Fertilizer recommendations
+• Irrigation schedules
+• Pest and disease management
+• Harvesting techniques
+• Storage tips
+
+**Ask me like:**
+• "Tell me about wheat cultivation"
+• "How to grow rice?"
+• "Tomato farming tips"
+• "Best time to plant potato"
+
+**Type your crop name to get started!** 🚜"""
+
+# ---------------------- MULTILINGUAL KEYWORD DETECTION ----------------------
 def detect_intent_multilingual(user_message):
     """Detect user intent from multilingual input"""
+    # Translate user message to English for intent detection
+    if TRANSLATION_AVAILABLE:
+        try:
+            translator = GoogleTranslator(source='auto', target='en')
+            message_en = translator.translate(user_message).lower()
+        except:
+            message_en = user_message.lower()
+    else:
+        message_en = user_message.lower()
+    
+    # Also check original message
     message_lower = user_message.lower()
     
-    # Scheme keywords
-    scheme_keywords = ['scheme', 'subsidy', 'government', 'yojana', 'benefit', 'pm kisan', 
-                      'insurance', 'loan', 'credit', 'pension', 'योजना', 'सब्सिडी', 'बीमा',
-                      'rkvy', 'kusum', 'solar', 'fasal bima', 'kisan credit', 'organic']
+    # Multilingual keywords for each intent
+    disease_keywords = {
+        'en': ['disease', 'sick', 'infected', 'diagnose', 'problem', 'leaf'],
+        'hi': ['रोग', 'बीमार', 'संक्रमित', 'पत्ती', 'समस्या'],
+        'mr': ['रोग', 'आजारी', 'संक्रमित', 'पान', 'समस्या'],
+        'ta': ['நோய்', 'நோயுற்ற', 'தொற்று', 'இலை', 'பிரச்சனை'],
+        'te': ['వ్యాధి', 'అనారోగ్యం', 'సోకిన', 'ఆకు', 'సమస్య'],
+        'bn': ['রোগ', 'অসুস্থ', 'সংক্রমিত', 'পাতা', 'সমস্যা'],
+        'gu': ['રોગ', 'બીમાર', 'ચેપગ્રસ્ત', 'પાન', 'સમસ્યા'],
+        'kn': ['ರೋಗ', 'ಅನಾರೋಗ್ಯ', 'ಸೋಂಕು', 'ಎಲೆ', 'ಸಮಸ್ಯೆ'],
+        'ml': ['രോഗം', 'അസുഖം', 'രോഗബാധ', 'ഇല', 'പ്രശ്നം'],
+        'pa': ['ਬਿਮਾਰੀ', 'ਬੀਮਾਰ', 'ਸੰਕਰਮਿਤ', 'ਪੱਤਾ', 'ਸਮੱਸਿਆ']
+    }
     
-    disease_keywords = ['disease', 'sick', 'infected', 'problem', 'leaf', 'रोग', 'बीमारी']
-    price_keywords = ['price', 'cost', 'market', 'rate', 'mandi', 'कीमत', 'दाम', 'बाजार']
-    weather_keywords = ['weather', 'temperature', 'rain', 'climate', 'मौसम', 'तापमान']
-    crop_keywords = ['wheat', 'rice', 'crop', 'farming', 'cultivation', 'grow', 'गेहूं', 'चावल', 'फसल']
-    greeting_keywords = ['hello', 'hi', 'hey', 'namaste', 'start', 'नमस्ते', 'हैलो']
+    price_keywords = {
+        'en': ['price', 'cost', 'market', 'rate', 'mandi'],
+        'hi': ['कीमत', 'दाम', 'बाजार', 'मंडी', 'भाव'],
+        'mr': ['किंमत', 'दर', 'बाजार', 'मंडी'],
+        'ta': ['விலை', 'சந்தை', 'வீதம்'],
+        'te': ['ధర', 'మార్కెట్', 'మండి'],
+        'bn': ['দাম', 'বাজার', 'মণ্ডি'],
+        'gu': ['કિંમત', 'બજાર', 'મંડી'],
+        'kn': ['ಬೆಲೆ', 'ಮಾರುಕಟ್ಟೆ', 'ಮಂಡಿ'],
+        'ml': ['വില', 'മാർക്കറ്റ്', 'മണ്ഡി'],
+        'pa': ['ਕੀਮਤ', 'ਬਾਜ਼ਾਰ', 'ਮੰਡੀ']
+    }
     
-    # Check intents
-    if any(keyword in message_lower for keyword in scheme_keywords):
-        return 'scheme'
-    if any(keyword in message_lower for keyword in disease_keywords):
+    weather_keywords = {
+        'en': ['weather', 'temperature', 'rain', 'climate'],
+        'hi': ['मौसम', 'तापमान', 'बारिश', 'जलवायु'],
+        'mr': ['हवामान', 'तापमान', 'पाऊस'],
+        'ta': ['வானிலை', 'வெப்பநிலை', 'மழை'],
+        'te': ['వాతావరణం', 'ఉష్ణోగ్రత', 'వర్షం'],
+        'bn': ['আবহাওয়া', 'তাপমাত্রা', 'বৃষ্টি'],
+        'gu': ['હવામાન', 'તાપમાન', 'વરસાદ'],
+        'kn': ['ಹವಾಮಾನ', 'ತಾಪಮಾನ', 'ಮಳೆ'],
+        'ml': ['കാലാവസ്ഥ', 'താപനില', 'മഴ'],
+        'pa': ['ਮੌਸਮ', 'ਤਾਪਮਾਨ', 'ਮੀਂਹ']
+    }
+    
+    crop_keywords = {
+        'en': ['wheat', 'rice', 'crop', 'farming', 'cultivation', 'grow', 'tomato', 'potato', 'maize', 'chili'],
+        'hi': ['गेहूं', 'चावल', 'फसल', 'खेती', 'उगाना', 'टमाटर', 'आलू'],
+        'mr': ['गहू', 'भात', 'पीक', 'शेती', 'टोमॅटो'],
+        'ta': ['கோதுமை', 'அரிசி', 'பயிர்', 'விவசாயம்', 'தக்காளி'],
+        'te': ['గోధుమ', 'వరి', 'పంట', 'వ్యవసాయం', 'టమోటా'],
+        'bn': ['গম', 'চাল', 'ফসল', 'চাষ', 'টমেটো'],
+        'gu': ['ઘઉં', 'ચોખા', 'પાક', 'ખેતી', 'ટામેટાં'],
+        'kn': ['ಗೋಧಿ', 'ಅಕ್ಕಿ', 'ಬೆಳೆ', 'ಕೃಷಿ', 'ಟೊಮೇಟೊ'],
+        'ml': ['ഗോതമ്പ്', 'അരി', 'വിള', 'കൃഷി', 'തക്കാളി'],
+        'pa': ['ਕਣਕ', 'ਚੌਲ', 'ਫਸਲ', 'ਖੇਤੀ', 'ਟਮਾਟਰ']
+    }
+    
+    greeting_keywords = {
+        'en': ['hello', 'hi', 'hey', 'namaste', 'start'],
+        'hi': ['नमस्ते', 'हैलो', 'हाय', 'शुरू'],
+        'mr': ['नमस्कार', 'हॅलो', 'सुरू'],
+        'ta': ['வணக்கம்', 'ஹலோ', 'தொடங்கு'],
+        'te': ['నమస్కారం', 'హలో', 'ప్రారంభం'],
+        'bn': ['নমস্কার', 'হ্যালো', 'শুরু'],
+        'gu': ['નમસ્તે', 'હેલો', 'શરૂ'],
+        'kn': ['ನಮಸ್ಕಾರ', 'ಹಲೋ', 'ಪ್ರಾರಂಭ'],
+        'ml': ['നമസ്കാരം', 'ഹലോ', 'ആരംഭിക്കുക'],
+        'pa': ['ਸਤ ਸ੍ਰੀ ਅਕਾਲ', 'ਹੈਲੋ', 'ਸ਼ੁਰੂ']
+    }
+    
+    # Check for disease intent
+    for lang_keywords in disease_keywords.values():
+        if any(keyword in message_lower for keyword in lang_keywords):
+            return 'disease'
+    if any(word in message_en for word in disease_keywords['en']):
         return 'disease'
-    if any(keyword in message_lower for keyword in price_keywords):
+    
+    # Check for price intent
+    for lang_keywords in price_keywords.values():
+        if any(keyword in message_lower for keyword in lang_keywords):
+            return 'price'
+    if any(word in message_en for word in price_keywords['en']):
         return 'price'
-    if any(keyword in message_lower for keyword in weather_keywords):
+    
+    # Check for weather intent
+    for lang_keywords in weather_keywords.values():
+        if any(keyword in message_lower for keyword in lang_keywords):
+            return 'weather'
+    if any(word in message_en for word in weather_keywords['en']):
         return 'weather'
-    if any(keyword in message_lower for keyword in crop_keywords):
+    
+    # Check for crop tips intent
+    for lang_keywords in crop_keywords.values():
+        if any(keyword in message_lower for keyword in lang_keywords):
+            return 'crop'
+    if any(word in message_en for word in crop_keywords['en']):
         return 'crop'
-    if any(keyword in message_lower for keyword in greeting_keywords):
+    
+    # Check for greeting intent
+    for lang_keywords in greeting_keywords.values():
+        if any(keyword in message_lower for keyword in lang_keywords):
+            return 'greeting'
+    if any(word in message_en for word in greeting_keywords['en']):
         return 'greeting'
     
     return 'default'
 
 # ---------------------- CHATBOT RESPONSE LOGIC ----------------------
 def get_bot_response(user_message, user_lang='en'):
-    """Generates intelligent responses"""
+    """Generates intelligent responses with multilingual understanding"""
     
+    # Translate user message to English for processing
     message_en = user_message
     if TRANSLATION_AVAILABLE and user_lang != 'en':
         try:
@@ -1784,14 +2017,11 @@ def get_bot_response(user_message, user_lang='en'):
         except:
             pass
     
+    # Detect intent from multilingual input
     intent = detect_intent_multilingual(user_message)
     response_en = ""
     
-    if intent == 'scheme':
-        scheme_info = get_scheme_info(message_en)
-        response_en = scheme_info
-    
-    elif intent == 'disease':
+    if intent == 'disease':
         st.session_state.expect_image = True
         response_en = """🔬 **Crop Disease Detection**
 
@@ -1803,32 +2033,48 @@ I'll analyze it and provide:
 ✅ Prevention tips"""
     
     elif intent == 'price':
-        city = "Delhi"  # Default
-        prices = get_produce_prices(city)
-        response_en = format_price_response(prices, city)
+        city, vegetable = extract_city_and_vegetable_from_message(message_en)
+        
+        if city:
+            prices = get_produce_prices(city)
+            if prices:
+                response_en = format_price_response(prices, city, vegetable)
+            else:
+                response_en = f"❌ Sorry, I don't have price data for '{city}'. Try: Delhi or Mumbai."
+        else:
+            response_en = """💰 **Market Prices Available!**
+
+🏆 **Cities Covered:** Delhi, Mumbai, and more!
+
+💬 **Ask me:** 
+• "Tomato price in Mumbai"
+• "Show onion prices in Delhi"
+
+🔍 Type your city and vegetable name!"""
     
     elif intent == 'weather':
-        weather = get_weather("Mumbai")
-        if weather:
-            response_en = f"""🌤️ **Weather in {weather['city']}:**
+        city, _ = extract_city_and_vegetable_from_message(message_en)
+        
+        if not city:
+            response_en = "🔍 Please specify a location!\nExample: 'Weather in Delhi'"
+        else:
+            weather = get_weather(city)
+            if weather:
+                response_en = f"""🌤️ **Weather in {weather['city']}:**
             
 - Temperature: {weather['temperature']}°C (feels like {weather['feels_like']}°C)
 - Conditions: {weather['description'].title()}
 - Humidity: {weather['humidity']}%
-- Wind: {weather['wind_speed']} m/s"""
-        else:
-            response_en = "❌ Couldn't fetch weather data."
+- Wind: {weather['wind_speed']} m/s
+
+**Advice:** {"Good for outdoor work! 🌞" if weather['temperature'] > 15 else "Indoor tasks recommended. 🧥"}"""
+            else:
+                response_en = f"❌ Couldn't fetch weather for '{city}'."
     
     elif intent == 'crop':
-        response_en = """🌾 **Crop Cultivation Tips**
-
-I can help with:
-• 🌾 Wheat - Rabi crop
-• 🍚 Rice - Kharif crop
-• 🍅 Tomato - Vegetable crop
-• 🥔 Potato - Tuber crop
-
-**Ask me:** "Tell me about wheat cultivation" """
+        # Check which specific crop is mentioned
+        crop_guides = get_crop_guide(message_en)
+        response_en = crop_guides
     
     elif intent == 'greeting':
         response_en = f"""{get_greeting_by_language(user_lang)}
@@ -1838,7 +2084,6 @@ I can help you with:
 💰 Market prices
 🌾 Crop cultivation tips
 🔬 Disease detection (upload photo)
-🏛️ Government schemes & subsidies
 
 **What would you like to know?** 🚜"""
     
@@ -1850,12 +2095,11 @@ Ask me about:
 • 💰 Market prices
 • 🌤️ Weather updates
 • 🌱 Crop tips
-• 🏛️ Government schemes
 
 **Type your question!** 🚜"""
     
     # Translate response back to user's language
-    if user_lang != 'en' and TRANSLATION_AVAILABLE:
+    if user_lang != 'en':
         return translate_text(response_en, target_lang=user_lang)
     
     return response_en
@@ -1894,13 +2138,6 @@ with st.sidebar:
         
     if st.button(get_ui_text('crop_tips', current_lang)):
         user_msg = get_ui_text('tell_about', current_lang)
-        st.session_state.messages.append({"role": "user", "content": user_msg})
-        bot_response = get_bot_response(user_msg, st.session_state.selected_language)
-        st.session_state.messages.append({"role": "assistant", "content": bot_response})
-        st.rerun()
-    
-    if st.button(get_ui_text('govt_schemes', current_lang)):
-        user_msg = get_ui_text('govt_schemes_msg', current_lang)
         st.session_state.messages.append({"role": "user", "content": user_msg})
         bot_response = get_bot_response(user_msg, st.session_state.selected_language)
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
